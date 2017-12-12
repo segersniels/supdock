@@ -11,7 +11,7 @@ Where [options] are:
   - rmi
   - logs
 EOS
-version = '0.0.1'
+version = '0.0.2'
 
 def create_selection(ids, names)
   selection = []
@@ -47,17 +47,27 @@ case ARGV[0]
   when 'version', '-v', '--version'
     puts version
   when 'stop'
-    unless get_ids('ps').empty?
-      container = $prompt.select('Which container would you like to stop?', create_selection(get_ids('ps'),get_names('ps')))
-      `docker stop #{container.split('-').first}`
-      puts "Container #{container} was stopped..."
+    if ARGV[1] == 'all'
+      `docker stop $(docker ps -aq)`
+      puts 'All containers stopped...'
     else
-      puts 'No containers currently running...'
+      unless get_ids('ps').empty?
+        container = $prompt.select('Which container would you like to stop?', create_selection(get_ids('ps'),get_names('ps')))
+        `docker stop #{container.split('-').first}`
+        puts "Container #{container} was stopped..."
+      else
+        puts 'No containers currently running...'
+      end
     end
   when 'rm'
-    container = $prompt.select('Which container would you like to remove?', create_selection(get_ids('psa'),get_names('psa')))
-    `docker rm -f #{container.split('-').first}`
-    puts "Container #{container} was removed..."
+    if ARGV[1] == 'all'
+      `docker rm $(docker ps -aq)`
+      puts 'All containers removed...'
+    else
+      container = $prompt.select('Which container would you like to remove?', create_selection(get_ids('psa'),get_names('psa')))
+      `docker rm -f #{container.split('-').first}`
+      puts "Container #{container} was removed..."
+    end
   when 'rmi'
     image = $prompt.select('Which image would you like to remove?', create_selection(get_ids('images'),get_names('images')))
     `docker rmi -f #{image.split('-').first}`
