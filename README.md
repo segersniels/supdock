@@ -6,7 +6,7 @@ What's Up, Doc(ker)? A slightly more visual way to interact with the docker daem
 
 ## Installation
 ```bash
-curl -o /usr/local/bin/supdock https://raw.githubusercontent.com/segersniels/supdock/master/supdock ; chmod +x /usr/local/bin/supdock
+gem install tty-prompt ; curl -o /usr/local/bin/supdock https://raw.githubusercontent.com/segersniels/supdock/master/supdock ; chmod +x /usr/local/bin/supdock
 ```
 
 ## Why
