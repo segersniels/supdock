@@ -47,26 +47,30 @@ case ARGV[0]
   when 'version', '-v', '--version'
     puts version
   when 'stop'
-    if ARGV[1] == 'all'
-      `docker stop $(docker ps -aq)`
-      puts 'All containers stopped...'
-    else
-      unless get_ids('ps').empty?
+    unless get_ids('ps').empty?
+      if ARGV[1] == 'all'
+        `docker stop $(docker ps -aq)`
+        puts 'All containers stopped...'
+      else
         container = $prompt.select('Which container would you like to stop?', create_selection(get_ids('ps'),get_names('ps')))
         `docker stop #{container.split('-').first}`
         puts "Container #{container} was stopped..."
-      else
-        puts 'No containers currently running...'
       end
+    else
+      puts 'No containers currently running...'
     end
   when 'rm'
-    if ARGV[1] == 'all'
-      `docker rm $(docker ps -aq)`
-      puts 'All containers removed...'
+    unless get_ids('psa').empty?
+      if ARGV[1] == 'all'
+        `docker rm $(docker ps -aq)`
+        puts 'All containers removed...'
+      else
+        container = $prompt.select('Which container would you like to remove?', create_selection(get_ids('psa'),get_names('psa')))
+        `docker rm -f #{container.split('-').first}`
+        puts "Container #{container} was removed..."
+      end
     else
-      container = $prompt.select('Which container would you like to remove?', create_selection(get_ids('psa'),get_names('psa')))
-      `docker rm -f #{container.split('-').first}`
-      puts "Container #{container} was removed..."
+      puts 'No containers available to remove...'
     end
   when 'rmi'
     image = $prompt.select('Which image would you like to remove?', create_selection(get_ids('images'),get_names('images')))
