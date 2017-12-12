@@ -6,8 +6,8 @@ $prompt = TTY::Prompt.new
 banner = <<-EOS
 What's up Dock(er)? Usage: supdock [options] <filenames>
 Where [options] are: 
-  - stop
-  - rm
+  - stop | all
+  - rm | all
   - rmi
   - logs
 EOS
