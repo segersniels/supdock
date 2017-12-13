@@ -44,6 +44,7 @@ end
 case ARGV[0]
   when 'help', '-h', '--help'
     puts banner
+    system "docker --help"
   when 'version', '-v', '--version'
     puts version
   when 'stop'

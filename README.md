@@ -12,6 +12,9 @@ gem install tty-prompt ; curl -o /usr/local/bin/supdock https://raw.githubuserco
 You might have to execute as `sudo` to install the gem.
 
 ## Why
-Repetitive use of `docker ps`, `docker ps -a`, `docker stop` and `docker rmi` when troubleshooting  complex container setups can get chaotic.
+Repetitive use of `docker ps`, `docker ps -a`, `docker stop` and `docker rmi` when troubleshooting  complex container setups can get chaotic. Supdock aims to optimize and speed up your workflow using docker.
 
 ![](https://i.gyazo.com/c1e63cfff8edf9e7c47397b642e1ceaf.gif)
+
+## Contributing
+If you would like to see something added or you want to add something yourself feel free to create an issue or a pull request.
