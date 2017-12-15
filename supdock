@@ -13,6 +13,7 @@ Commands:
   rm | all
   rmi
   logs
+  ssh
 EOS
 version = '0.0.2'
 
@@ -89,6 +90,14 @@ when 'logs'
   else
     image = $prompt.select('Which container would you like to see the logs of?', create_selection(get_ids('psa'), get_names('psa')))
     system "docker logs #{image.split('-').first}"
+  end
+when 'ssh'
+  if get_ids('ps').empty?
+    puts 'No containers to see logs of...'
+  else
+    image = $prompt.select("Which container would you like to 'ssh' to?", create_selection(get_ids('psa'), get_names('psa')))
+    shell = $prompt.select('Which type of shell is the container using?', %w(bash ash))
+    system "docker exec -ti #{image.split('-').first} #{shell}"
   end
 else
   system "docker #{ARGV[0]} #{ARGV[1]} #{ARGV[2]}"
