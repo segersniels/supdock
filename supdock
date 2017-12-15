@@ -9,11 +9,11 @@ What's up Dock(er)?
 Usage:  supdock COMMAND
 
 Commands:
-  stop | all
-  rm | all
-  rmi
-  logs
-  ssh
+  stop        \tStop a running container
+  rm          \tRemove a container
+  rmi         \tRemove an image
+  logs        \tFetch the logs of a container
+  ssh         \tSSH into a container
 EOS
 version = '0.0.2'
 
@@ -35,6 +35,10 @@ def get_names(action)
   return `docker ps | awk '{print $NF}' | tail -n +2`.split if action == 'ps'
   return `docker ps -a | awk '{print $NF}' | tail -n +2`.split if action == 'psa'
   return `docker images | awk '{print $1}' | tail -n +2`.split if action == 'images'
+end
+
+def prompt_selection()
+  
 end
 
 case ARGV[0]
@@ -100,5 +104,9 @@ when 'ssh'
     system "docker exec -ti #{image.split('-').first} #{shell}"
   end
 else
-  system "docker #{ARGV[0]} #{ARGV[1]} #{ARGV[2]}"
+  if ARGV[0].nil?
+    system "supdock -h"
+  else
+    system "docker #{ARGV[0]} #{ARGV[1]} #{ARGV[2]}"
+  end
 end
