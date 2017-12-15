@@ -52,7 +52,7 @@ when 'help', '-h', '--help'
 when 'version', '-v', '--version'
   puts version
 when 'update'
-  `curl -o /usr/local/bin/supdock #{source} 2>/dev/null ; chmod +x /usr/local/bin/supdock`
+  `curl -o /usr/local/bin/supdock #{source} > /dev/null ; chmod +x /usr/local/bin/supdock`
   puts 'Latest version was installed...'
 when 'stop'
   if get_ids('ps').empty?
