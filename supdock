@@ -9,6 +9,9 @@ What's up Dock(er)?
 Usage:  supdock COMMAND
 
 Commands:
+  help        \tShows general information about supdock
+  version     \tShows the current installed version
+  update      \tUpdates to the latest version
   stop        \tStop a running container
   rm          \tRemove a container
   rmi         \tRemove an image
@@ -16,6 +19,7 @@ Commands:
   ssh         \tSSH into a container
 EOS
 version = '0.0.2'
+source = 'https://raw.githubusercontent.com/segersniels/supdock/master/supdock'
 
 def create_selection(ids, names)
   selection = []
@@ -47,6 +51,8 @@ when 'help', '-h', '--help'
   system 'docker --help'
 when 'version', '-v', '--version'
   puts version
+when 'update'
+  `curl -o /usr/local/bin/supdock #{source} ; chmod +x /usr/local/bin/supdock`
 when 'stop'
   if get_ids('ps').empty?
     puts 'No containers currently running...'
