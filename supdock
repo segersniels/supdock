@@ -53,6 +53,7 @@ when 'version', '-v', '--version'
   puts version
 when 'update'
   `curl -o /usr/local/bin/supdock #{source} ; chmod +x /usr/local/bin/supdock`
+  puts 'Latest version was installed...'
 when 'stop'
   if get_ids('ps').empty?
     puts 'No containers currently running...'
