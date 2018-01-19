@@ -10,6 +10,11 @@ gem install tty-prompt ; curl -o /usr/local/bin/supdock https://raw.githubuserco
 ```
 
 You might have to execute as `sudo` to install the gem.
+If you don't want to use `supdock` and `docker` separately you can just set an alias:
+
+```bash
+alias docker="supdock"
+```
 
 ## Why
 Repetitive use of `docker ps`, `docker ps -a`, `docker stop` and `docker rmi` when troubleshooting  complex container setups can get chaotic. Supdock aims to optimize and speed up your workflow using docker.
