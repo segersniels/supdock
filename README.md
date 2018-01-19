@@ -9,8 +9,8 @@ What's Up, Dock(er)? A slightly more visual way to interact with the docker daem
 gem install tty-prompt ; curl -o /usr/local/bin/supdock https://raw.githubusercontent.com/segersniels/supdock/master/supdock ; chmod +x /usr/local/bin/supdock
 ```
 
-You might have to execute as `sudo` to install the gem.
-If you don't want to use `supdock` and `docker` separately you can just set an alias:
+You might have to execute as `sudo` to install the gem.  
+If you don't want to use `supdock` and `docker` separately you can just set an alias.
 
 ```bash
 alias docker="supdock"
