@@ -114,6 +114,6 @@ else
   if ARGV[0].nil?
     system "supdock -h"
   else
-    system "docker #{ARGV[0]} #{ARGV[1]} #{ARGV[2]}"
+    system "docker #{ARGV[0]} #{ARGV[1]} #{ARGV[2]} #{ARGV[3]} #{ARGV[4]} #{ARGV[5]} #{ARGV[6]} #{ARGV[7]} #{ARGV[8]}"
   end
 end
