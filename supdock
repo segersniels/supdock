@@ -75,8 +75,13 @@ when 'rm'
       `docker rm $(docker ps -aq)`
       puts 'All containers removed...'
     else
-      container = $prompt.select('Which container would you like to remove?', create_selection(get_ids('psa') ,get_names('psa')))
-      `docker rm -f #{container.split('-').first}`
+      if ARGV[1].nil?
+        container = $prompt.select('Which container would you like to remove?', create_selection(get_ids('psa') ,get_names('psa')))
+        `docker rm -f #{container.split('-').first}`
+      else
+        container = ARGV[1]
+        `docker rm -f #{container}`
+      end
       puts "Container #{container} was removed..."
     end
   end
@@ -84,8 +89,13 @@ when 'rmi'
   if get_ids('images').empty?
     puts 'No images to remove...'
   else
-    image = $prompt.select('Which image would you like to remove?', create_selection(get_ids('images') ,get_names('images')))
-    `docker rmi -f #{image.split('-').first}`
+    if ARGV[1].nil?
+      image = $prompt.select('Which image would you like to remove?', create_selection(get_ids('images') ,get_names('images')))
+      `docker rmi -f #{image.split('-').first}`
+    else
+      image = ARGV[1]
+      `docker rmi -f #{image}`
+    end
     puts "Image #{image} was removed..."
   end
 when 'history'
