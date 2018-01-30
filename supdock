@@ -18,7 +18,7 @@ Commands:
   logs        \tFetch the logs of a container
   ssh         \tSSH into a container
 EOS
-version = '0.0.2'
+version = '0.0.3'
 source = 'https://raw.githubusercontent.com/segersniels/supdock/master/supdock'
 
 def create_selection(ids, names)
