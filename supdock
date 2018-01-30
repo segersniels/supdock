@@ -30,15 +30,17 @@ def create_selection(ids, names)
 end
 
 def get_ids(action)
-  return `docker ps | awk '{print $1}' | tail -n +2`.split if action == 'ps'
-  return `docker ps -a | awk '{print $1}' | tail -n +2`.split if action == 'psa'
-  return `docker images | awk '{print $3}' | tail -n +2`.split if action == 'images'
+  return `docker ps |awk '{print $1}' |tail -n +2`.split if action == 'ps'
+  return `docker ps -a |awk '{print $1}' |tail -n +2`.split if action == 'psa'
+  return `docker ps -a |grep 'Exited' |awk '{print $1}'`.split if action == 'psa_stopped'
+  return `docker images |awk '{print $3}' |tail -n +2`.split if action == 'images'
 end
 
 def get_names(action)
-  return `docker ps | awk '{print $NF}' | tail -n +2`.split if action == 'ps'
-  return `docker ps -a | awk '{print $NF}' | tail -n +2`.split if action == 'psa'
-  return `docker images | awk '{print $1}' | tail -n +2`.split if action == 'images'
+  return `docker ps |awk '{print $NF}' |tail -n +2`.split if action == 'ps'
+  return `docker ps -a |awk '{print $NF}' |tail -n +2`.split if action == 'psa'
+  return `docker ps -a |grep 'Exited' |awk '{print $NF}'`.split if action == 'psa_stopped'
+  return `docker images |awk '{print $1}' |tail -n +2`.split if action == 'images'
 end
 
 def prompt_selection()
@@ -62,10 +64,28 @@ when 'stop'
       `docker stop $(docker ps -aq)`
       puts 'All containers stopped...'
     else
-      container = $prompt.select('Which container would you like to stop?', create_selection(get_ids('ps') ,get_names('ps')))
-      `docker stop #{container.split('-').first}`
+      if ARGV[1].nil?
+        container = $prompt.select('Which container would you like to stop?', create_selection(get_ids('ps') ,get_names('ps')))
+        `docker stop #{container.split('-').first}`
+      else
+         container = ARGV[1]
+        `docker stop #{container}`
+      end
       puts "Container #{container} was stopped..."
     end
+  end
+when 'start'
+  if get_ids('psa').empty?
+    puts 'No containers available to start...'
+  else
+    if ARGV[1].nil?
+      container = $prompt.select('Which container would you like to start?', create_selection(get_ids('psa_stopped') ,get_names('psa_stopped')))
+      `docker start #{container.split('-').first}`
+    else
+      container = ARGV[1]
+      `docker start #{container}`
+    end
+    puts "Container #{container} started..."
   end
 when 'rm'
   if get_ids('psa').empty?
