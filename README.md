@@ -1,5 +1,5 @@
 # Supdock
-What's Up, Dock(er)? A slightly more visual way to interact with the docker daemon. Supdock is a wrapper for the docker command, written in Ruby, meaning you can still use all of the standard `docker` commands.
+What's Up, Dock(er)? A slightly more visual way to interact with the docker daemon. Supdock is a wrapper for the docker command, written in Ruby, meaning you can still use all of the other `docker` commands without issues.
 
 <p align="center">
 <img src="https://i.imgur.com/ATV0nP7.png" width="250">
