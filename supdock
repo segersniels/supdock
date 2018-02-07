@@ -57,7 +57,8 @@ when 'help', '-h', '--help'
   puts banner
   system 'docker --help'
 when 'version', '-v', '--version'
-  puts version
+  puts "Supdock version #{version}"
+  system "docker --version"
 when 'update'
   `curl -o /usr/local/bin/supdock #{source} -q 2>/dev/null ; chmod +x /usr/local/bin/supdock`
   puts 'Latest version was installed...'
