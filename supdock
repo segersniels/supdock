@@ -22,7 +22,7 @@ Commands:
 
 ---------------------------------------------------------
 EOS
-version = '0.0.4'
+version = '0.0.5'
 source = 'https://raw.githubusercontent.com/segersniels/supdock/master/supdock'
 
 def create_selection(ids, names)
@@ -82,7 +82,7 @@ when 'stop'
     end
   end
 when 'start'
-  if get_ids('psa').empty?
+  if get_ids('psa_stopped').empty?
     puts 'No containers available to start...'
   else
     if ARGV[1].nil?
