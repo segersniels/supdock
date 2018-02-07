@@ -23,7 +23,7 @@ Repetitive use of `docker ps`, `docker ps -a`, `docker stop` and `docker rmi` wh
 
 ## Possible Issues
 - `... can't find header files for ruby at /usr/.../ruby.h` when building native extensions.  
-  You may need to install ruby headers by installing `ruby-devel` on your machine.
+  You may need to install ruby headers by installing `ruby-devel` on your machine.  
   Source: `https://stackoverflow.com/a/4502672/9002446`
 
 ## Contributing
