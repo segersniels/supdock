@@ -150,7 +150,7 @@ when 'ssh'
   if get_ids('ps').empty?
     puts 'No containers to SSH to...'
   else
-    image = $prompt.select("Which container would you like to 'ssh' to?", create_selection(get_ids('psa'), get_names('psa')))
+    image = $prompt.select("Which container would you like to 'ssh' to?", create_selection(get_ids('ps'), get_names('ps')))
     shell = $prompt.select('Which type of shell is the container using?', %w(bash ash))
     system "docker exec -ti #{image.split('-').first} #{shell}"
   end
