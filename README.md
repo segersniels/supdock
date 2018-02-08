@@ -17,7 +17,7 @@ alias docker="supdock"
 ```
 
 ## Why
-Repetitive use of `docker ps`, `docker ps -a`, `docker stop` and `docker rmi` when troubleshooting  complex container setups can get chaotic. Supdock aims to optimize and speed up your workflow using docker.
+Repetitive use of `docker ps`, `docker logs`, `docker stop` and `docker rmi` when troubleshooting  complex container setups can get chaotic. Supdock aims to optimize and speed up your workflow using docker.
 
 ![](https://i.gyazo.com/c1e63cfff8edf9e7c47397b642e1ceaf.gif)
 
