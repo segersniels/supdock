@@ -29,5 +29,8 @@
         "commander": "^2.14.1",
         "inquirer": "^5.1.0",
         "lodash": "^4.17.5"
+    },
+    "bin" : {
+        "supdock-test": "supdock.js"
     }
 }

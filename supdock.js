@@ -1,16 +1,11 @@
 #!/usr/bin/env node
 const package = require('./package.json');
-const fs = require('fs');
 const exec = require('./lib/exec.js');
 const program = require('commander');
 
 program.version(package.version);
 
-program
-    .command('update', 'Updates to the latest version')
-    .action();
-
-const commands = ['start', 'stop', 'logs', 'ssh', 'update', 'stats', 'rm', 'rmi'];
+const commands = ['start', 'stop', 'logs', 'ssh', 'update', 'stats', 'rm', 'rmi', '-h', '-v', '-V', '--help', '--version', 'help'];
 
 if (commands.indexOf(process.argv[2]) >= 0) {
     program
