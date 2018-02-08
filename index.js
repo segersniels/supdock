@@ -5,7 +5,13 @@ const program = require('commander');
 const spawn = require('child_process').spawn;
 const _ = require('lodash');
 
-program.version(package.version);
+program.version(package.version)
+    .option('-f, --force')
+    .option('-D, --debug')
+    .option('-H, --host <list>')
+    .option('-l, --log-level')
+    .option('--config')
+    .option('--no-stream');
 
 program
     .command('stop')
@@ -65,6 +71,9 @@ program
 
 program
     .on('--help', () => {
+        spawn('docker', ['help'], { stdio: 'inherit' });
+    })
+    .on('-h', () => {
         spawn('docker', ['help'], { stdio: 'inherit' });
     });
 

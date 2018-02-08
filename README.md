@@ -21,7 +21,19 @@ Repetitive use of `docker ps`, `docker logs`, `docker stop` and `docker rmi` whe
 ![](https://i.gyazo.com/c1e63cfff8edf9e7c47397b642e1ceaf.gif)
 
 ## Known issues
-Passing flags to supdock (eg. `supdock rm -f foo`) when using one of the custom commands results in an unknown option. This is unwanted behaviour and I'm looking into it.
+Passing flags to `supdock` (eg. `supdock rm -f foo`) when using one of the custom commands can result in an unknown option error. This is because [`commander.js`](https://www.npmjs.com/package/commander) interferes with it and doesn't know it. These custom flags have to be added to the tool manually. So if you encounter a flag you wish to use, feel free to post an issue so I can add it.
+
+I currently have these basic flags added:  
+```bash
+    -V, --version      output the version number
+    -f, --force        
+    -D, --debug        
+    -H, --host <list>  
+    -l, --log-level    
+    --config           
+    --no-stream        
+    -h, --help         output usage information
+```
 
 ## Contributing
 If you would like to see something added or you want to add something yourself feel free to create an issue or a pull request.
