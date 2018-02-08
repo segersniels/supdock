@@ -2,6 +2,7 @@
 const package = require('./package.json');
 const exec = require('./lib/exec.js');
 const program = require('commander');
+const spawn = require('child_process').spawn;
 const _ = require('lodash');
 
 program.version(package.version);
@@ -60,6 +61,11 @@ program
     .action(() => {
         if (typeof process.argv[3] === 'undefined') exec.sshContainer();
         else exec.docker();
+    });
+
+program
+    .on('--help', () => {
+        spawn('docker', ['help'], { stdio: 'inherit' });
     });
 
 program.parse(process.argv);
