@@ -30,6 +30,6 @@
         "lodash": "^4.17.5"
     },
     "bin" : {
-        "supdock-test": "index.js"
+        "supdock": "index.js"
     }
 }

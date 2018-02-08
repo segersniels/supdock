@@ -6,9 +6,6 @@ const _ = require('lodash');
 
 program.version(package.version);
 
-//const commands = ['start', 'stop', 'logs', 'ssh', 'update', 'stats', 'rm', 'rmi', '-h', '-v', '-V', '--help', '--version', 'help'];
-
-
 program
     .command('stop')
     .description('Stop a running container')
