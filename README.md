@@ -18,7 +18,7 @@ alias docker="supdock"
 ## Why
 Repetitive use of `docker ps`, `docker logs`, `docker stop` and `docker rmi` when troubleshooting  complex container setups can get chaotic. Supdock aims to optimize and speed up your workflow using docker.
 
-![](https://i.gyazo.com/c1e63cfff8edf9e7c47397b642e1ceaf.gif)
+![](./img/usage.gif)
 
 ## Known issues
 Passing flags to `supdock` (eg. `supdock rm -f foo`) when using one of the custom commands can result in an unknown option error. This is because [`commander.js`](https://www.npmjs.com/package/commander) interferes with it and doesn't know it. These custom flags have to be added to the tool manually. So if you encounter a flag you wish to use, feel free to post an issue so I can add it.
