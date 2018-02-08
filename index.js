@@ -56,6 +56,14 @@ if (commands.indexOf(process.argv[2]) >= 0) {
             else exec.docker();
         });
 
+    program
+        .command('ssh')
+        .description('SSH into a container')
+        .action(() => {
+            if (typeof process.argv[3] === 'undefined') exec.sshContainer();
+            else exec.docker();
+        });
+
     program.parse(process.argv);
 } else {
     exec.docker();
