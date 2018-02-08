@@ -1,0 +1,33 @@
+{
+    "name": "supdock",
+    "version": "0.0.4",
+    "description": "What's Up Dock(er)?",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/segersniels/supdock.git"
+    },
+    "keywords": [
+        "docker",
+        "supdock",
+        "visual",
+        "interactive",
+        "wrapper",
+        "cli"
+    ],
+    "author": "Niels Segers",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/segersniels/supdock/issues"
+    },
+    "homepage": "https://github.com/segersniels/supdock#readme",
+    "dependencies": {
+        "colors": "^1.1.2",
+        "commander": "^2.14.1",
+        "inquirer": "^5.1.0",
+        "lodash": "^4.17.5"
+    }
+}
