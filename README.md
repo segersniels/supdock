@@ -8,7 +8,8 @@ What's Up, Dock(er)? A slightly more visual way to interact with the docker daem
 Repetitive use of `docker ps`, `docker logs`, `docker stats` and `docker exec -ti` when troubleshooting  complex container setups can get chaotic. Supdock aims to optimize and speed up your workflow using docker.
 
 <p align="center">
-<img src="https://i.imgur.com/DVP2rbt.gif" width="450">
+<img src="https://i.imgur.com/moY077k.gif" width="450">
+<img src="https://i.imgur.com/lH5qUNK.gif" width="450">
 
 ## Installation
 ##### NPM
