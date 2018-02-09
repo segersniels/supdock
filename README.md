@@ -30,8 +30,8 @@ alias docker="supdock"
 ```
 
 <p align="center">
-<img src="https://i.imgur.com/lH5qUNK.gif" width="450">
 <img src="https://i.imgur.com/moY077k.gif" width="450">
+<img src="https://i.imgur.com/lH5qUNK.gif" width="450">
 
 ## Known Issues
 ### Ruby
