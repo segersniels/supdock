@@ -4,15 +4,18 @@ What's Up, Dock(er)? A slightly more visual way to interact with the docker daem
 <p align="center">
 <img src="https://i.imgur.com/ATV0nP7.png" width="250">
 
+## Why
+Repetitive use of `docker ps`, `docker logs`, `docker stats` and `docker exec -ti` when troubleshooting  complex container setups can get chaotic. Supdock aims to optimize and speed up your workflow using docker.
+
 ## Installation
-### NPM
+##### NPM
 ```bash
 npm install -g supdock
 ```
 
 Source code for npm [supdock](https://www.npmjs.com/package/supdock) is available in the [`npm`](https://github.com/segersniels/supdock/tree/npm) branch.
 
-### Ruby
+##### Ruby
 You might have to execute as `sudo` to install the `tty-prompt` gem.  
 
 ```bash
@@ -26,11 +29,9 @@ If you don't want to use `supdock` and `docker` separately you can just set an a
 alias docker="supdock"
 ```
 
-## Why
-Repetitive use of `docker ps`, `docker logs`, `docker stats` and `docker exec -ti` when troubleshooting  complex container setups can get chaotic. Supdock aims to optimize and speed up your workflow using docker.
-
 <p align="center">
-<img src="https://i.imgur.com/DVP2rbt.gif" width="450">
+<img src="https://i.imgur.com/lH5qUNK.gif" width="450">
+<img src="https://i.imgur.com/moY077k.gif" width="450">
 
 ## Known Issues
 ### Ruby
