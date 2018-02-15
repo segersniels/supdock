@@ -25,7 +25,7 @@
     "bugs": {
         "url": "https://github.com/segersniels/supdock/issues"
     },
-    "homepage": "https://github.com/segersniels/supdock/tree/npm#readme",
+    "homepage": "https://github.com/segersniels/supdock#readme",
     "dependencies": {
         "commander": "^2.14.1",
         "inquirer": "^5.1.0",
