@@ -118,6 +118,20 @@ program
     });
 
 program
+    .command('env')
+    .description('See the environment variables of a running container')
+    .action(() => {
+        if (typeof process.argv[3] === 'undefined') {
+            const question = 'Which container would you like to see the environment variables of?';
+            const error = 'No containers running';
+            exec.executeCommand('ps', question, 'env', error);
+        } else {
+            exec.docker();
+        }
+    });
+
+
+program
     .on('--help', () => {
         spawn('docker', ['help'], { stdio: 'inherit' });
     })
