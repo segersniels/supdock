@@ -1,4 +1,8 @@
 # Changelog
+## 0.2.11 (February 15, 2018)
+##### Changed
+- New npm README publish (hur dur).
+
 ## 0.2.1 (February 15, 2018)
 ##### Changed
 - Fixed an issue where compose would trigger a prompt even when no action was specified.
