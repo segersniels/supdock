@@ -1,6 +1,6 @@
 {
     "name": "supdock",
-    "version": "0.1.9",
+    "version": "0.2.0",
     "description": "What's Up Dock(er)?",
     "main": "index.js",
     "scripts": {
@@ -16,7 +16,9 @@
         "visual",
         "interactive",
         "wrapper",
-        "cli"
+        "cli",
+        "compose",
+        "docker-compose"
     ],
     "author": "Niels Segers",
     "license": "ISC",

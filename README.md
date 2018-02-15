@@ -19,13 +19,6 @@ npm install -g supdock
 
 Source code for npm [supdock](https://www.npmjs.com/package/supdock) is available in the [`npm`](https://github.com/segersniels/supdock/tree/npm) branch.
 
-##### Ruby
-You might have to execute as `sudo` to install the `tty-prompt` gem.  
-
-```bash
-gem install tty-prompt ; curl -o /usr/local/bin/supdock https://raw.githubusercontent.com/segersniels/supdock/master/supdock ; chmod +x /usr/local/bin/supdock
-```
-
 ### Extra
 If you don't want to use `supdock` and `docker` separately you can just set an alias.
 
@@ -33,14 +26,9 @@ If you don't want to use `supdock` and `docker` separately you can just set an a
 alias docker="supdock"
 ```
 
+### Changelog
+
 ## Known Issues
-### Ruby
-- `... can't find header files for ruby at /usr/.../ruby.h` when building native extensions.  
-
-You may need to install ruby headers by installing `ruby-devel` on your machine.  
-*Source: [`https://stackoverflow.com/a/4502672/9002446`](https://stackoverflow.com/a/4502672/9002446)*
-
-### NPM
 - Passing flags to `supdock` (eg. `supdock rm -f foo`) when using one of the custom commands can result in an unknown option error.
 
 This is because [`commander.js`](https://www.npmjs.com/package/commander) interferes with it and doesn't know it. These custom flags have to be added to the tool manually. So if you encounter a flag you wish to use, feel free to post an issue so I can add it.

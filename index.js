@@ -19,7 +19,7 @@ program
     .action(() => {
         if (typeof process.argv[3] === 'undefined') {
             const question = 'Which container would you like to stop?';
-            const error = 'No containers available to stop';
+            const error = 'supdock: no containers available to stop';
             exec.executeCommand('ps', question, 'stop', error);
         } else {
             exec.docker();
@@ -32,7 +32,7 @@ program
     .action(() => {
         if (typeof process.argv[3] === 'undefined') {
             const question = 'Which container would you like to start?';
-            const error = 'No containers available to start';
+            const error = 'supdock: no containers available to start';
             exec.executeCommand('psaStopped', question, 'start', error);
         } else {
             exec.docker();
@@ -45,7 +45,7 @@ program
     .action(() => {
         if (typeof process.argv[3] === 'undefined') {
             const question = 'Which container would you like to see the logs of?';
-            const error = 'No containers to see the logs of';
+            const error = 'supdock: no containers to see the logs of';
             exec.executeCommand('psa', question, 'logs', error);
         } else {
             exec.docker();
@@ -58,7 +58,7 @@ program
     .action(() => {
         if (typeof process.argv[3] === 'undefined') {
             const question = 'Which container would you like to remove?';
-            const error = 'No containers to remove';
+            const error = 'supdock: no containers to remove';
             exec.executeCommand('psa', question, 'rm', error);
         } else {
             exec.docker();
@@ -71,7 +71,7 @@ program
     .action(() => {
         if (typeof process.argv[3] === 'undefined') {
             const question = 'Which image would you like to remove?';
-            const error = 'No images to remove';
+            const error = 'supdock: no images to remove';
             exec.executeCommand('images', question, 'rmi', error);
         } else {
             exec.docker();
@@ -84,7 +84,7 @@ program
     .action(() => {
         if (typeof process.argv[3] === 'undefined') {
             const question = 'Which containers would you like to see that stats of?';
-            const error = 'No containers available';
+            const error = 'supdock: no containers available';
             exec.executeCommand('ps', question, 'stats', error);
         } else {
             exec.docker();
@@ -97,7 +97,7 @@ program
     .action(() => {
         if (typeof process.argv[3] === 'undefined') {
             const question = 'Which container would you like to SSH to?';
-            const error = 'No containers available';
+            const error = 'supdock: no containers available';
             exec.executeCommand('ps', question, 'ssh', error);
         } else {
             exec.docker();
@@ -110,7 +110,7 @@ program
     .action(() => {
         if (typeof process.argv[3] === 'undefined') {
             const question = 'Which image would you like to see the history of?';
-            const error = 'No images available';
+            const error = 'supdock: no images available';
             exec.executeCommand('images', question, 'history', error);
         } else {
             exec.docker();
@@ -123,13 +123,21 @@ program
     .action(() => {
         if (typeof process.argv[3] === 'undefined') {
             const question = 'Which container would you like to see the environment variables of?';
-            const error = 'No containers running';
+            const error = 'supdock: no containers running';
             exec.executeCommand('ps', question, 'env', error);
         } else {
             exec.docker();
         }
     });
 
+program
+    .command('compose [action]')
+    .description('Bring up a docker-compose project')
+    .action(action => {
+        const question = 'Which project would you like to bring up?';
+        const error = 'supdock: no projects found';
+        exec.executeCompose(question, action, error);
+    });
 
 program
     .on('--help', () => {
