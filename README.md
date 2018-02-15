@@ -12,12 +12,12 @@ Repetitive use of `docker ps`, `docker logs`, `docker stats` and `docker exec -t
 <img src="https://i.imgur.com/lH5qUNK.gif" width="450">
 
 ## Installation
-##### NPM
+Supdock is available through NPM.
+
 ```bash
 npm install -g supdock
 ```
 
-### Extra
 If you don't want to use `supdock` and `docker` separately you can just set an alias.
 
 ```bash
