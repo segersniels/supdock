@@ -134,7 +134,7 @@ program
     .command('compose [action]')
     .description('Bring up a docker-compose project')
     .action(action => {
-        const question = 'Which project would you like to bring up?';
+        const question = `Which project would you like to ${action}?`;
         const error = 'supdock: no projects found';
         exec.executeCompose(question, action, error);
     });
