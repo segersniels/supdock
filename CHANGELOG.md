@@ -1,4 +1,9 @@
 # Changelog
+## 0.2.2 (February 15, 2018)
+##### Changed
+- Basic README changes.
+- `docker compose start/stop` now shows the correct message for both actions.
+
 ## 0.2.11 (February 15, 2018)
 ##### Changed
 - New npm README publish (hur dur).
