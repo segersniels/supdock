@@ -1,8 +1,12 @@
 # Changelog
+## 0.2.3 (March 5, 2018)
+##### Added
+- `supdock prune` which removes all dangling images and exited containers.
+
 ## 0.2.2 (February 15, 2018)
 ##### Changed
 - Basic README changes.
-- `docker compose start/stop` now shows the correct message for both actions.
+- `supdock compose start/stop` now shows the correct message for both actions.
 
 ## 0.2.11 (February 15, 2018)
 ##### Changed
@@ -14,15 +18,15 @@
 
 ## 0.2.0 (February 15, 2018)
 ##### Added
-- `docker compose [action]` searches your system for `docker-compose.yml` files and lets you start and stop these projects from whatever folder you are in.
+- `supdock compose [action]` searches your system for `docker-compose.yml` files and lets you start and stop these projects from whatever folder you are in.
 
 ## 0.1.9 (February 15, 2018)
 ##### Added
-- `docker env` shows the user the environment variables of the selected container.
+- `supdock env` shows the user the environment variables of the selected container.
 
 ## 0.1.8 (February 14, 2018)
 ##### Added
-- `docker history`
+- `supdock history`
 
 ##### Changed
 - Refactored big part of execution code removing a lot of duplicate code.

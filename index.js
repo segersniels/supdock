@@ -79,6 +79,17 @@ program
     });
 
 program
+    .command('prune')
+    .description('Remove stopped containers and dangling images')
+    .action(() => {
+        if (typeof process.argv[3] === 'undefined') {
+            exec.execute('docker', ['system', 'prune', '-f']);
+        } else {
+            exec.docker();
+        }
+    });
+
+program
     .command('stats')
     .description('See the stats of a container')
     .action(() => {
