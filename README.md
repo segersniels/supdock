@@ -45,6 +45,7 @@ Commands:
   logs              See the logs of a container
   rm                Remove a container
   rmi               Remove an image
+  prune             Remove stopped containers and dangling images
   stats             See the stats of a container
   ssh               SSH into a container
   history           See the history of an image
