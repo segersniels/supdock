@@ -1,4 +1,8 @@
 # Changelog
+## 0.2.4 (March 5, 2018)
+##### Fixed
+- Exported function `execute` not defined.
+
 ## 0.2.3 (March 5, 2018)
 ##### Added
 - `supdock prune` which removes all dangling images and exited containers.

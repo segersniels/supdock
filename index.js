@@ -83,7 +83,7 @@ program
     .description('Remove stopped containers and dangling images')
     .action(() => {
         if (typeof process.argv[3] === 'undefined') {
-            exec.execute('docker', ['system', 'prune', '-f']);
+            exec.docker(['system', 'prune', '-f']);
         } else {
             exec.docker();
         }
