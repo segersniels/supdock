@@ -23,6 +23,13 @@ If you don't want to use `supdock` and `docker` separately you can just set an a
 alias docker="supdock"
 ```
 
+#### Go
+A Golang version is also available.
+
+```bash
+curl https://raw.githubusercontent.com/segersniels/supdock-go/master/supdock-go > /usr/local/bin/supdock ; chmod +x /usr/local/bin/supdock
+```
+
 ## Usage
 ```
 Usage: supdock [options] [command]
