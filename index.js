@@ -40,6 +40,19 @@ program
     });
 
 program
+    .command('restart')
+    .description('Restart a running container')
+    .action(() => {
+        if (typeof process.argv[3] === 'undefined') {
+            const question = 'Which container would you like to restart?';
+            const error = 'supdock: no containers available to restart';
+            exec.executeCommand('ps', question, 'restart', error);
+        } else {
+            exec.docker();
+        }
+    });
+
+program
     .command('logs')
     .description('See the logs of a container')
     .action(() => {

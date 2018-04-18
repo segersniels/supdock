@@ -24,7 +24,7 @@ alias docker="supdock"
 ```
 
 #### Go
-A Golang version is also available.
+A more optimal Golang version is also available and is maintained more frequently.
 
 ```bash
 curl https://raw.githubusercontent.com/segersniels/supdock-go/master/supdock-go > /usr/local/bin/supdock ; chmod +x /usr/local/bin/supdock
@@ -49,6 +49,7 @@ Commands:
 
   stop              Stop a running container
   start             Start a stopped container
+  restart           Restart a running container
   logs              See the logs of a container
   rm                Remove a container
   rmi               Remove an image
