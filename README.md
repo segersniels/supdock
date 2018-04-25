@@ -57,6 +57,7 @@ Commands:
   stats             See the stats of a container
   ssh               SSH into a container
   history           See the history of an image
+  history           Inspect a container
   env               See the environment variables of a running container
   compose [action]  Bring up a docker-compose project
 ```

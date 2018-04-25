@@ -142,6 +142,19 @@ program
     });
 
 program
+    .command('inspect')
+    .description('Inspect a container')
+    .action(() => {
+        if (typeof process.argv[3] === 'undefined') {
+            const question = 'Which image would you like to inspect?';
+            const error = 'supdock: no containers to inspect';
+            exec.executeCommand('ps', question, 'inspect', error);
+        } else {
+            exec.docker();
+        }
+    });
+
+program
     .command('env')
     .description('See the environment variables of a running container')
     .action(() => {
