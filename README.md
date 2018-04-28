@@ -24,11 +24,7 @@ alias docker="supdock"
 ```
 
 #### Go
-A more optimal Golang version is also available and is maintained more frequently.
-
-```bash
-curl https://raw.githubusercontent.com/segersniels/supdock-go/master/supdock-go > /usr/local/bin/supdock ; chmod +x /usr/local/bin/supdock
-```
+A more optimal Golang version is also available [here](https://github.com/segersniels/supdock-go) and is maintained more frequently.
 
 ## Usage
 ```
