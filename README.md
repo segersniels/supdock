@@ -1,5 +1,6 @@
 # Supdock
-[![NPM](https://nodei.co/npm/supdock.png?mini=true)](https://npmjs.org/package/supdock)
+[![changelog](https://img.shields.io/badge/changelog--lightgrey.svg)](CHANGELOG.md)
+[![npm](https://img.shields.io/npm/dm/supdock.svg)](https://www.npmjs.com/package/supdock)
 
 What's Up, Dock(er)? A slightly more visual way to interact with the docker daemon. Supdock is a wrapper for the docker command meaning you can still use all of the other `docker` commands without issues.
 
