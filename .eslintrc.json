@@ -1,0 +1,53 @@
+{
+  "env": {
+    "node": true
+  },
+  "extends": [
+    "prettier",
+    "prettier/standard",
+    "plugin:node/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "plugins": [
+    "prettier",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "prettier/prettier": "error",
+    "valid-jsdoc": "warn",
+    "require-jsdoc": "off",
+    "no-case-declarations": "off",
+    "no-constant-condition": "off",
+    "no-console": "off",
+    "no-process-exit": "off",
+    "no-useless-escape": "off",
+    "node/no-missing-require": "off",
+    "@typescript-eslint/adjacent-overload-signatures": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-member-accessibility": "off",
+    "@typescript-eslint/member-ordering": "off",
+    "@typescript-eslint/no-use-before-define": "warn",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/indent": "off",
+    "@typescript-eslint/array-type": "off",
+    "@typescript-eslint/camelcase": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/prefer-interface": "warn",
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/no-object-literal-type-assertion": "warn"
+  },
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "rules": {
+        "node/no-unsupported-features/es-syntax": "off",
+        "valid-jsdoc": "off"
+      }
+    }
+  ]
+}

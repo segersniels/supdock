@@ -1,0 +1,48 @@
+{
+    "name": "supdock",
+    "version": "1.0.0",
+    "description": "What's Up Dock(er)?",
+    "main": "index.ts",
+    "scripts": {
+        "build": "tsc --outDir bin ; pkg -t node10 ./bin/index.js -o ./bin/supdock"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/segersniels/supdock.git"
+    },
+    "keywords": [
+        "docker",
+        "supdock",
+        "visual",
+        "interactive",
+        "wrapper",
+        "cli",
+        "compose",
+        "docker-compose"
+    ],
+    "author": "Niels Segers",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/segersniels/supdock/issues"
+    },
+    "homepage": "https://github.com/segersniels/supdock#readme",
+    "dependencies": {
+        "@types/inquirer": "0.0.43",
+        "@types/node": "^11.9.4",
+        "commander": "^2.14.1",
+        "inquirer": "^5.1.0"
+    },
+    "bin": {
+        "ts-supdock": "./bin/index.js"
+    },
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^1.4.0",
+        "eslint": "^5.4.0",
+        "eslint-config-prettier": "^3.0.1",
+        "eslint-plugin-node": "^7.0.1",
+        "eslint-plugin-prettier": "^2.6.2",
+        "pkg": "^4.3.7",
+        "prettier": "^1.14.2",
+        "typescript": "^3.3.3333"
+    }
+}

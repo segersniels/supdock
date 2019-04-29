@@ -1,10 +1,10 @@
 {
     "name": "supdock",
-    "version": "0.2.6",
+    "version": "1.0.0",
     "description": "What's Up Dock(er)?",
-    "main": "index.js",
+    "main": "index.ts",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "build": "tsc --outDir bin ; pkg -t node10 ./bin/index.js -o ./bin/supdock"
     },
     "repository": {
         "type": "git",
@@ -27,11 +27,22 @@
     },
     "homepage": "https://github.com/segersniels/supdock#readme",
     "dependencies": {
+        "@types/inquirer": "0.0.43",
+        "@types/node": "^11.9.4",
         "commander": "^2.14.1",
-        "inquirer": "^5.1.0",
-        "lodash": "^4.17.5"
+        "inquirer": "^5.1.0"
     },
     "bin": {
-        "supdock": "index.js"
+        "ts-supdock": "./bin/index.js"
+    },
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^1.4.0",
+        "eslint": "^5.4.0",
+        "eslint-config-prettier": "^3.0.1",
+        "eslint-plugin-node": "^7.0.1",
+        "eslint-plugin-prettier": "^2.6.2",
+        "pkg": "^4.3.7",
+        "prettier": "^1.14.2",
+        "typescript": "^3.3.3333"
     }
 }
