@@ -10,7 +10,7 @@ export default class Supdock {
       .filter(line => line);
   }
 
-  private getNames(type: string) {
+  private getNames(type: 'psa' | 'ps' | 'psaStopped' | 'images') {
     switch (type) {
       case 'psa':
         return this.executeFullyDeclaredCommand(
@@ -26,8 +26,6 @@ export default class Supdock {
         );
       case 'images':
         return this.executeFullyDeclaredCommand(CommandAliasses.IMAGE_NAMES);
-      default:
-        return;
     }
   }
 
