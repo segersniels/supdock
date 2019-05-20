@@ -1,6 +1,7 @@
 import { execSync, spawnSync, spawn } from 'child_process';
 import * as inquirer from 'inquirer';
-import CommandAliasses from './enums/commands';
+import { NameCommands, IdCommands } from './enums';
+import Type from './types/type';
 
 export default class Supdock {
   private executeFullyDeclaredCommand(command: string): string[] {
@@ -10,44 +11,12 @@ export default class Supdock {
       .filter(line => line);
   }
 
-  private getNames(type: 'psa' | 'ps' | 'psaStopped' | 'images') {
-    switch (type) {
-      case 'psa':
-        return this.executeFullyDeclaredCommand(
-          CommandAliasses.ALL_CONTAINER_NAMES,
-        );
-      case 'ps':
-        return this.executeFullyDeclaredCommand(
-          CommandAliasses.RUNNING_CONTAINER_NAMES,
-        );
-      case 'psaStopped':
-        return this.executeFullyDeclaredCommand(
-          CommandAliasses.ALL_STOPPED_CONTAINER_NAMES,
-        );
-      case 'images':
-        return this.executeFullyDeclaredCommand(CommandAliasses.IMAGE_NAMES);
-    }
+  private getNames(type: Type) {
+    return this.executeFullyDeclaredCommand(NameCommands[type]);
   }
 
-  private getIds(type: string) {
-    switch (type) {
-      case 'psa':
-        return this.executeFullyDeclaredCommand(
-          CommandAliasses.ALL_CONTAINER_IDS,
-        );
-      case 'ps':
-        return this.executeFullyDeclaredCommand(
-          CommandAliasses.RUNNING_CONTAINER_IDS,
-        );
-      case 'psaStopped':
-        return this.executeFullyDeclaredCommand(
-          CommandAliasses.ALL_STOPPED_CONTAINER_IDS,
-        );
-      case 'images':
-        return this.executeFullyDeclaredCommand(CommandAliasses.IMAGE_IDS);
-      default:
-        return;
-    }
+  private getIds(type: Type) {
+    return this.executeFullyDeclaredCommand(IdCommands[type]);
   }
 
   private createChoices(ids: string[], names: string[]) {
@@ -102,16 +71,11 @@ export default class Supdock {
       });
   }
 
-  public passthrough(options: string[] = process.argv.slice(2)) {
+  public default(options: string[] = process.argv.slice(2)) {
     this.spawn('docker', options);
   }
 
-  public execute(
-    command: string,
-    question: string,
-    error: string,
-    type: string,
-  ) {
+  public execute(command: string, question: string, error: string, type: Type) {
     const ids = this.getIds(type)!;
     if (ids.length > 0) {
       const choices = this.createChoices(ids, this.getNames(type)!);
@@ -121,7 +85,7 @@ export default class Supdock {
     }
   }
 
-  public async executeInParallel(command: string, type: string) {
+  public async executeInParallel(command: string, type: Type) {
     const ids = this.getIds(type)!;
     return Promise.all(
       ids.map(id => {
