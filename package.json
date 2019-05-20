@@ -1,6 +1,6 @@
 {
     "name": "supdock",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "description": "What's Up Dock(er)?",
     "main": "index.ts",
     "scripts": {
