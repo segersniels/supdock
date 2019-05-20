@@ -30,7 +30,7 @@ program
         );
       }
     } else {
-      supdock.passthrough();
+      supdock.default();
     }
   });
 
@@ -50,7 +50,7 @@ program
         );
       }
     } else {
-      supdock.passthrough();
+      supdock.default();
     }
   });
 
@@ -70,7 +70,7 @@ program
         );
       }
     } else {
-      supdock.passthrough();
+      supdock.default();
     }
   });
 
@@ -86,7 +86,7 @@ program
         'psa',
       );
     } else {
-      supdock.passthrough();
+      supdock.default();
     }
   });
 
@@ -102,7 +102,7 @@ program
         'psa',
       );
     } else {
-      supdock.passthrough();
+      supdock.default();
     }
   });
 
@@ -118,7 +118,7 @@ program
         'images',
       );
     } else {
-      supdock.passthrough();
+      supdock.default();
     }
   });
 
@@ -127,9 +127,9 @@ program
   .description('Remove stopped containers and dangling images')
   .action(() => {
     if (typeof process.argv[3] === 'undefined') {
-      supdock.passthrough(['system', 'prune', '-f']);
+      supdock.default(['system', 'prune', '-f']);
     } else {
-      supdock.passthrough();
+      supdock.default();
     }
   });
 
@@ -145,7 +145,7 @@ program
         'ps',
       );
     } else {
-      supdock.passthrough();
+      supdock.default();
     }
   });
 
@@ -161,7 +161,7 @@ program
         'ps',
       );
     } else {
-      supdock.passthrough();
+      supdock.default();
     }
   });
 
@@ -177,7 +177,7 @@ program
         'images',
       );
     } else {
-      supdock.passthrough();
+      supdock.default();
     }
   });
 
@@ -193,7 +193,7 @@ program
         'ps',
       );
     } else {
-      supdock.passthrough();
+      supdock.default();
     }
   });
 
@@ -209,7 +209,7 @@ program
         'ps',
       );
     } else {
-      supdock.passthrough();
+      supdock.default();
     }
   });
 
@@ -218,5 +218,5 @@ program.parse(process.argv);
 const commands = program.commands.map((command: any) => command._name);
 
 if (!commands.includes(process.argv[2])) {
-  supdock.passthrough();
+  supdock.default();
 }
