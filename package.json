@@ -41,7 +41,7 @@
         "eslint-config-prettier": "^3.0.1",
         "eslint-plugin-node": "^7.0.1",
         "eslint-plugin-prettier": "^2.6.2",
-        "pkg": "^4.3.7",
+        "pkg": "^4.4.0",
         "prettier": "^1.14.2",
         "typescript": "^3.3.3333"
     }
