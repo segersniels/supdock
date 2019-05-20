@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { version } from './package.json';
 import * as program from 'commander';
-import Supdock from './src/supdock';
+import Supdock from './src';
 
 const supdock = new Supdock();
 
