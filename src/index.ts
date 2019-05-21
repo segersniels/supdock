@@ -4,33 +4,19 @@ import { NameCommands, IdCommands } from './enums';
 import Type from './types/type';
 import { logAndForget } from './helpers/logger';
 import { version } from '../package.json';
+import metadata from './metadata';
 
 export default class Supdock {
   private commands: any;
 
   constructor() {
-    this.commands = {
-      logs: 'See the logs of a container',
-      restart: 'Restart a running container',
-      start: 'Start a stopped container',
-      stop: 'Stop a running container',
-      ssh: 'SSH into a container',
-      env: 'See the environment variables of a running container',
-      rm: 'Remove a container',
-      rmi: 'Remove an image',
-      history: 'See the history of an image',
-      stats: 'See the stats of a container',
-      inspect: 'Inspect a container',
-      prune:
-        "Remove stopped containers and dangling images. For more detailed usage refer to 'docker system prune -h'",
-      // compose: 'Allows for dynamic docker-compose usage',
-    };
+    this.commands = metadata;
   }
 
   private generateCommandDescriptions() {
     const commands = Object.keys(this.commands);
     return commands
-      .map(command => `\t${command}\t\t${this.commands[command]}`)
+      .map(command => `\t${command}\t\t${this.commands[command].description}`)
       .join('\n');
   }
 
@@ -104,8 +90,9 @@ export default class Supdock {
     this.spawn('docker', options);
   }
 
-  public execute(command: string, question: string, error: string, type: Type) {
+  public execute(command: string, type: Type) {
     const { ids, names } = this.getDockerInfo(type)!;
+    const { question, error } = this.commands[command];
     if (ids.length > 0) {
       const choices = this.createChoices(ids, names);
       this.prompt(question, choices, command);

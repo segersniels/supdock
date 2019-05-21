@@ -24,12 +24,7 @@ if (!supdock.getCustomCommands().includes(command)) {
 switch (command) {
   case 'stats': {
     if (flags.prompt || flags.p) {
-      supdock.execute(
-        'stats',
-        'Which containers would you like to see that stats of?',
-        'supdock: no containers available',
-        'ps',
-      );
+      supdock.execute('stats', 'ps');
     } else {
       supdock.default();
     }
@@ -37,12 +32,7 @@ switch (command) {
   }
   case 'logs': {
     if (promptEnabled && Object.keys(flags).length === 0) {
-      supdock.execute(
-        'logs',
-        'Which container would you like to see the logs of?',
-        'supdock: no containers to see the logs of',
-        'psa',
-      );
+      supdock.execute('logs', 'psa');
     } else {
       supdock.default();
     }
@@ -53,12 +43,7 @@ switch (command) {
       if (nonFlags.all) {
         supdock.executeInParallel('stop', 'ps');
       } else {
-        supdock.execute(
-          'stop',
-          'Which container would you like to stop?',
-          'supdock: no containers available to stop',
-          'ps',
-        );
+        supdock.execute('stop', 'ps');
       }
     } else {
       supdock.default();
@@ -70,12 +55,7 @@ switch (command) {
       if (nonFlags.all) {
         supdock.executeInParallel('start', 'psaStopped');
       } else {
-        supdock.execute(
-          'start',
-          'Which container would you like to start?',
-          'supdock: no containers available to start',
-          'psaStopped',
-        );
+        supdock.execute('start', 'psaStopped');
       }
     } else {
       supdock.default();
@@ -87,12 +67,7 @@ switch (command) {
       if (nonFlags.all) {
         supdock.executeInParallel('restart', 'psaStopped');
       } else {
-        supdock.execute(
-          'restart',
-          'Which container would you like to restart?',
-          'supdock: no containers available to restart',
-          'ps',
-        );
+        supdock.execute('restart', 'ps');
       }
     } else {
       supdock.default();
@@ -101,12 +76,7 @@ switch (command) {
   }
   case 'logs': {
     if (promptEnabled) {
-      supdock.execute(
-        'logs',
-        'Which container would you like to see the logs of?',
-        'supdock: no containers to see the logs of',
-        'psa',
-      );
+      supdock.execute('logs', 'psa');
     } else {
       supdock.default();
     }
@@ -114,12 +84,7 @@ switch (command) {
   }
   case 'rm': {
     if (promptEnabled) {
-      supdock.execute(
-        'rm',
-        'Which container would you like to remove?',
-        'supdock: no containers to remove',
-        'psa',
-      );
+      supdock.execute('rm', 'psa');
     } else {
       supdock.default();
     }
@@ -127,12 +92,7 @@ switch (command) {
   }
   case 'rmi': {
     if (promptEnabled) {
-      supdock.execute(
-        'rmi',
-        'Which image would you like to remove?',
-        'supdock: no images to remove',
-        'images',
-      );
+      supdock.execute('rmi', 'images');
     } else {
       supdock.default();
     }
@@ -148,12 +108,7 @@ switch (command) {
   }
   case 'ssh': {
     if (promptEnabled) {
-      supdock.execute(
-        'ssh',
-        'Which container would you like to SSH to?',
-        'supdock: no containers available',
-        'ps',
-      );
+      supdock.execute('ssh', 'ps');
     } else {
       supdock.default();
     }
@@ -161,12 +116,7 @@ switch (command) {
   }
   case 'history': {
     if (promptEnabled) {
-      supdock.execute(
-        'history',
-        'Which image would you like to see the history of?',
-        'supdock: no images available',
-        'images',
-      );
+      supdock.execute('history', 'images');
     } else {
       supdock.default();
     }
@@ -174,12 +124,7 @@ switch (command) {
   }
   case 'inspect': {
     if (promptEnabled) {
-      supdock.execute(
-        'inspect',
-        'Which image would you like to inspect?',
-        'supdock: no containers to inspect',
-        'ps',
-      );
+      supdock.execute('inspect', 'ps');
     } else {
       supdock.default();
     }
@@ -187,12 +132,7 @@ switch (command) {
   }
   case 'env': {
     if (promptEnabled) {
-      supdock.execute(
-        'env',
-        'Which container would you like to see the environment variables of?',
-        'supdock: no containers running',
-        'ps',
-      );
+      supdock.execute('env', 'ps');
     } else {
       supdock.default();
     }
