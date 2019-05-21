@@ -11,12 +11,10 @@ export default class Supdock {
       .filter(line => line);
   }
 
-  private getNames(type: Type) {
-    return this.executeFullyDeclaredCommand(NameCommands[type]);
-  }
-
-  private getIds(type: Type) {
-    return this.executeFullyDeclaredCommand(IdCommands[type]);
+  private getDockerInfo(type: Type) {
+    const ids = this.executeFullyDeclaredCommand(IdCommands[type]);
+    const names = this.executeFullyDeclaredCommand(NameCommands[type]);
+    return { ids, names };
   }
 
   private createChoices(ids: string[], names: string[]) {
@@ -76,9 +74,9 @@ export default class Supdock {
   }
 
   public execute(command: string, question: string, error: string, type: Type) {
-    const ids = this.getIds(type)!;
+    const { ids, names } = this.getDockerInfo(type)!;
     if (ids.length > 0) {
-      const choices = this.createChoices(ids, this.getNames(type)!);
+      const choices = this.createChoices(ids, names);
       this.prompt(question, choices, command);
     } else {
       throw new Error(error);
@@ -86,7 +84,7 @@ export default class Supdock {
   }
 
   public async executeInParallel(command: string, type: Type) {
-    const ids = this.getIds(type)!;
+    const { ids } = this.getDockerInfo(type)!;
     return Promise.all(
       ids.map(id => {
         return new Promise(resolve => {
