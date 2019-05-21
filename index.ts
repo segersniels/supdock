@@ -1,25 +1,56 @@
 #!/usr/bin/env node
-import { version } from './package.json';
-import * as program from 'commander';
 import Supdock from './src';
+import { parseArguments } from './src/helpers/args';
 
 const supdock = new Supdock();
+const { command, flags, nonFlags } = parseArguments();
+const promptEnabled = Object.keys(nonFlags).length === 0;
 
-program
-  .version(version)
-  .option('-f, --force')
-  .option('-D, --debug')
-  .option('-H, --host <list>')
-  .option('-l, --log-level')
-  .option('--config')
-  .option('--no-stream');
+// Output usage
+if (flags.help || flags.h) {
+  supdock.usage();
+}
 
-program
-  .command('stop')
-  .description('Stop a running container')
-  .action(() => {
-    if (typeof process.argv[3] === 'undefined' || process.argv[3] === 'all') {
-      if (process.argv[3] === 'all') {
+// Output version information
+if (flags.version || flags.v) {
+  supdock.version();
+}
+
+// Fallback to default Docker execution if command is unknown to Supdock
+if (!supdock.getCustomCommands().includes(command)) {
+  supdock.default();
+}
+
+switch (command) {
+  case 'stats': {
+    if (flags.prompt || flags.p) {
+      supdock.execute(
+        'stats',
+        'Which containers would you like to see that stats of?',
+        'supdock: no containers available',
+        'ps',
+      );
+    } else {
+      supdock.default();
+    }
+    break;
+  }
+  case 'logs': {
+    if (promptEnabled && Object.keys(flags).length === 0) {
+      supdock.execute(
+        'logs',
+        'Which container would you like to see the logs of?',
+        'supdock: no containers to see the logs of',
+        'psa',
+      );
+    } else {
+      supdock.default();
+    }
+    break;
+  }
+  case 'stop': {
+    if (promptEnabled || nonFlags.all) {
+      if (nonFlags.all) {
         supdock.executeInParallel('stop', 'ps');
       } else {
         supdock.execute(
@@ -32,14 +63,11 @@ program
     } else {
       supdock.default();
     }
-  });
-
-program
-  .command('start')
-  .description('Start a stopped container')
-  .action(() => {
-    if (typeof process.argv[3] === 'undefined' || process.argv[3] === 'all') {
-      if (process.argv[3] === 'all') {
+    break;
+  }
+  case 'start': {
+    if (promptEnabled || nonFlags.all) {
+      if (nonFlags.all) {
         supdock.executeInParallel('start', 'psaStopped');
       } else {
         supdock.execute(
@@ -52,14 +80,11 @@ program
     } else {
       supdock.default();
     }
-  });
-
-program
-  .command('restart')
-  .description('Restart a running container')
-  .action(() => {
-    if (typeof process.argv[3] === 'undefined' || process.argv[3] === 'all') {
-      if (process.argv[3] === 'all') {
+    break;
+  }
+  case 'restart': {
+    if (promptEnabled || nonFlags.all) {
+      if (nonFlags.all) {
         supdock.executeInParallel('restart', 'psaStopped');
       } else {
         supdock.execute(
@@ -72,13 +97,10 @@ program
     } else {
       supdock.default();
     }
-  });
-
-program
-  .command('logs')
-  .description('See the logs of a container')
-  .action(() => {
-    if (typeof process.argv[3] === 'undefined') {
+    break;
+  }
+  case 'logs': {
+    if (promptEnabled) {
       supdock.execute(
         'logs',
         'Which container would you like to see the logs of?',
@@ -88,13 +110,10 @@ program
     } else {
       supdock.default();
     }
-  });
-
-program
-  .command('rm')
-  .description('Remove a container')
-  .action(() => {
-    if (typeof process.argv[3] === 'undefined') {
+    break;
+  }
+  case 'rm': {
+    if (promptEnabled) {
       supdock.execute(
         'rm',
         'Which container would you like to remove?',
@@ -104,13 +123,10 @@ program
     } else {
       supdock.default();
     }
-  });
-
-program
-  .command('rmi')
-  .description('Remove an image')
-  .action(() => {
-    if (typeof process.argv[3] === 'undefined') {
+    break;
+  }
+  case 'rmi': {
+    if (promptEnabled) {
       supdock.execute(
         'rmi',
         'Which image would you like to remove?',
@@ -120,40 +136,18 @@ program
     } else {
       supdock.default();
     }
-  });
-
-program
-  .command('prune')
-  .description('Remove stopped containers and dangling images')
-  .action(() => {
-    if (typeof process.argv[3] === 'undefined') {
+    break;
+  }
+  case 'prune': {
+    if (promptEnabled) {
       supdock.default(['system', 'prune', '-f']);
     } else {
       supdock.default();
     }
-  });
-
-program
-  .command('stats')
-  .description('See the stats of a container')
-  .action(() => {
-    if (typeof process.argv[3] === 'undefined') {
-      supdock.execute(
-        'stats',
-        'Which containers would you like to see that stats of?',
-        'supdock: no containers available',
-        'ps',
-      );
-    } else {
-      supdock.default();
-    }
-  });
-
-program
-  .command('ssh')
-  .description('SSH into a container')
-  .action(() => {
-    if (typeof process.argv[3] === 'undefined') {
+    break;
+  }
+  case 'ssh': {
+    if (promptEnabled) {
       supdock.execute(
         'ssh',
         'Which container would you like to SSH to?',
@@ -163,13 +157,10 @@ program
     } else {
       supdock.default();
     }
-  });
-
-program
-  .command('history')
-  .description('See the history of an image')
-  .action(() => {
-    if (typeof process.argv[3] === 'undefined') {
+    break;
+  }
+  case 'history': {
+    if (promptEnabled) {
       supdock.execute(
         'history',
         'Which image would you like to see the history of?',
@@ -179,13 +170,10 @@ program
     } else {
       supdock.default();
     }
-  });
-
-program
-  .command('inspect')
-  .description('Inspect a container')
-  .action(() => {
-    if (typeof process.argv[3] === 'undefined') {
+    break;
+  }
+  case 'inspect': {
+    if (promptEnabled) {
       supdock.execute(
         'inspect',
         'Which image would you like to inspect?',
@@ -195,13 +183,10 @@ program
     } else {
       supdock.default();
     }
-  });
-
-program
-  .command('env')
-  .description('See the environment variables of a running container')
-  .action(() => {
-    if (typeof process.argv[3] === 'undefined') {
+    break;
+  }
+  case 'env': {
+    if (promptEnabled) {
       supdock.execute(
         'env',
         'Which container would you like to see the environment variables of?',
@@ -211,12 +196,9 @@ program
     } else {
       supdock.default();
     }
-  });
-
-program.parse(process.argv);
-
-const commands = program.commands.map((command: any) => command._name);
-
-if (!commands.includes(process.argv[2])) {
-  supdock.default();
+    break;
+  }
+  default: {
+    supdock.default();
+  }
 }

@@ -30,7 +30,8 @@
         "@types/inquirer": "0.0.43",
         "@types/node": "^11.9.4",
         "commander": "^2.14.1",
-        "inquirer": "^5.1.0"
+        "inquirer": "^5.1.0",
+        "minimist": "^1.2.0"
     },
     "bin": {
         "ts-supdock": "./bin/index.js"

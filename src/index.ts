@@ -2,8 +2,38 @@ import { execSync, spawnSync, spawn } from 'child_process';
 import * as inquirer from 'inquirer';
 import { NameCommands, IdCommands } from './enums';
 import Type from './types/type';
+import { logAndForget } from './helpers/logger';
+import { version } from '../package.json';
 
 export default class Supdock {
+  private commands: any;
+
+  constructor() {
+    this.commands = {
+      logs: 'See the logs of a container',
+      restart: 'Restart a running container',
+      start: 'Start a stopped container',
+      stop: 'Stop a running container',
+      ssh: 'SSH into a container',
+      env: 'See the environment variables of a running container',
+      rm: 'Remove a container',
+      rmi: 'Remove an image',
+      history: 'See the history of an image',
+      stats: 'See the stats of a container',
+      inspect: 'Inspect a container',
+      prune:
+        "Remove stopped containers and dangling images. For more detailed usage refer to 'docker system prune -h'",
+      // compose: 'Allows for dynamic docker-compose usage',
+    };
+  }
+
+  private generateCommandDescriptions() {
+    const commands = Object.keys(this.commands);
+    return commands
+      .map(command => `\t${command}\t\t${this.commands[command]}`)
+      .join('\n');
+  }
+
   private executeFullyDeclaredCommand(command: string): string[] {
     return execSync(command, { maxBuffer: 1024 * 10000 })
       .toString()
@@ -23,6 +53,7 @@ export default class Supdock {
 
   private spawn(command: string, args: string[]) {
     spawnSync(command, args, { stdio: 'inherit' });
+    process.exit(0);
   }
 
   private ssh(id: string) {
@@ -92,5 +123,34 @@ export default class Supdock {
         });
       }),
     );
+  }
+
+  public usage() {
+    const commandDescriptions = this.generateCommandDescriptions();
+    logAndForget(`NAME:
+\tsupdock - What's Up Dock(er)?
+
+USAGE:
+\tsupdock [global options] command [command options] [arguments...]
+
+VERSION:
+\t${version}
+
+COMMANDS:
+${commandDescriptions}
+\thelp, h\t\tShows a list of commands or help for one command
+
+GLOBAL OPTIONS:
+\t--help, -h\tshow help
+\t--version, -v\tprint the version
+    `);
+  }
+
+  public version() {
+    logAndForget(`supdock version ${version}`);
+  }
+
+  public getCustomCommands() {
+    return Object.keys(this.commands);
   }
 }
