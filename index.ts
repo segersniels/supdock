@@ -30,15 +30,19 @@ if (!supdock.getCustomCommands().includes(command)) {
 switch (command) {
   case 'stats': {
     if (flags.prompt || flags.p) {
-      supdock.execute('stats', 'ps');
+      supdock.execute('stats', 'ps', ['--no-stream']);
     } else {
       supdock.default();
     }
     break;
   }
   case 'logs': {
-    if (promptEnabled && Object.keys(flags).length === 0) {
-      supdock.execute('logs', 'psa');
+    if (promptEnabled) {
+      if (flags.follow || flags.f) {
+        supdock.execute('logs', 'psa', ['-f']);
+      } else {
+        supdock.execute('logs', 'psa');
+      }
     } else {
       supdock.default();
     }

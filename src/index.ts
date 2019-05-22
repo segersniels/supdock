@@ -1,4 +1,4 @@
-import { execSync, spawnSync, spawn } from 'child_process';
+import { execSync, spawn } from 'child_process';
 import * as inquirer from 'inquirer';
 import { NameCommands, IdCommands } from './enums';
 import Type from './types/type';
@@ -44,8 +44,7 @@ export default class Supdock {
   }
 
   private spawn(command: string, args: string[]) {
-    spawnSync(command, args, { stdio: 'inherit' });
-    process.exit(0);
+    spawn(command, args, { stdio: 'inherit' });
   }
 
   private ssh(id: string) {
