@@ -20,6 +20,12 @@ export default class Supdock {
       .join('\n');
   }
 
+  private generateFlagDescriptions(command: string) {
+    return this.commands[command].flags
+      .map((flag: string) => `  ${flag}`)
+      .join('\n');
+  }
+
   private executeFullyDeclaredCommand(command: string): string[] {
     return execSync(command, { maxBuffer: 1024 * 10000 })
       .toString()
@@ -57,80 +63,81 @@ export default class Supdock {
       });
   }
 
-  private prompt(question: string, choices: string[], command: string) {
-    inquirer
-      .prompt([
-        {
-          type: 'list',
-          name: 'container',
-          message: question,
-          choices: choices,
-        },
-      ])
-      .then((answers: any) => {
-        const id = answers.container.split('-')[0].trim();
-        switch (command) {
-          case 'ssh': {
-            this.ssh(id);
-            break;
-          }
-          case 'stats':
-            this.spawn('docker', [command, id, '--no-stream']);
-            break;
-          case 'env':
-            this.spawn('docker', ['exec', '-ti', id, 'env']);
-            break;
-          default:
-            this.spawn('docker', [command, id]);
-        }
-      });
+  private prompt(message: string, choices: string[]): any {
+    return inquirer.prompt([
+      {
+        type: 'list',
+        name: 'container',
+        message,
+        choices,
+      },
+    ]);
   }
 
   public default(options: string[] = process.argv.slice(2)) {
     this.spawn('docker', options);
   }
 
-  public execute(command: string, type: Type) {
+  public async execute(command: string, type: Type, flags: string[] = []) {
     const { ids, names } = this.getDockerInfo(type)!;
     const { question, error } = this.commands[command];
+
     if (ids.length > 0) {
       const choices = this.createChoices(ids, names);
-      this.prompt(question, choices, command);
+      const { container } = await this.prompt(question, choices);
+      const id = container.split('-')[0].trim();
+
+      switch (command) {
+        case 'ssh': {
+          this.ssh(id);
+          break;
+        }
+        case 'env':
+          this.spawn('docker', ['exec', '-ti', id, 'env']);
+          break;
+        default:
+          this.spawn('docker', [command, ...flags, id]);
+      }
     } else {
       throw new Error(error);
     }
   }
 
-  public async executeInParallel(command: string, type: Type) {
+  public executeInParallel(command: string, type: Type) {
     const { ids } = this.getDockerInfo(type)!;
-    return Promise.all(
-      ids.map(id => {
-        return new Promise(resolve => {
-          resolve(spawn('docker', [command, id]));
-        });
-      }),
-    );
+    ids.forEach(id => {
+      const child = spawn('docker', [command, id], {
+        detached: true,
+        stdio: 'ignore',
+      });
+      child.unref();
+    });
   }
 
-  public usage() {
-    const commandDescriptions = this.generateCommandDescriptions();
-    logAndForget(`NAME:
-\tsupdock - What's Up Dock(er)?
+  public usage(command?: string) {
+    if (!command) {
+      const descriptions = this.generateCommandDescriptions();
+      logAndForget(`NAME:
+  \tsupdock - What's Up Dock(er)?
 
-USAGE:
-\tsupdock [global options] command [command options] [arguments...]
+  USAGE:
+  \tsupdock [global options] command [command options] [arguments...]
 
-VERSION:
-\t${version}
+  VERSION:
+  \t${version}
 
-COMMANDS:
-${commandDescriptions}
-\thelp, h\t\tShows a list of commands or help for one command
+  COMMANDS:
+  ${descriptions}
+  \thelp, h\t\tShows a list of commands or help for one command
 
-GLOBAL OPTIONS:
-\t--help, -h\tshow help
-\t--version, -v\tprint the version
-    `);
+  GLOBAL OPTIONS:
+  \t--help, -h\tshow help
+  \t--version, -v\tprint the version
+      `);
+    } else {
+      this.default();
+      logAndForget(`\nCustom:\n${this.generateFlagDescriptions(command)}`);
+    }
   }
 
   public version() {

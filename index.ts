@@ -10,7 +10,11 @@ const promptEnabled = Object.keys(nonFlags).length === 0;
 
 // Output usage
 if (flags.help || flags.h) {
-  supdock.usage();
+  if (command) {
+    supdock.usage(command);
+  } else {
+    supdock.usage();
+  }
 }
 
 // Output version information
