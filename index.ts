@@ -4,6 +4,8 @@ import { parseArguments } from './src/helpers/args';
 
 const supdock = new Supdock();
 const { command, flags, nonFlags } = parseArguments();
+
+// Prompt is enabled when no extra arguments are passed besides the command and flags
 const promptEnabled = Object.keys(nonFlags).length === 0;
 
 // Output usage
