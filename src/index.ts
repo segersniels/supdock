@@ -2,7 +2,7 @@ import { execSync, spawn } from 'child_process';
 import * as inquirer from 'inquirer';
 import { NameCommands, IdCommands } from './enums';
 import Type from './types/type';
-import { logAndForget } from './helpers/logger';
+import { logAndForget, info } from './helpers/logger';
 import { version } from '../package.json';
 import metadata from './metadata';
 
@@ -103,6 +103,9 @@ export default class Supdock {
   }
 
   public executeInParallel(command: string, type: Type) {
+    info('Asynchronous execution of command is happening in the background...');
+    info(`Some containers might take longer than others to ${command}...`);
+
     const { ids } = this.getDockerInfo(type)!;
     ids.forEach(id => {
       const child = spawn('docker', [command, id], {
