@@ -9,24 +9,38 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
       - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
       - run: |
           npm run build:ci
           ./bin/index-linux --help
       - run:
-          name: "GitHub release"
+          name: 'GitHub release'
           command: |
             wget https://github.com/tcnksm/ghr/releases/download/v0.12.1/ghr_v0.12.1_linux_amd64.tar.gz
             tar -xzvf ghr_v0.12.1_linux_amd64.tar.gz
             VERSION=$(./bin/index-linux --version)
             ./ghr_v0.12.1_linux_amd64/ghr -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} bin/
+      - run:
+          name: 'NPM release'
+          command: |
+            echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/repo/.npmrc
+            npm publish
 
 workflows:
   version: 2
   build-deploy:
     jobs:
-    - build:
-        filters:
-          branches:
-            only:
-            - master
+      - build:
+          filters:
+            branches:
+              only:
+                - master
