@@ -2,7 +2,7 @@
 [![changelog](https://img.shields.io/badge/changelog--lightgrey.svg)](CHANGELOG.md)
 [![npm](https://img.shields.io/npm/dm/supdock.svg)](https://www.npmjs.com/package/supdock)
 
->Deprecated, for a more up to date version check out the golang version at: [https://github.com/segersniels/supdock-go](https://github.com/segersniels/supdock-go).
+>Under rework to Typescript. Check out the Golang version in the meantime: [https://github.com/segersniels/supdock](https://github.com/segersniels/supdock).
 
 What's Up, Dock(er)? A slightly more visual way to interact with the docker daemon. Supdock is a wrapper for the docker command meaning you can still use all of the other `docker` commands without issues.
 
@@ -36,12 +36,12 @@ Usage: supdock [options] [command]
 Options:
 
   -V, --version      output the version number
-  -f, --force        
-  -D, --debug        
-  -H, --host <list>  
-  -l, --log-level    
-  --config           
-  --no-stream        
+  -f, --force
+  -D, --debug
+  -H, --host <list>
+  -l, --log-level
+  --config
+  --no-stream
   -h, --help         output usage information
 
 Commands:
