@@ -16,6 +16,14 @@ Repetitive use of `docker ps`, `docker logs`, `docker stats` and `docker exec -t
 <img src="https://i.imgur.com/moY077k.gif" width="450">
 
 ## Installation
+### Binary
+Grab a binary from the [releases](https://github.com/segersniels/supdock-ts/releases) page and move it into your desired bin (eg. /usr/local/bin) location.
+
+```bash
+mv index-<os> /usr/local/bin/supdock
+```
+
+### NPM
 ```bash
 npm install -g supdock
 ```
