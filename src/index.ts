@@ -52,20 +52,6 @@ export default class Supdock {
     this.spawn('docker', options);
   }
 
-  public executeInParallel(command: string, type: Type) {
-    info('Asynchronous execution of command is happening in the background...');
-    info(`Some containers might take longer than others to ${command}...`);
-
-    const { ids } = this.getDockerInfo(type);
-    ids.forEach(id => {
-      const child = spawn('docker', [command, id], {
-        detached: true,
-        stdio: 'ignore',
-      });
-      child.unref();
-    });
-  }
-
   public usage(command?: string) {
     if (!command) {
       const descriptions = this.generateCommandDescriptions();
@@ -105,6 +91,20 @@ export default class Supdock {
 
   public getCustomCommands() {
     return Object.keys(this.commands);
+  }
+
+  private executeInParallel(command: string, type: Type) {
+    info('Asynchronous execution of command is happening in the background...');
+    info(`Some containers might take longer than others to ${command}...`);
+
+    const { ids } = this.getDockerInfo(type);
+    ids.forEach(id => {
+      const child = spawn('docker', [command, id], {
+        detached: true,
+        stdio: 'ignore',
+      });
+      child.unref();
+    });
   }
 
   private async execute(command: string, type: Type, flags: string[] = []) {
