@@ -1,0 +1,30 @@
+version: 2
+defaults: &defaults
+  working_directory: ~/supdock
+  docker:
+    - image: circleci/node:10
+
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm run build
+      - run:
+          name: "GitHub release"
+          command: |
+            wget https://github.com/tcnksm/ghr/releases/download/v0.12.1/ghr_v0.12.1_linux_amd64.tar.gz
+            tar -xzvf ghr_v0.12.1_linux_amd64.tar.gz
+            VERSION=$(./bin/supdock --version)
+            ./ghr_v0.12.1_linux_amd64/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./bin/supdock
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+    - build:
+        filters:
+          branches:
+            only:
+            - master
