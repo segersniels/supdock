@@ -1,8 +1,8 @@
 {
   "name": "supdock",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "What's Up Dock(er)?",
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
     "build": "tsc --skipLibCheck ; pkg -t node10 dist/index.js -o ./bin/supdock",
     "build:ci": "tsc --skipLibCheck ; pkg dist/index.js --out-path ./bin",
@@ -38,7 +38,7 @@
     "minimist": "^1.2.0"
   },
   "bin": {
-    "ts-supdock": "./dist/index.js"
+    "ts-supdock": "index.js"
   },
   "devDependencies": {
     "pkg": "^4.4.0",
