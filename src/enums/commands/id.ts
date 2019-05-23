@@ -1,8 +1,6 @@
-import CommandAliasses from './default';
-
 export const IdCommands = {
-  ps: CommandAliasses.RUNNING_CONTAINER_IDS,
-  psa: CommandAliasses.ALL_CONTAINER_IDS,
-  images: CommandAliasses.IMAGE_IDS,
-  psaStopped: CommandAliasses.ALL_STOPPED_CONTAINER_IDS,
+  ps: "docker ps |awk '{print $1}' |tail -n +2",
+  psa: "docker ps -a |awk '{print $1}' |tail -n +2",
+  images: "docker images |awk '{print $3}' |tail -n +2",
+  psaStopped: "docker ps -a |grep 'Exited' |awk '{print $1}'",
 };

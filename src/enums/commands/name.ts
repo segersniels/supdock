@@ -1,8 +1,6 @@
-import CommandAliasses from './default';
-
 export const NameCommands = {
-  ps: CommandAliasses.RUNNING_CONTAINER_NAMES,
-  psa: CommandAliasses.ALL_CONTAINER_NAMES,
-  images: CommandAliasses.IMAGE_NAMES,
-  psaStopped: CommandAliasses.ALL_STOPPED_CONTAINER_NAMES,
+  ps: "docker ps |awk '{print $NF}' |tail -n +2",
+  psa: "docker ps -a |awk '{print $NF}' |tail -n +2",
+  images: "docker images |awk '{print $1}' |tail -n +2",
+  psaStopped: "docker ps -a |grep 'Exited' |awk '{print $NF}'",
 };
