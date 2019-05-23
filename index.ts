@@ -27,6 +27,7 @@ if (!supdock.getCustomCommands().includes(command)) {
   supdock.default();
 }
 
+// TODO: cleanup and make more readable
 switch (command) {
   case 'stats': {
     if (flags.prompt || flags.p) {
