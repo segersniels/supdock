@@ -11,7 +11,7 @@ jobs:
       - checkout
       - run: npm install
       - run: |
-          npm run build
+          npm run build:ci
           ./bin/index-linux --help
       - run:
           name: "GitHub release"
