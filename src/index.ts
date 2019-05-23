@@ -155,9 +155,9 @@ export default class Supdock {
   }
 
   private generateFlagDescriptions(command: string) {
-    return this.commands[command].flags
+    return this.commands[command] && this.commands[command].flags
       ? this.commands[command].flags
-          .map((flag: string) => `  ${flag}`)
+          .map((flag: string) => `  ${flag[0]}, ${flag[1]}`)
           .join('\n')
       : '';
   }
