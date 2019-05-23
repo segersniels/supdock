@@ -1,76 +1,16 @@
 import { execSync, spawn } from 'child_process';
 import * as inquirer from 'inquirer';
-import { NameCommands, IdCommands } from './enums';
-import Type from './types/type';
-import { logAndForget, info } from './helpers/logger';
 import { version } from '../package.json';
+import { IdCommands, NameCommands } from './enums';
+import { info, logAndForget } from './helpers/logger';
 import metadata from './metadata';
+import Type from './types/type';
 
 export default class Supdock {
   private commands: any;
 
   constructor() {
     this.commands = metadata;
-  }
-
-  private generateCommandDescriptions() {
-    const commands = Object.keys(this.commands);
-    return commands
-      .map(command => `\t${command}\t\t${this.commands[command].description}`)
-      .join('\n');
-  }
-
-  private generateFlagDescriptions(command: string) {
-    return this.commands[command].flags
-      .map((flag: string) => `  ${flag}`)
-      .join('\n');
-  }
-
-  private executeFullyDeclaredCommand(command: string): string[] {
-    return execSync(command, { maxBuffer: 1024 * 10000 })
-      .toString()
-      .split('\n')
-      .filter(line => line);
-  }
-
-  private getDockerInfo(type: Type) {
-    const ids = this.executeFullyDeclaredCommand(IdCommands[type]);
-    const names = this.executeFullyDeclaredCommand(NameCommands[type]);
-    return { ids, names };
-  }
-
-  private createChoices(ids: string[], names: string[]) {
-    return ids.map((id: string, index: number) => `${id} - ${names[index]}`);
-  }
-
-  private spawn(command: string, args: string[]) {
-    spawn(command, args, { stdio: 'inherit' });
-  }
-
-  private ssh(id: string) {
-    inquirer
-      .prompt([
-        {
-          type: 'list',
-          name: 'shell',
-          message: 'Which shell is the container using?',
-          choices: ['bash', 'ash'],
-        },
-      ])
-      .then((shell: any) => {
-        this.spawn('docker', ['exec', '-ti', id.trim(), shell.shell]);
-      });
-  }
-
-  private prompt(message: string, choices: string[]): any {
-    return inquirer.prompt([
-      {
-        type: 'list',
-        name: 'container',
-        message,
-        choices,
-      },
-    ]);
   }
 
   public default(options: string[] = process.argv.slice(2)) {
@@ -148,5 +88,65 @@ export default class Supdock {
 
   public getCustomCommands() {
     return Object.keys(this.commands);
+  }
+
+  private generateCommandDescriptions() {
+    const commands = Object.keys(this.commands);
+    return commands
+      .map(command => `\t${command}\t\t${this.commands[command].description}`)
+      .join('\n');
+  }
+
+  private generateFlagDescriptions(command: string) {
+    return this.commands[command].flags
+      .map((flag: string) => `  ${flag}`)
+      .join('\n');
+  }
+
+  private executeFullyDeclaredCommand(command: string): string[] {
+    return execSync(command, { maxBuffer: 1024 * 10000 })
+      .toString()
+      .split('\n')
+      .filter(line => line);
+  }
+
+  private getDockerInfo(type: Type) {
+    const ids = this.executeFullyDeclaredCommand(IdCommands[type]);
+    const names = this.executeFullyDeclaredCommand(NameCommands[type]);
+    return { ids, names };
+  }
+
+  private createChoices(ids: string[], names: string[]) {
+    return ids.map((id: string, index: number) => `${id} - ${names[index]}`);
+  }
+
+  private spawn(command: string, args: string[]) {
+    spawn(command, args, { stdio: 'inherit' });
+  }
+
+  private ssh(id: string) {
+    inquirer
+      .prompt([
+        {
+          type: 'list',
+          name: 'shell',
+          message: 'Which shell is the container using?',
+          choices: ['bash', 'ash'],
+        },
+      ])
+      .then((shell: any) => {
+        this.spawn('docker', ['exec', '-ti', id.trim(), shell.shell]);
+      });
+  }
+
+  private prompt(message: string, choices: string[]): any {
+    return inquirer.prompt([
+      {
+        type: 'list',
+        name: 'container',
+        message,
+        choices,
+      },
+    ]);
   }
 }

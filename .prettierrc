@@ -1,5 +1,5 @@
 {
   "singleQuote": true,
-  "trailingComma": "all",
-  "parser": "typescript"
+  "semi": true,
+  "trailingComma": "all"
 }

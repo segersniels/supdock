@@ -49,7 +49,7 @@ export default {
     description: 'See the stats of a container',
     question: 'Which containers would you like to see that stats of?',
     error: 'no containers available',
-    flags: ['-p, --prompt']
+    flags: ['-p, --prompt'],
   },
   inspect: {
     description: 'Inspect a container',
