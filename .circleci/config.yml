@@ -32,8 +32,8 @@ jobs:
       - run:
           name: 'NPM release'
           command: |
-            echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/supdock/.npmrc
-            npm publish
+            echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/supdock/dist/.npmrc
+            cd dist ; npm publish
 
 workflows:
   version: 2
