@@ -78,7 +78,12 @@ export default class Supdock {
       `);
     } else {
       this.default();
-      logAndForget(`\nCustom:\n${this.generateFlagDescriptions(command)}`);
+      const flagDescriptions = this.generateFlagDescriptions(command);
+      // Only log extra stuff if there are actual custom flags for the command
+      if (flagDescriptions.length > 0) {
+        logAndForget(`\nCustom:\n${flagDescriptions}`);
+      }
+      process.exit(0);
     }
   }
 
@@ -99,8 +104,10 @@ export default class Supdock {
 
   private generateFlagDescriptions(command: string) {
     return this.commands[command].flags
-      .map((flag: string) => `  ${flag}`)
-      .join('\n');
+      ? this.commands[command].flags
+          .map((flag: string) => `  ${flag}`)
+          .join('\n')
+      : '';
   }
 
   private executeFullyDeclaredCommand(command: string): string[] {
