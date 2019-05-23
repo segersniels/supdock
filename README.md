@@ -34,9 +34,6 @@ If you don't want to use `supdock` and `docker` separately you can just set an a
 alias docker="supdock"
 ```
 
-#### Go
-A more optimal Golang version is also available [here](https://github.com/segersniels/supdock-go) and is maintained more frequently.
-
 ## Usage
 ```
 Usage: supdock [options] [command]
