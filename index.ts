@@ -149,7 +149,4 @@ switch (command) {
     }
     break;
   }
-  default: {
-    supdock.default();
-  }
 }
