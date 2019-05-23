@@ -42,7 +42,7 @@ alias docker="supdock"
 ## Usage
 
 ```
-NAME:
+  NAME:
   	supdock - What's Up Dock(er)?
 
   USAGE:
@@ -52,19 +52,19 @@ NAME:
   	2.0.4
 
   COMMANDS:
-  	logs		See the logs of a container
-	  restart		Restart a running container
-	  start		Start a stopped container
-	  stop		Stop a running container
-	  ssh		SSH into a container
-	  env		See the environment variables of a running container
-	  rm		Remove a container
-	  rmi		Remove an image
-	  history		See the history of an image
-	  stats		See the stats of a container
-	  inspect		Inspect a container
-	  prune		Remove stopped containers and dangling images. For more detailed usage refer to 'docker system prune -h'
-  	help, h		Shows a list of commands or help for one command
+    logs		See the logs of a container
+    restart		Restart a running container
+    start		Start a stopped container
+    stop		Stop a running container
+    ssh		SSH into a container
+    env		See the environment variables of a running container
+    rm		Remove a container
+    rmi		Remove an image
+    history		See the history of an image
+    stats		See the stats of a container
+    inspect		Inspect a container
+    prune		Remove stopped containers and dangling images. For more detailed usage refer to 'docker system prune -h'
+    help, h		Shows a list of commands or help for one command
 
   GLOBAL OPTIONS:
   	--help, -h	show help
