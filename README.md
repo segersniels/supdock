@@ -1,5 +1,5 @@
 # Supdock
-[![changelog](https://img.shields.io/badge/changelog--lightgrey.svg)](CHANGELOG.md)
+[![CircleCI](https://circleci.com/gh/segersniels/supdock-ts.svg?style=svg)](https://circleci.com/gh/segersniels/supdock-ts)
 [![npm](https://img.shields.io/npm/dm/supdock.svg)](https://www.npmjs.com/package/supdock)
 
 >Under rework to Typescript. Check out the Golang version in the meantime: [https://github.com/segersniels/supdock](https://github.com/segersniels/supdock).
