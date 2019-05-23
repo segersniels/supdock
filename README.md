@@ -49,7 +49,7 @@ alias docker="supdock"
   	supdock [global options] command [command options] [arguments...]
 
   VERSION:
-  	2.0.4
+  	...
 
   COMMANDS:
   	logs		See the logs of a container
