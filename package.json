@@ -4,7 +4,8 @@
   "description": "What's Up Dock(er)?",
   "main": "index.ts",
   "scripts": {
-    "build": "tsc --outDir bin ; pkg -t node10 ./bin/index.js -o ./bin/supdock",
+    "build": "tsc --skipLibCheck ; pkg -t node10 dist/index.js -o ./bin/supdock",
+    "build:ci": "tsc --skipLibCheck ; pkg dist/index.js --out-path ./bin",
     "lint:fix": "tslint --format stylish --fix './src/**/*.ts' './index.ts'",
     "check:typescript": "tsc --noEmit --skipLibCheck --project .",
     "nuke": "rm -rf node_modules ; npm install"
@@ -37,7 +38,7 @@
     "minimist": "^1.2.0"
   },
   "bin": {
-    "ts-supdock": "./bin/index.js"
+    "ts-supdock": "./dist/index.js"
   },
   "devDependencies": {
     "pkg": "^4.4.0",

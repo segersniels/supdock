@@ -10,14 +10,16 @@ jobs:
     steps:
       - checkout
       - run: npm install
-      - run: npm run build
+      - run: |
+          npm run build
+          ./bin/index-linux --help
       - run:
           name: "GitHub release"
           command: |
             wget https://github.com/tcnksm/ghr/releases/download/v0.12.1/ghr_v0.12.1_linux_amd64.tar.gz
             tar -xzvf ghr_v0.12.1_linux_amd64.tar.gz
-            VERSION=$(./bin/supdock --version)
-            ./ghr_v0.12.1_linux_amd64/ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} ./bin/supdock
+            VERSION=$(./bin/index-linux --version)
+            ./ghr_v0.12.1_linux_amd64/ghr -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${VERSION} bin/
 
 workflows:
   version: 2
