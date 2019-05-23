@@ -13,33 +13,43 @@ export default class Supdock {
     this.commands = metadata;
   }
 
-  public default(options: string[] = process.argv.slice(2)) {
-    this.spawn('docker', options);
+  public async run(args: any) {
+    const { type, flags } = this.commands[args.command];
+
+    // Fire and forget the following commands in background when 'all' is passed as nonFlag
+    if (
+      args.nonFlags.all &&
+      ['start', 'restart', 'stop'].includes(args.command)
+    ) {
+      this.executeInParallel(args.command, type);
+      return;
+    }
+
+    const promptEnabled =
+      Object.keys(args.nonFlags).length === 0 ||
+      args.flags.p ||
+      args.flags.prompt;
+    const passedFlags = Object.keys(args.flags);
+    const allowedFlags = [].concat
+      .apply([], flags)
+      .map((flag: string) => flag.replace(/-/g, ''));
+
+    // When flag passed is not a valid custom flag or other arguments are being passed default to normal docker
+    if (
+      (passedFlags.length > 0 &&
+        !passedFlags.find(flag => allowedFlags.includes(flag))) ||
+      !promptEnabled
+    ) {
+      this.default();
+      return;
+    }
+
+    // When every check has passed, perform the rest of customised supdock command
+    await this.execute(args.command, type, this.parseFlags(args.flags));
   }
 
-  public async execute(command: string, type: Type, flags: string[] = []) {
-    const { ids, names } = this.getDockerInfo(type)!;
-    const { question, error } = this.commands[command];
-
-    if (ids.length > 0) {
-      const choices = this.createChoices(ids, names);
-      const { container } = await this.prompt(question, choices);
-      const id = container.split('-')[0].trim();
-
-      switch (command) {
-        case 'ssh': {
-          this.ssh(id);
-          break;
-        }
-        case 'env':
-          this.spawn('docker', ['exec', '-ti', id, 'env']);
-          break;
-        default:
-          this.spawn('docker', [command, ...flags, id]);
-      }
-    } else {
-      throw new Error(error);
-    }
+  public default(options: string[] = process.argv.slice(2)) {
+    this.spawn('docker', options);
   }
 
   public executeInParallel(command: string, type: Type) {
@@ -93,6 +103,46 @@ export default class Supdock {
 
   public getCustomCommands() {
     return Object.keys(this.commands);
+  }
+
+  private async execute(command: string, type: Type, flags: string[] = []) {
+    const { ids, names } = this.getDockerInfo(type);
+    const { question, error } = this.commands[command];
+
+    if (ids.length > 0) {
+      const choices = this.createChoices(ids, names);
+      const { container } = await this.prompt(question, choices);
+      const id = container.split('-')[0].trim();
+
+      // Define custom command logic if needed
+      switch (command) {
+        case 'ssh': {
+          this.ssh(id);
+          break;
+        }
+        case 'env':
+          this.spawn('docker', ['exec', '-ti', id, 'env']);
+          break;
+        case 'stop':
+          if (flags.includes('-f') || flags.includes('--force')) {
+            this.spawn('docker', ['rm', ...flags, id]);
+          } else {
+            this.spawn('docker', [command, ...flags, id]);
+          }
+          break;
+        default:
+          this.spawn('docker', [command, ...flags, id]);
+      }
+    } else {
+      info(error);
+    }
+  }
+
+  private parseFlags(flags: any) {
+    // Filter out the prompt flag if passed and prepare remaining flags for passing to docker
+    return Object.keys(flags)
+      .filter(flag => !['p', 'prompt'].includes(flag))
+      .map(flag => (flag.length > 1 ? `--${flag}` : `-${flag}`));
   }
 
   private generateCommandDescriptions() {
