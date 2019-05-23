@@ -38,7 +38,7 @@
     "minimist": "^1.2.0"
   },
   "bin": {
-    "ts-supdock": "index.js"
+    "supdock": "index.js"
   },
   "devDependencies": {
     "pkg": "^4.4.0",
