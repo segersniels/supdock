@@ -143,7 +143,7 @@ export default class Supdock {
   }
 
   public version() {
-    logAndForget(`supdock version ${version}`);
+    logAndForget(version);
   }
 
   public getCustomCommands() {
