@@ -21,6 +21,7 @@ async function run() {
   // Fallback to default Docker execution if command is unknown to Supdock
   if (!supdock.getCustomCommands().includes(command)) {
     supdock.default();
+    return;
   }
 
   await supdock.run({ command, flags, nonFlags });
