@@ -56,7 +56,7 @@ export default class Supdock {
     info('Asynchronous execution of command is happening in the background...');
     info(`Some containers might take longer than others to ${command}...`);
 
-    const { ids } = this.getDockerInfo(type)!;
+    const { ids } = this.getDockerInfo(type);
     ids.forEach(id => {
       const child = spawn('docker', [command, id], {
         detached: true,
@@ -87,9 +87,11 @@ export default class Supdock {
   \t--version, -v\tprint the version
       `);
     } else {
+      // Output the default docker help
       this.default();
-      const flagDescriptions = this.generateFlagDescriptions(command);
+
       // Only log extra stuff if there are actual custom flags for the command
+      const flagDescriptions = this.generateFlagDescriptions(command);
       if (flagDescriptions.length > 0) {
         logAndForget(`\nCustom:\n${flagDescriptions}`);
       }
