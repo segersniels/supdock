@@ -25,6 +25,7 @@ Grab a binary from the [releases](https://github.com/segersniels/supdock-ts/rele
 
 ```bash
 mv index-<os> /usr/local/bin/supdock
+chmod +x /usr/local/bin/supdock
 ```
 
 ### NPM
