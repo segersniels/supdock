@@ -119,7 +119,7 @@ export default class Supdock {
       // Define custom command logic if needed
       switch (command) {
         case 'ssh': {
-          this.ssh(id);
+          await this.ssh(id);
           break;
         }
         case 'env':
@@ -183,8 +183,8 @@ export default class Supdock {
     spawnSync(command, args, { stdio: 'inherit' });
   }
 
-  private ssh(id: string) {
-    inquirer
+  private async ssh(id: string) {
+    await inquirer
       .prompt([
         {
           type: 'list',
