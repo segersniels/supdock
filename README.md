@@ -1,7 +1,6 @@
 # Supdock
 
-[![CircleCI](https://circleci.com/gh/segersniels/supdock-ts.svg?style=svg)](https://circleci.com/gh/segersniels/supdock-ts)
-[![npm](https://img.shields.io/npm/dm/supdock.svg)](https://www.npmjs.com/package/supdock)
+[![CircleCI](https://circleci.com/gh/segersniels/supdock-ts/tree/master.svg?style=svg)](https://circleci.com/gh/segersniels/supdock-ts/tree/master)[![npm](https://img.shields.io/npm/dm/supdock.svg)](https://www.npmjs.com/package/supdock)
 
 > Rework to Typescript in progress. There might be inconsistencies and broken things popping up. Feel free to report these by making an issue. Feel free to temporarily use the Golang version of Supdock: [https://github.com/segersniels/supdock](https://github.com/segersniels/supdock).
 
