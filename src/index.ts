@@ -113,7 +113,7 @@ export default class Supdock {
 
     if (ids.length > 0) {
       const choices = this.createChoices(ids, names);
-      const { container } = await this.prompt(question, choices);
+      const { choice: container } = await this.prompt(question, choices);
       const id = container.split('-')[0].trim();
 
       // Define custom command logic if needed
@@ -184,25 +184,19 @@ export default class Supdock {
   }
 
   private async ssh(id: string) {
-    await inquirer
-      .prompt([
-        {
-          type: 'list',
-          name: 'shell',
-          message: 'Which shell is the container using?',
-          choices: ['bash', 'ash'],
-        },
-      ])
-      .then((shell: any) => {
-        this.spawn('docker', ['exec', '-ti', id.trim(), shell.shell]);
-      });
+    await this.prompt('Which shell is the container using?', [
+      'bash',
+      'ash',
+    ]).then((answer: any) => {
+      this.spawn('docker', ['exec', '-ti', id.trim(), answer.choice]);
+    });
   }
 
   private prompt(message: string, choices: string[]): any {
     return inquirer.prompt([
       {
         type: 'list',
-        name: 'container',
+        name: 'choice',
         message,
         choices,
       },
