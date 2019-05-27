@@ -19,7 +19,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: |
           npm run build:ci
-          ./bin/index-linux --help
+          ./bin/supdock-linux --help
       - persist_to_workspace:
           root: ~/supdock
           paths:
@@ -36,7 +36,7 @@ jobs:
           command: |
             wget https://github.com/tcnksm/ghr/releases/download/v0.12.1/ghr_v0.12.1_linux_amd64.tar.gz
             tar -xzvf ghr_v0.12.1_linux_amd64.tar.gz
-            VERSION=$(./bin/index-linux --version)
+            VERSION=$(./bin/supdock-linux --version)
             ./ghr_v0.12.1_linux_amd64/ghr -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ${VERSION} bin/
       - run:
           name: 'NPM release'
