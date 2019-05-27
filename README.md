@@ -24,7 +24,7 @@ Repetitive use of `docker ps`, `docker logs`, `docker stats` and `docker exec -t
 Grab a binary from the [releases](https://github.com/segersniels/supdock-ts/releases) page and move it into your desired bin (eg. /usr/local/bin) location.
 
 ```bash
-mv index-<os> /usr/local/bin/supdock
+mv supdock-<os> /usr/local/bin/supdock
 chmod +x /usr/local/bin/supdock
 ```
 
