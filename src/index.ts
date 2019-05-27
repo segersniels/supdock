@@ -2,7 +2,7 @@ import { execSync, spawn, spawnSync } from 'child_process';
 import * as inquirer from 'inquirer';
 import { version } from '../package.json';
 import { IdCommands, NameCommands } from './enums';
-import { info, logAndForget } from './helpers/logger';
+import { info, logAndForget, warn } from './helpers/logger';
 import metadata from './metadata';
 import Type from './types/type';
 
@@ -94,8 +94,9 @@ export default class Supdock {
   }
 
   private executeInParallel(command: string, type: Type) {
-    info('Asynchronous execution of command is happening in the background...');
-    info(`Some containers might take longer than others to ${command}...`);
+    info('Asynchronous execution of command is happening in the background');
+    info(`Some containers might take longer than others to ${command}`, true);
+    spawn;
 
     const { ids } = this.getDockerInfo(type);
     ids.forEach(id => {
@@ -136,7 +137,7 @@ export default class Supdock {
           this.spawn('docker', [command, ...flags, id]);
       }
     } else {
-      info(error);
+      warn(error);
     }
   }
 
