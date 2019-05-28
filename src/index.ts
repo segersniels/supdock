@@ -142,10 +142,15 @@ export default class Supdock {
   }
 
   private parseFlags(flags: any) {
-    // Filter out the prompt flag if passed and prepare remaining flags for passing to docker
-    return Object.keys(flags)
-      .filter(flag => !['p', 'prompt'].includes(flag))
-      .map(flag => (flag.length > 1 ? `--${flag}` : `-${flag}`));
+    const parsed: any[] = [];
+    for (const flag of Object.keys(flags)) {
+      parsed.push(flag.length > 1 ? `--${flag}` : `-${flag}`);
+      // If flag has a value that is not a boolean add it to the array
+      if (typeof flags[flag] !== 'boolean') {
+        parsed.push(flags[flag]);
+      }
+    }
+    return parsed;
   }
 
   private generateCommandDescriptions() {
