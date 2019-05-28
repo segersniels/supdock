@@ -5,7 +5,7 @@ export default {
     description: 'See the logs of a container',
     question: 'Which container would you like to see the logs of?',
     error: 'no containers to see the logs of',
-    flags: [['-f', '--follow']],
+    flags: [['-f', '--follow'], ['-t', '--timestamps'], ['--details']],
     type: CommandAlias.ALL_CONTAINERS,
   },
   restart: {
