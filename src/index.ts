@@ -161,11 +161,17 @@ export default class Supdock {
   }
 
   private generateFlagDescriptions(command: string) {
-    return this.commands[command] && this.commands[command].flags
-      ? this.commands[command].flags
-          .map((flag: string) => `  ${flag[0]}, ${flag[1]}`)
-          .join('\n')
-      : '';
+    const descriptions: string[] = [];
+    if (this.commands[command] && this.commands[command].flags) {
+      for (const flag of this.commands[command].flags) {
+        if (flag.length === 1) {
+          descriptions.push(`      ${flag[0]}`);
+        } else {
+          descriptions.push(`  ${flag[0]}, ${flag[1]}`);
+        }
+      }
+    }
+    return descriptions.join('\n');
   }
 
   private executeFullyDeclaredCommand(command: string): string[] {
