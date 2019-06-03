@@ -2,7 +2,7 @@ import { execSync, spawn, spawnSync } from 'child_process';
 import * as inquirer from 'inquirer';
 import { version } from '../package.json';
 import { IdCommands, NameCommands } from './enums';
-import { info, logAndForget } from './helpers/logger';
+import { info, logAndForget, warn } from './helpers/logger';
 import metadata from './metadata';
 import Type from './types/type';
 
@@ -15,6 +15,13 @@ export default class Supdock {
 
   public async run(args: any) {
     const { type, flags } = this.commands[args.command];
+
+    // Special command
+    // TODO find a better solution to having this hardcoded here
+    if (args.command === 'prune') {
+      this.spawn('docker', ['system', 'prune', '-f']);
+      return;
+    }
 
     // Fire and forget the following commands in background when 'all' is passed as nonFlag
     if (
@@ -30,9 +37,7 @@ export default class Supdock {
       args.flags.p ||
       args.flags.prompt;
     const passedFlags = Object.keys(args.flags);
-    const allowedFlags = [].concat
-      .apply([], flags)
-      .map((flag: string) => flag.replace(/-/g, ''));
+    const allowedFlags: string[] = [].concat.apply([], flags);
 
     // When flag passed is not a valid custom flag or other arguments are being passed default to normal docker
     if (
@@ -45,7 +50,11 @@ export default class Supdock {
     }
 
     // When every check has passed, perform the rest of customised supdock command
-    await this.execute(args.command, type, this.parseFlags(args.flags));
+    await this.execute(
+      args.command,
+      type,
+      this.parseFlags(args.flags, allowedFlags),
+    );
   }
 
   public default(options: string[] = process.argv.slice(2)) {
@@ -79,7 +88,7 @@ export default class Supdock {
       // Only log extra stuff if there are actual custom flags for the command
       const flagDescriptions = this.generateFlagDescriptions(command);
       if (flagDescriptions.length > 0) {
-        logAndForget(`\nCustom:\n${flagDescriptions}`);
+        logAndForget(`\nOptions (supdock):\n${flagDescriptions}`);
       }
       process.exit(0);
     }
@@ -94,8 +103,9 @@ export default class Supdock {
   }
 
   private executeInParallel(command: string, type: Type) {
-    info('Asynchronous execution of command is happening in the background...');
-    info(`Some containers might take longer than others to ${command}...`);
+    info('Asynchronous execution of command is happening in the background');
+    info(`Some containers might take longer than others to ${command}`, true);
+    spawn;
 
     const { ids } = this.getDockerInfo(type);
     ids.forEach(id => {
@@ -113,13 +123,13 @@ export default class Supdock {
 
     if (ids.length > 0) {
       const choices = this.createChoices(ids, names);
-      const { container } = await this.prompt(question, choices);
+      const { choice: container } = await this.prompt(question, choices);
       const id = container.split('-')[0].trim();
 
       // Define custom command logic if needed
       switch (command) {
         case 'ssh': {
-          this.ssh(id);
+          await this.ssh(id);
           break;
         }
         case 'env':
@@ -136,15 +146,35 @@ export default class Supdock {
           this.spawn('docker', [command, ...flags, id]);
       }
     } else {
-      info(error);
+      warn(error);
     }
   }
 
-  private parseFlags(flags: any) {
-    // Filter out the prompt flag if passed and prepare remaining flags for passing to docker
-    return Object.keys(flags)
-      .filter(flag => !['p', 'prompt'].includes(flag))
-      .map(flag => (flag.length > 1 ? `--${flag}` : `-${flag}`));
+  private parseFlags(flags: any, allowedFlags: string[]) {
+    const parsed: any[] = [];
+
+    for (const flag of Object.keys(flags)) {
+      // If prompt flag has been passed and is allowed for the command strip it from the further execution flags
+      if (['p', 'prompt'].includes(flag) && allowedFlags.includes(flag)) {
+        continue;
+      }
+
+      // Minimist parses --no-<flag> variables to a boolean flag with value false with the --no prefix stripped
+      // So we have to readd the prefix
+      if (allowedFlags.includes(`no-${flag}`) && !flags[flag]) {
+        parsed.push(`--no-${flag}`);
+        continue;
+      }
+
+      // Normal flag behaviour
+      parsed.push(flag.length > 1 ? `--${flag}` : `-${flag}`);
+
+      // If flag has a value that is not a boolean add it to the array
+      if (typeof flags[flag] !== 'boolean') {
+        parsed.push(flags[flag]);
+      }
+    }
+    return parsed;
   }
 
   private generateCommandDescriptions() {
@@ -155,11 +185,17 @@ export default class Supdock {
   }
 
   private generateFlagDescriptions(command: string) {
-    return this.commands[command] && this.commands[command].flags
-      ? this.commands[command].flags
-          .map((flag: string) => `  ${flag[0]}, ${flag[1]}`)
-          .join('\n')
-      : '';
+    const descriptions: string[] = [];
+    if (this.commands[command] && this.commands[command].flags) {
+      for (const flag of this.commands[command].flags) {
+        if (flag.length === 1) {
+          descriptions.push(`      --${flag[0]}`);
+        } else {
+          descriptions.push(`  -${flag[0]}, --${flag[1]}`);
+        }
+      }
+    }
+    return descriptions.join('\n');
   }
 
   private executeFullyDeclaredCommand(command: string): string[] {
@@ -183,26 +219,20 @@ export default class Supdock {
     spawnSync(command, args, { stdio: 'inherit' });
   }
 
-  private ssh(id: string) {
-    inquirer
-      .prompt([
-        {
-          type: 'list',
-          name: 'shell',
-          message: 'Which shell is the container using?',
-          choices: ['bash', 'ash'],
-        },
-      ])
-      .then((shell: any) => {
-        this.spawn('docker', ['exec', '-ti', id.trim(), shell.shell]);
-      });
+  private async ssh(id: string) {
+    await this.prompt('Which shell is the container using?', [
+      'bash',
+      'ash',
+    ]).then((answer: any) => {
+      this.spawn('docker', ['exec', '-ti', id.trim(), answer.choice]);
+    });
   }
 
   private prompt(message: string, choices: string[]): any {
     return inquirer.prompt([
       {
         type: 'list',
-        name: 'container',
+        name: 'choice',
         message,
         choices,
       },

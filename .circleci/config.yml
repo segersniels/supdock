@@ -12,8 +12,6 @@ jobs:
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
       - run: npm install
       - save_cache:
           paths:
@@ -21,25 +19,39 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: |
           npm run build:ci
-          ./bin/index-linux --help
+          ./bin/supdock-linux --help
+      - persist_to_workspace:
+          root: ~/supdock
+          paths:
+            - bin
+            - dist
+
+  deploy:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/supdock
       - run:
           name: 'GitHub release'
           command: |
             wget https://github.com/tcnksm/ghr/releases/download/v0.12.1/ghr_v0.12.1_linux_amd64.tar.gz
             tar -xzvf ghr_v0.12.1_linux_amd64.tar.gz
-            VERSION=$(./bin/index-linux --version)
-            ./ghr_v0.12.1_linux_amd64/ghr -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ${VERSION} bin/ || true
+            VERSION=$(./bin/supdock-linux --version)
+            ./ghr_v0.12.1_linux_amd64/ghr -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ${VERSION} bin/
       - run:
           name: 'NPM release'
           command: |
             echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/supdock/dist/.npmrc
-            cp README.md dist/README.md ; cd dist ; npm publish || true
+            cp README.md dist/README.md ; cd dist ; npm publish
 
 workflows:
   version: 2
   build-deploy:
     jobs:
-      - build:
+      - build
+      - deploy:
+          requires:
+            - build
           filters:
             branches:
               only:
