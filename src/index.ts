@@ -43,7 +43,11 @@ export default class Supdock {
     }
 
     // When every check has passed, perform the rest of customised supdock command
-    await this.execute(args.command, type, this.parseFlags(args.flags));
+    await this.execute(
+      args.command,
+      type,
+      this.parseFlags(args.flags, allowedFlags),
+    );
   }
 
   public default(options: string[] = process.argv.slice(2)) {
@@ -139,10 +143,25 @@ export default class Supdock {
     }
   }
 
-  private parseFlags(flags: any) {
+  private parseFlags(flags: any, allowedFlags: string[]) {
     const parsed: any[] = [];
+
     for (const flag of Object.keys(flags)) {
+      // If prompt flag has been passed and is allowed for the command strip it from the further execution flags
+      if (['p', 'prompt'].includes(flag) && allowedFlags.includes(flag)) {
+        continue;
+      }
+
+      // Minimist parses --no-<flag> variables to a boolean flag with value false with the --no prefix stripped
+      // So we have to readd the prefix
+      if (allowedFlags.includes(`no-${flag}`) && !flags[flag]) {
+        parsed.push(`--no-${flag}`);
+        continue;
+      }
+
+      // Normal flag behaviour
       parsed.push(flag.length > 1 ? `--${flag}` : `-${flag}`);
+
       // If flag has a value that is not a boolean add it to the array
       if (typeof flags[flag] !== 'boolean') {
         parsed.push(flags[flag]);
