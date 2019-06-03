@@ -81,7 +81,7 @@ export default class Supdock {
       // Only log extra stuff if there are actual custom flags for the command
       const flagDescriptions = this.generateFlagDescriptions(command);
       if (flagDescriptions.length > 0) {
-        logAndForget(`\nPrompt Enabled:\n${flagDescriptions}`);
+        logAndForget(`\nOptions (supdock):\n${flagDescriptions}`);
       }
       process.exit(0);
     }
