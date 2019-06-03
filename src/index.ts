@@ -30,9 +30,7 @@ export default class Supdock {
       args.flags.p ||
       args.flags.prompt;
     const passedFlags = Object.keys(args.flags);
-    const allowedFlags = [].concat
-      .apply([], flags)
-      .map((flag: string) => flag.replace(/-/g, ''));
+    const allowedFlags: string[] = [].concat.apply([], flags);
 
     // When flag passed is not a valid custom flag or other arguments are being passed default to normal docker
     if (
@@ -165,9 +163,9 @@ export default class Supdock {
     if (this.commands[command] && this.commands[command].flags) {
       for (const flag of this.commands[command].flags) {
         if (flag.length === 1) {
-          descriptions.push(`      ${flag[0]}`);
+          descriptions.push(`      --${flag[0]}`);
         } else {
-          descriptions.push(`  ${flag[0]}, ${flag[1]}`);
+          descriptions.push(`  -${flag[0]}, --${flag[1]}`);
         }
       }
     }
