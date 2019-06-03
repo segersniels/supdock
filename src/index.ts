@@ -16,6 +16,13 @@ export default class Supdock {
   public async run(args: any) {
     const { type, flags } = this.commands[args.command];
 
+    // Special command
+    // TODO find a better solution to having this hardcoded here
+    if (args.command === 'prune') {
+      this.spawn('docker', ['system', 'prune', '-f']);
+      return;
+    }
+
     // Fire and forget the following commands in background when 'all' is passed as nonFlag
     if (
       args.nonFlags.all &&
