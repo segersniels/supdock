@@ -1,10 +1,8 @@
 import { execSync, spawn, spawnSync } from 'child_process';
 import * as inquirer from 'inquirer';
 import { version } from '../package.json';
-import { IdCommands, NameCommands } from './enums';
 import { info, logAndForget, warn } from './helpers/logger';
 import metadata from './metadata';
-import Type from './types/type';
 
 export default class Supdock {
   private commands: any;
@@ -102,12 +100,13 @@ export default class Supdock {
     return Object.keys(this.commands);
   }
 
-  private executeInParallel(command: string, type: Type) {
+  private executeInParallel(command: string, type: string) {
     info('Asynchronous execution of command is happening in the background');
     info(`Some containers might take longer than others to ${command}`, true);
-    spawn;
 
-    const { ids } = this.getDockerInfo(type);
+    const ids = this.createChoices(type).map(choice =>
+      choice.split('-')[0].trim(),
+    );
     ids.forEach(id => {
       const child = spawn('docker', [command, id], {
         detached: true,
@@ -117,12 +116,11 @@ export default class Supdock {
     });
   }
 
-  private async execute(command: string, type: Type, flags: string[] = []) {
-    const { ids, names } = this.getDockerInfo(type);
+  private async execute(command: string, type: string, flags: string[] = []) {
     const { question, error } = this.commands[command];
+    const choices = this.createChoices(type);
 
-    if (ids.length > 0) {
-      const choices = this.createChoices(ids, names);
+    if (choices.length > 0) {
       const { choice: container } = await this.prompt(question, choices);
       const id = container.split('-')[0].trim();
 
@@ -205,14 +203,8 @@ export default class Supdock {
       .filter(line => line);
   }
 
-  private getDockerInfo(type: Type) {
-    const ids = this.executeFullyDeclaredCommand(IdCommands[type]);
-    const names = this.executeFullyDeclaredCommand(NameCommands[type]);
-    return { ids, names };
-  }
-
-  private createChoices(ids: string[], names: string[]) {
-    return ids.map((id: string, index: number) => `${id} - ${names[index]}`);
+  private createChoices(type: string) {
+    return this.executeFullyDeclaredCommand(type);
   }
 
   private spawn(command: string, args: string[]) {
