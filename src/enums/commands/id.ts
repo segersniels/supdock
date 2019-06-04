@@ -1,6 +1,6 @@
 export const IdCommands = {
-  ps: "docker ps |awk '{print $1}' |tail -n +2",
-  psa: "docker ps -a |awk '{print $1}' |tail -n +2",
-  images: "docker images |awk '{print $3}' |tail -n +2",
-  psaStopped: "docker ps -a |grep 'Exited' |awk '{print $1}'",
+  ps: 'docker ps -q',
+  psa: 'docker ps -aq',
+  images: 'docker images -q',
+  psaStopped: 'docker ps -qf status=exited',
 };
