@@ -174,6 +174,7 @@ export default class Supdock {
         parsed.push(flags[flag]);
       }
     }
+
     return parsed;
   }
 
