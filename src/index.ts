@@ -14,13 +14,6 @@ export default class Supdock {
   public async run(args: any) {
     const { type, flags } = this.commands[args.command];
 
-    // Special command
-    // TODO find a better solution to having this hardcoded here
-    if (args.command === 'prune') {
-      this.spawn('docker', ['system', 'prune', '-f']);
-      return;
-    }
-
     // Fire and forget the following commands in background when 'all' is passed as nonFlag
     if (
       args.nonFlags.all &&
@@ -118,8 +111,17 @@ export default class Supdock {
 
   private async execute(command: string, type: string, flags: string[] = []) {
     const { question, error } = this.commands[command];
-    const choices = this.createChoices(type);
 
+    // Special custom commands without prompt
+    if (!question && !error) {
+      switch (command) {
+        case 'prune':
+          this.spawn('docker', ['system', 'prune', '-f']);
+          return;
+      }
+    }
+
+    const choices = this.createChoices(type);
     if (choices.length > 0) {
       const { choice: container } = await this.prompt(question, choices);
       const id = container.split('-')[0].trim();
