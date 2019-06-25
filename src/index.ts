@@ -73,15 +73,7 @@ export default class Supdock {
   \t--version, -v\tprint the version
       `);
     } else {
-      // Output the default docker help
-      this.default();
-
-      // Only log extra stuff if there are actual custom flags for the command
-      const flagDescriptions = this.generateFlagDescriptions(command);
-      if (flagDescriptions.length > 0) {
-        logAndForget(`\nOptions (supdock):\n${flagDescriptions}`);
-      }
-      process.exit(0);
+      this.commandUsage(command);
     }
   }
 
@@ -91,6 +83,23 @@ export default class Supdock {
 
   public getCustomCommands() {
     return Object.keys(this.commands);
+  }
+
+  private commandUsage(command: string) {
+    // Output the default docker help
+    this.default();
+
+    // Only log extra stuff if there are actual custom flags for the command
+    const flagDescriptions = this.generateFlagDescriptions(command);
+    if (flagDescriptions.length > 0) {
+      const metadata = this.commands[command];
+      info(`\nOptions (supdock):\n${flagDescriptions}`);
+      if (metadata.extraUsageInfo) {
+        info(`\n${metadata.extraUsageInfo}`);
+      }
+    }
+
+    process.exit(0);
   }
 
   private executeInParallel(command: string, type: string) {
