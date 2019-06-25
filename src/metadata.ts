@@ -14,6 +14,8 @@ export default {
     error: 'no containers available to restart',
     flags: [['t', 'time']],
     type: CommandAlias.RUNNING_CONTAINERS,
+    extraUsageInfo:
+      'It is possible to pass "all" as the name/id to restart all currently running containers.\n  eg. supdock restart all',
   },
   start: {
     description: 'Start a stopped container',
@@ -21,6 +23,8 @@ export default {
     error: 'no containers available to start',
     flags: [['a', 'attach'], ['i', 'interactive']],
     type: CommandAlias.STOPPED_CONTAINERS,
+    extraUsageInfo:
+      'It is possible to pass "all" as the name/id to start all currently stopped containers.\n  eg. supdock start all',
   },
   stop: {
     description: 'Stop a running container',
@@ -28,6 +32,8 @@ export default {
     error: 'no containers available to stop',
     flags: [['f', 'force'], ['t', 'time']],
     type: CommandAlias.RUNNING_CONTAINERS,
+    extraUsageInfo:
+      'It is possible to pass "all" as the name/id to stop all currently running containers.\n  eg. `supdock stop all`',
   },
   ssh: {
     description: 'SSH into a container',
