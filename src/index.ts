@@ -118,47 +118,6 @@ export default class Supdock {
     });
   }
 
-  private async execute(command: string, type: string, flags: string[] = []) {
-    const { question, error } = this.commands[command];
-
-    // Special custom commands without prompt
-    if (!question && !error) {
-      switch (command) {
-        case 'prune':
-          this.spawn('docker', ['system', 'prune', '-f']);
-          return;
-      }
-    }
-
-    const choices = this.createChoices(type);
-    if (choices.length > 0) {
-      const { choice: container } = await this.prompt(question, choices);
-      const id = container.split('-')[0].trim();
-
-      // Define custom command logic if needed
-      switch (command) {
-        case 'ssh': {
-          await this.ssh(id);
-          break;
-        }
-        case 'env':
-          this.spawn('docker', ['exec', '-ti', id, 'env']);
-          break;
-        case 'stop':
-          if (flags.includes('-f') || flags.includes('--force')) {
-            this.spawn('docker', ['rm', ...flags, id]);
-          } else {
-            this.spawn('docker', [command, ...flags, id]);
-          }
-          break;
-        default:
-          this.spawn('docker', [command, ...flags, id]);
-      }
-    } else {
-      warn(error);
-    }
-  }
-
   private parseFlags(flags: any, allowedFlags: string[]) {
     const parsed: any[] = [];
 
@@ -215,21 +174,12 @@ export default class Supdock {
       .filter(line => line);
   }
 
-  private createChoices(type: string) {
-    return this.executeFullyDeclaredCommand(type);
-  }
-
   private spawn(command: string, args: string[]) {
     spawnSync(command, args, { stdio: 'inherit' });
   }
 
-  private async ssh(id: string) {
-    await this.prompt('Which shell is the container using?', [
-      'bash',
-      'ash',
-    ]).then((answer: any) => {
-      this.spawn('docker', ['exec', '-ti', id.trim(), answer.choice]);
-    });
+  private createChoices(type: string) {
+    return this.executeFullyDeclaredCommand(type);
   }
 
   private prompt(message: string, choices: string[]): any {
@@ -241,5 +191,55 @@ export default class Supdock {
         choices,
       },
     ]);
+  }
+
+  private async ssh(id: string) {
+    await this.prompt('Which shell is the container using?', [
+      'bash',
+      'ash',
+    ]).then((answer: any) => {
+      this.spawn('docker', ['exec', '-ti', id.trim(), answer.choice]);
+    });
+  }
+
+  private async execute(command: string, type: string, flags: string[] = []) {
+    const { question, error } = this.commands[command];
+
+    // Special custom commands without prompt
+    if (!question && !error) {
+      switch (command) {
+        case 'prune':
+          this.spawn('docker', ['system', 'prune', '-f']);
+          return;
+      }
+    }
+
+    const choices = this.createChoices(type);
+    if (choices.length > 0) {
+      const { choice: container } = await this.prompt(question, choices);
+      const id = container.split('-')[0].trim();
+
+      // Define custom command logic if needed
+      switch (command) {
+        case 'ssh': {
+          await this.ssh(id);
+          break;
+        }
+        case 'env':
+          this.spawn('docker', ['exec', '-ti', id, 'env']);
+          break;
+        case 'stop':
+          if (flags.includes('-f') || flags.includes('--force')) {
+            this.spawn('docker', ['rm', ...flags, id]);
+          } else {
+            this.spawn('docker', [command, ...flags, id]);
+          }
+          break;
+        default:
+          this.spawn('docker', [command, ...flags, id]);
+      }
+    } else {
+      warn(error);
+    }
   }
 }
