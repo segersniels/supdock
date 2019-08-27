@@ -56,9 +56,16 @@
       "camelcase": 0,
       "quotes": ["error", "single"],
       "semi": ["error", "always"],
-      "indent": ["error", 2],
-      "object-curly-newline": ["error", { "multiline": true }],
-      "no-trailing-spaces": 2
+      "indent": ["error", 2, { "SwitchCase": 1 }],
+      "object-curly-newline": [
+        "error",
+        {
+          "multiline": true
+        }
+      ],
+      "no-trailing-spaces": 2,
+      "comma-dangle": ["error", "only-multiline"],
+      "space-before-function-paren": ["error", "never"]
     }
   }
 }
