@@ -49,25 +49,16 @@
   },
   "standardx": {
     "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint/eslint-plugin"
-    ]
+    "plugins": ["@typescript-eslint/eslint-plugin"]
   },
   "eslintConfig": {
     "rules": {
       "camelcase": 0,
-      "quotes": [
-        "error",
-        "single"
-      ],
-      "semi": [
-        "error",
-        "always"
-      ],
-      "indent": [
-        "error",
-        2
-      ]
+      "quotes": ["error", "single"],
+      "semi": ["error", "always"],
+      "indent": ["error", 2],
+      "object-curly-newline": ["error", { "multiline": true }],
+      "no-trailing-spaces": 2
     }
   }
 }
