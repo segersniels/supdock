@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc --skipLibCheck ; pkg -t node10 dist/index.js -o ./bin/supdock",
     "build:ci": "tsc --skipLibCheck ; pkg dist/index.js --out-path ./bin ; ./scripts/rename.sh",
-    "lint:fix": "tslint --format stylish --fix './src/**/*.ts' './index.ts'",
+    "lint:fix": "standardx --fix **/*.ts",
     "check:typescript": "tsc --noEmit --skipLibCheck --project .",
     "nuke": "rm -rf node_modules ; npm install"
   },
@@ -41,12 +41,33 @@
     "supdock": "index.js"
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
     "pkg": "^4.4.0",
-    "prettier": "^1.16.4",
-    "typescript": "^3.3.3333",
-    "tslint": "^5.13.1",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-config-standard": "^8.0.1",
-    "tslint-plugin-prettier": "^2.0.1"
+    "standardx": "^5.0.0",
+    "typescript": "^3.3.3333"
+  },
+  "standardx": {
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint/eslint-plugin"
+    ]
+  },
+  "eslintConfig": {
+    "rules": {
+      "camelcase": 0,
+      "quotes": [
+        "error",
+        "single"
+      ],
+      "semi": [
+        "error",
+        "always"
+      ],
+      "indent": [
+        "error",
+        2
+      ]
+    }
   }
 }
