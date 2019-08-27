@@ -44,7 +44,7 @@ jobs:
           name: 'NPM release'
           command: |
             echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/supdock/dist/.npmrc
-            cp README.md dist/README.md ; cd dist ; npm publish
+            cp README.md dist/README.md ; cd dist ; npm publish || true
 
 workflows:
   version: 2
