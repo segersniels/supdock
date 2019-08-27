@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc --skipLibCheck ; pkg -t node10 dist/index.js -o ./bin/supdock",
     "build:ci": "tsc --skipLibCheck ; pkg dist/index.js --out-path ./bin ; ./scripts/rename.sh",
+    "lint": "standardx **/*.ts",
     "lint:fix": "standardx --fix **/*.ts",
     "check:typescript": "tsc --noEmit --skipLibCheck --project .",
     "nuke": "rm -rf node_modules ; npm install"
