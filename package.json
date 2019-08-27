@@ -54,7 +54,6 @@
   },
   "eslintConfig": {
     "rules": {
-      "camelcase": 0,
       "quotes": ["error", "single"],
       "semi": ["error", "always"],
       "indent": ["error", 2, { "SwitchCase": 1 }],
