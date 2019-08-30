@@ -1,4 +1,4 @@
-import CommandAlias from './enums/commands';
+import CommandAlias from '../enums/Commands';
 
 export default {
   logs: {
@@ -85,6 +85,6 @@ export default {
   },
   prune: {
     description:
-      'Remove stopped containers and dangling images. For more detailed usage refer to \'docker system prune -h\'',
+      'Remove stopped containers and dangling images. For more detailed usage refer to "docker system prune -h"',
   },
 };
