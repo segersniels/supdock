@@ -1,5 +1,5 @@
 import CommandsEnum from '../enums/Commands';
-import CommandInterface from '../interfaces/command';
+import CommandInterface from '../interfaces/Command';
 
 const commands: { [name: string]: CommandInterface } = {
   logs: {
