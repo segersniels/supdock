@@ -1,10 +1,12 @@
 /* eslint-disable */
+import CommandAlias from '../enums/Commands';
+
 interface Command {
   description: string;
   question?: string;
   error?: string;
   flags?: string[][];
-  type?: string;
+  type?: CommandAlias;
   extraUsageInfo?: string;
 }
 
