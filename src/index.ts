@@ -3,6 +3,7 @@ import * as inquirer from 'inquirer';
 import { version } from '../package.json';
 import { info, logAndForget, warn } from './helpers/logger';
 import metadata from './metadata';
+import Command from './interfaces/Command';
 
 export default class Supdock {
   private commands: any;
@@ -92,7 +93,7 @@ export default class Supdock {
     // Only log extra stuff if there are actual custom flags for the command
     const flagDescriptions = this.generateFlagDescriptions(command);
     if (flagDescriptions.length > 0) {
-      const metadata = this.commands[command];
+      const metadata: Command = this.commands[command];
       info(`\nOptions (supdock):\n${flagDescriptions}`);
       if (metadata.extraUsageInfo) {
         info(`\n${metadata.extraUsageInfo}`);
