@@ -1,7 +1,7 @@
 import CommandsEnum from '../enums/Commands';
-import CommandInterface from '../interfaces/Command';
+import Command from '../interfaces/Command';
 
-const commands: { [name: string]: CommandInterface } = {
+const commands: { [name: string]: Command } = {
   logs: {
     description: 'See the logs of a container',
     question: 'Which container would you like to see the logs of?',
