@@ -4,9 +4,14 @@ import { version } from '../package.json';
 import { info, logAndForget, warn } from './helpers/logger';
 import metadata from './metadata';
 import Command from './interfaces/Command';
+import Commands from './types/Commands';
+import {
+  generateFlagDescriptions,
+  generateGeneralDescription,
+} from './helpers/description';
 
 export default class Supdock {
-  private commands: any;
+  private commands: Commands;
 
   constructor() {
     this.commands = metadata;
@@ -20,7 +25,7 @@ export default class Supdock {
       args.nonFlags.all &&
       ['start', 'restart', 'stop'].includes(args.command)
     ) {
-      this.executeInParallel(args.command, type);
+      this.executeInParallel(args.command, type!);
       return;
     }
 
@@ -29,7 +34,7 @@ export default class Supdock {
       args.flags.p ||
       args.flags.prompt;
     const passedFlags = Object.keys(args.flags);
-    const allowedFlags: string[] = [].concat.apply([], flags);
+    const allowedFlags: string[] = ([] as string[]).concat.apply([], flags!);
 
     // When flag passed is not a valid custom flag or other arguments are being passed default to normal docker
     if (
@@ -44,7 +49,7 @@ export default class Supdock {
     // When every check has passed, perform the rest of customised supdock command
     await this.execute(
       args.command,
-      type,
+      type!,
       this.parseFlags(args.flags, allowedFlags)
     );
   }
@@ -55,24 +60,8 @@ export default class Supdock {
 
   public usage(command?: string) {
     if (!command) {
-      const descriptions = this.generateCommandDescriptions();
-      logAndForget(`NAME:
-  \tsupdock - What's Up Dock(er)?
-
-  USAGE:
-  \tsupdock [global options] command [command options] [arguments...]
-
-  VERSION:
-  \t${version}
-
-  COMMANDS:
-  ${descriptions}
-  \thelp, h\t\tShows a list of commands or help for one command
-
-  GLOBAL OPTIONS:
-  \t--help, -h\tshow help
-  \t--version, -v\tprint the version
-      `);
+      const commandNames = Object.keys(this.commands);
+      logAndForget(generateGeneralDescription(this.commands, commandNames));
     } else {
       this.commandUsage(command);
     }
@@ -91,7 +80,7 @@ export default class Supdock {
     this.default();
 
     // Only log extra stuff if there are actual custom flags for the command
-    const flagDescriptions = this.generateFlagDescriptions(command);
+    const flagDescriptions = generateFlagDescriptions(this.commands, command);
     if (flagDescriptions.length > 0) {
       const metadata: Command = this.commands[command];
       info(`\nOptions (supdock):\n${flagDescriptions}`);
@@ -147,27 +136,6 @@ export default class Supdock {
     return parsed;
   }
 
-  private generateCommandDescriptions() {
-    const commands = Object.keys(this.commands);
-    return commands
-      .map(command => `\t${command}\t\t${this.commands[command].description}`)
-      .join('\n');
-  }
-
-  private generateFlagDescriptions(command: string) {
-    const descriptions: string[] = [];
-    if (this.commands[command] && this.commands[command].flags) {
-      for (const flag of this.commands[command].flags) {
-        if (flag.length === 1) {
-          descriptions.push(`      --${flag[0]}`);
-        } else {
-          descriptions.push(`  -${flag[0]}, --${flag[1]}`);
-        }
-      }
-    }
-    return descriptions.join('\n');
-  }
-
   private executeFullyDeclaredCommand(command: string): string[] {
     return execSync(command, { maxBuffer: 1024 * 10000 })
       .toString()
@@ -217,7 +185,7 @@ export default class Supdock {
 
     const choices = this.createChoices(type);
     if (choices.length > 0) {
-      const { choice: container } = await this.prompt(question, choices);
+      const { choice: container } = await this.prompt(question!, choices);
       const id = container.split('-')[0].trim();
 
       // Define custom command logic if needed
@@ -240,7 +208,7 @@ export default class Supdock {
           this.spawn('docker', [command, ...flags, id]);
       }
     } else {
-      warn(error);
+      warn(error!);
     }
   }
 }

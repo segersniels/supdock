@@ -1,7 +1,7 @@
 import CommandAlias from '../enums/CommandAlias';
-import Command from '../interfaces/Command';
+import Commands from '../types/Commands';
 
-const commands: { [name: string]: Command } = {
+const metadata: Commands = {
   logs: {
     description: 'See the logs of a container',
     question: 'Which container would you like to see the logs of?',
@@ -90,4 +90,4 @@ const commands: { [name: string]: Command } = {
   },
 };
 
-export default commands;
+export default metadata;
