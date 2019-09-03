@@ -11,6 +11,7 @@ interface Command {
   customPassing?: boolean;
   usage?: string;
   custom?: boolean;
+  options?: string[];
 }
 
 export default Command;

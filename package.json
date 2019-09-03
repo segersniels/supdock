@@ -35,6 +35,7 @@
     "chalk": "^2.4.2",
     "fuzzy-search": "^3.0.1",
     "inquirer": "^5.1.0",
+    "lodash.flatten": "^4.4.0",
     "minimist": "^1.2.0"
   },
   "bin": {
@@ -43,6 +44,7 @@
   "devDependencies": {
     "@types/fuzzy-search": "^2.1.0",
     "@types/inquirer": "0.0.43",
+    "@types/lodash.flatten": "^4.4.6",
     "@types/node": "^11.9.4",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
@@ -52,6 +54,8 @@
   },
   "standard": {
     "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint/eslint-plugin"]
+    "plugins": [
+      "@typescript-eslint/eslint-plugin"
+    ]
   }
 }

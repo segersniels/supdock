@@ -1,6 +1,5 @@
 import { version } from '../../package.json'
 import Commands from '../types/Commands.js' /* eslint-disable-line */
-import { possibleValues } from '../interfaces/Configuration'
 
 const generateCommandDescriptions = (
   commands: Commands,
@@ -54,15 +53,12 @@ export const generateFlagDescriptions = (
   return descriptions.join('\n')
 }
 
-/* eslint-disable */
-export const generateCustomCommandDescription = (command: string, description: string) => {
-  return `
-Usage:	docker ${command} [OPTIONS]
-
-  ${description}
-
-Options:
-    ${possibleValues.join('\n    ')}
-  `
+/* eslint-disable no-tabs */
+export const generateCustomCommandDescription = (command: string, description: string, options: string[] | undefined) => {
+  let customCommandDescription = `\nUsage:	docker ${command} [OPTIONS]\n\n  ${description}\n\n`
+  if (options) {
+    customCommandDescription += `Options:
+    ${options.join('\n    ')}`
+  }
+  return customCommandDescription
 }
-/* eslint-enable */

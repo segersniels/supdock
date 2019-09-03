@@ -1,5 +1,6 @@
 import CommandAlias from '../enums/CommandAlias'
 import Commands from '../types/Commands' /* eslint-disable-line */
+import { possibleValues } from '../interfaces/Configuration'
 
 const metadata: Commands = {
   logs: {
@@ -44,7 +45,8 @@ const metadata: Commands = {
     description: 'SSH into a container',
     question: 'Which container would you like to SSH to?',
     error: 'no containers available',
-    type: CommandAlias.RUNNING_CONTAINERS
+    type: CommandAlias.RUNNING_CONTAINERS,
+    custom: true
   },
   env: {
     description: 'See the environment variables of a running container',
@@ -96,11 +98,13 @@ const metadata: Commands = {
   enable: {
     description: 'Enable certain supdock functionality',
     custom: true,
+    options: possibleValues,
     customPassing: true
   },
   disable: {
     description: 'Disable certain supdock functionality',
     custom: true,
+    options: possibleValues,
     customPassing: true
   }
 }

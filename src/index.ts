@@ -12,6 +12,7 @@ import {
 } from './helpers/description'
 import * as FuzzySearch from 'fuzzy-search'
 import * as ConfigHelper from './helpers/config'
+import flatten = require('lodash.flatten');
 
 export default class Supdock {
   private commands: Commands
@@ -25,7 +26,7 @@ export default class Supdock {
 
     // Fire and forget the following commands in background when 'all' is passed as nonFlag
     if (
-      args.nonFlags.all &&
+      args.nonFlags.includes('all') &&
       ['start', 'restart', 'stop'].includes(args.command)
     ) {
       this.executeInParallel(args.command, type!)
@@ -37,7 +38,7 @@ export default class Supdock {
       args.flags.p ||
       args.flags.prompt
     const passedFlags = Object.keys(args.flags)
-    const allowedFlags: string[] = ([] as string[]).concat.apply([], flags!)
+    const allowedFlags: string[] = flatten(flags!)
 
     // When flag passed is not a valid custom flag or other arguments are being passed default to normal docker
     if (
@@ -81,7 +82,7 @@ export default class Supdock {
   }
 
   private commandUsage (command: string) {
-    const { custom, usage, description } = this.commands[command]
+    const { custom, usage, description, options } = this.commands[command]
 
     // When command has custom usage defined log that instead of throwing the unknown command to docker
     if (usage) {
@@ -92,7 +93,7 @@ export default class Supdock {
     // Allow commands to have their own detailed usage information when a complete custom command
     // Overwritten by usage alias above
     if (custom) {
-      info(generateCustomCommandDescription(command, description))
+      info(generateCustomCommandDescription(command, description, options))
     }
 
     // When a standard docker command log the default docker usage info first
@@ -207,10 +208,9 @@ export default class Supdock {
   ) {
     let choice
     const { question, customPassing } = this.commands[command]
-    const nonFlagNames = Object.keys(nonFlags)
 
-    if (customPassing && nonFlagNames.length === 1) {
-      const term = nonFlagNames[0]
+    if (customPassing && nonFlags.length === 1) {
+      const term = nonFlags[0]
       const choicesAfterFuzzySearching = await this.fuzzySearch(choices, term)
 
       // Check if the nonFlags passed completely match an id or name
