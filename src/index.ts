@@ -80,8 +80,24 @@ export default class Supdock {
   }
 
   private commandUsage (command: string) {
-    // Output the default docker help
-    this.default()
+    const { details, usage } = this.commands[command]
+
+    // When command has custom usage defined log that instead of throwing the unknown command to docker
+    if (usage) {
+      this.spawn('docker', usage.split(' '))
+      process.exit(0)
+    }
+
+    // Allow commands to have their own detailed usage information when a complete custom command
+    // Overwritten by usage alias above
+    if (details) {
+      info(details)
+    }
+
+    // When a standard docker command log the default docker usage info first
+    if (!usage && !details) {
+      this.default()
+    }
 
     // Only log extra stuff if there are actual custom flags for the command
     const flagDescriptions = generateFlagDescriptions(this.commands, command)

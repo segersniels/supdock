@@ -9,6 +9,8 @@ interface Command {
   type?: CommandAlias;
   extraUsageInfo?: string;
   customPassing?: boolean;
+  usage?: string;
+  details?: string;
 }
 
 export default Command;
