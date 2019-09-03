@@ -10,7 +10,7 @@ interface Command {
   extraUsageInfo?: string;
   customPassing?: boolean;
   usage?: string;
-  details?: string;
+  custom?: boolean;
 }
 
 export default Command;

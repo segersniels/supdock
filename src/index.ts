@@ -7,7 +7,8 @@ import Command from './interfaces/Command' /* eslint-disable-line */
 import Commands from './types/Commands' /* eslint-disable-line */
 import {
   generateFlagDescriptions,
-  generateGeneralDescription
+  generateGeneralDescription,
+  generateCustomCommandDescription
 } from './helpers/description'
 import * as FuzzySearch from 'fuzzy-search'
 import * as ConfigHelper from './helpers/config'
@@ -80,7 +81,7 @@ export default class Supdock {
   }
 
   private commandUsage (command: string) {
-    const { details, usage } = this.commands[command]
+    const { custom, usage, description } = this.commands[command]
 
     // When command has custom usage defined log that instead of throwing the unknown command to docker
     if (usage) {
@@ -90,12 +91,12 @@ export default class Supdock {
 
     // Allow commands to have their own detailed usage information when a complete custom command
     // Overwritten by usage alias above
-    if (details) {
-      info(details)
+    if (custom) {
+      info(generateCustomCommandDescription(command, description))
     }
 
     // When a standard docker command log the default docker usage info first
-    if (!usage && !details) {
+    if (!usage && !custom) {
       this.default()
     }
 

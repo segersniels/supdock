@@ -1,6 +1,5 @@
 import CommandAlias from '../enums/CommandAlias'
 import Commands from '../types/Commands' /* eslint-disable-line */
-import { possibleValues } from '../interfaces/Configuration'
 
 const metadata: Commands = {
   logs: {
@@ -96,12 +95,12 @@ const metadata: Commands = {
   },
   enable: {
     description: 'Enable certain supdock functionality',
-    details: `Enable certain supdock functionality.\n\nOptions:\n- ${possibleValues.join('\n- ')}`,
+    custom: true,
     customPassing: true
   },
   disable: {
     description: 'Disable certain supdock functionality',
-    details: `Disable certain supdock functionality.\n\nOptions:\n- ${possibleValues.join('\n- ')}`,
+    custom: true,
     customPassing: true
   }
 }
