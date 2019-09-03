@@ -239,7 +239,7 @@ export default class Supdock {
     const { question, error: commandError } = this.commands[command]
 
     // Special custom commands without prompt
-    if (!question && !error) {
+    if (!question && !commandError) {
       switch (command) {
         case 'prune':
           this.spawn('docker', ['system', 'prune', '-f'])
