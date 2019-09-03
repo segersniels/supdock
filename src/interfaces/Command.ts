@@ -8,6 +8,7 @@ interface Command {
   flags?: string[][];
   type?: CommandAlias;
   extraUsageInfo?: string;
+  customPassing?: boolean;
 }
 
 export default Command;

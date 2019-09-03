@@ -1,7 +1,7 @@
 import { execSync, spawn, spawnSync } from 'child_process';
 import * as inquirer from 'inquirer';
 import { version } from '../package.json';
-import { info, logAndForget, warn } from './helpers/logger';
+import { info, logAndForget, warn, error } from './helpers/logger';
 import metadata from './metadata';
 import Command from './interfaces/Command';
 import Commands from './types/Commands';
@@ -9,6 +9,7 @@ import {
   generateFlagDescriptions,
   generateGeneralDescription,
 } from './helpers/description';
+import * as FuzzySearch from 'fuzzy-search';
 
 export default class Supdock {
   private commands: Commands;
@@ -18,7 +19,7 @@ export default class Supdock {
   }
 
   public async run(args: any) {
-    const { type, flags } = this.commands[args.command];
+    const { type, flags, customPassing } = this.commands[args.command];
 
     // Fire and forget the following commands in background when 'all' is passed as nonFlag
     if (
@@ -38,9 +39,10 @@ export default class Supdock {
 
     // When flag passed is not a valid custom flag or other arguments are being passed default to normal docker
     if (
-      (passedFlags.length > 0 &&
+      !customPassing &&
+      ((passedFlags.length > 0 &&
         !passedFlags.find(flag => allowedFlags.includes(flag))) ||
-      !promptEnabled
+        !promptEnabled)
     ) {
       this.default();
       return;
@@ -50,7 +52,8 @@ export default class Supdock {
     await this.execute(
       args.command,
       type!,
-      this.parseFlags(args.flags, allowedFlags)
+      this.parseFlags(args.flags, allowedFlags),
+      args.nonFlags
     );
   }
 
@@ -171,8 +174,71 @@ export default class Supdock {
     });
   }
 
-  private async execute(command: string, type: string, flags: string[] = []) {
-    const { question, error } = this.commands[command];
+  private async fuzzySearch(choices: string[], term: string) {
+    const searches = new FuzzySearch(choices).search(term);
+    if (searches.length === 0) {
+      error(
+        `Was not able to match with container or image for search: ${term}`
+      );
+    }
+    return searches;
+  }
+
+  private async determineChoiceForCommand(
+    command: string,
+    choices: string[],
+    nonFlags: any
+  ) {
+    let choice;
+    const { question, customPassing } = this.commands[command];
+    const nonFlagNames = Object.keys(nonFlags);
+
+    if (customPassing && nonFlagNames.length === 1) {
+      const term = nonFlagNames[0];
+      const choicesAfterFuzzySearching = await this.fuzzySearch(choices, term);
+
+      // Check if the nonFlags passed completely match an id or name
+      // We don't want to ask for confirmation in this case
+      if (choicesAfterFuzzySearching.length === 1) {
+        choice = choicesAfterFuzzySearching[0];
+        if (
+          term === choice.split('-')[0].trim() ||
+          term === choice.split('-')[1].trim()
+        ) {
+          this.default();
+          return;
+        }
+
+        // Ask the user for confirmation
+        const confirmation = await this.prompt(
+          `Are you sure you want to execute '${command}' for container '${choice}'`,
+          ['Yes', 'No']
+        );
+
+        if (confirmation.choice === 'No') {
+          error('Exiting on request of user...');
+        }
+      } else {
+        // Multiple results returned from fuzzy search so ask user for confirmation
+        choice = (await this.prompt(
+          `Search '${term}' returned more than one result, please make a choice from the list below.`,
+          choicesAfterFuzzySearching
+        )).choice;
+      }
+    } else {
+      choice = (await this.prompt(question!, choices)).choice;
+    }
+
+    return choice;
+  }
+
+  private async execute(
+    command: string,
+    type: string,
+    flags: string[] = [],
+    nonFlags?: any
+  ) {
+    const { question, error: commandError } = this.commands[command];
 
     // Special custom commands without prompt
     if (!question && !error) {
@@ -183,32 +249,37 @@ export default class Supdock {
       }
     }
 
+    // Generate the choices for command type
     const choices = this.createChoices(type);
     if (choices.length > 0) {
-      const { choice: container } = await this.prompt(question!, choices);
-      const id = container.split('-')[0].trim();
+      // Extract the id from the choice that was made or given
+      const choice = await this.determineChoiceForCommand(
+        command,
+        choices,
+        nonFlags
+      );
+      const id = choice.split('-')[0].trim();
 
-      // Define custom command logic if needed
+      // Define custom command logic if needed for specific commands
       switch (command) {
         case 'ssh': {
           await this.ssh(id);
-          break;
+          return;
         }
         case 'env':
           this.spawn('docker', ['exec', '-ti', id, 'env']);
-          break;
+          return;
         case 'stop':
           if (flags.includes('-f') || flags.includes('--force')) {
             this.spawn('docker', ['rm', ...flags, id]);
-          } else {
-            this.spawn('docker', [command, ...flags, id]);
           }
-          break;
-        default:
-          this.spawn('docker', [command, ...flags, id]);
+          return;
       }
+
+      // Normal execution of command
+      this.spawn('docker', [command, ...flags, id]);
     } else {
-      warn(error!);
+      warn(commandError!);
     }
   }
 }

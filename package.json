@@ -32,9 +32,8 @@
   },
   "homepage": "https://github.com/segersniels/supdock-ts#readme",
   "dependencies": {
-    "@types/inquirer": "0.0.43",
-    "@types/node": "^11.9.4",
     "chalk": "^2.4.2",
+    "fuzzy-search": "^3.0.1",
     "inquirer": "^5.1.0",
     "minimist": "^1.2.0"
   },
@@ -42,20 +41,31 @@
     "supdock": "index.js"
   },
   "devDependencies": {
+    "@types/fuzzy-search": "^2.1.0",
+    "@types/inquirer": "0.0.43",
+    "@types/node": "^11.9.4",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
     "pkg": "^4.4.0",
     "standardx": "^5.0.0",
-    "typescript": "^3.3.3333"
+    "typescript": "^3.5.3"
   },
   "standardx": {
     "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint/eslint-plugin"]
+    "plugins": [
+      "@typescript-eslint/eslint-plugin"
+    ]
   },
   "eslintConfig": {
     "rules": {
-      "quotes": ["error", "single"],
-      "semi": ["error", "always"],
+      "quotes": [
+        "error",
+        "single"
+      ],
+      "semi": [
+        "error",
+        "always"
+      ],
       "indent": [
         "error",
         2,
@@ -70,8 +80,14 @@
         }
       ],
       "no-trailing-spaces": 2,
-      "comma-dangle": ["error", "only-multiline"],
-      "space-before-function-paren": ["error", "never"],
+      "comma-dangle": [
+        "error",
+        "only-multiline"
+      ],
+      "space-before-function-paren": [
+        "error",
+        "never"
+      ],
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": "error"
     }

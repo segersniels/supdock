@@ -8,6 +8,7 @@ const metadata: Commands = {
     error: 'no containers to see the logs of',
     flags: [['f', 'follow'], ['t', 'timestamps'], ['details']],
     type: CommandAlias.ALL_CONTAINERS,
+    customPassing: true,
   },
   restart: {
     description: 'Restart a running container',
@@ -17,6 +18,7 @@ const metadata: Commands = {
     type: CommandAlias.RUNNING_CONTAINERS,
     extraUsageInfo:
       'It is possible to pass "all" as the name/id to restart all currently running containers.\n  eg. supdock restart all',
+    customPassing: true,
   },
   start: {
     description: 'Start a stopped container',
@@ -26,6 +28,7 @@ const metadata: Commands = {
     type: CommandAlias.STOPPED_CONTAINERS,
     extraUsageInfo:
       'It is possible to pass "all" as the name/id to start all currently stopped containers.\n  eg. supdock start all',
+    customPassing: true,
   },
   stop: {
     description: 'Stop a running container',
@@ -35,6 +38,7 @@ const metadata: Commands = {
     type: CommandAlias.RUNNING_CONTAINERS,
     extraUsageInfo:
       'It is possible to pass "all" as the name/id to stop all currently running containers.\n  eg. `supdock stop all`',
+    customPassing: true,
   },
   ssh: {
     description: 'SSH into a container',
