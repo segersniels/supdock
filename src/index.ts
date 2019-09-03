@@ -10,6 +10,7 @@ import {
   generateGeneralDescription
 } from './helpers/description'
 import * as FuzzySearch from 'fuzzy-search'
+import * as ConfigHelper from './helpers/config'
 
 export default class Supdock {
   private commands: Commands
@@ -204,17 +205,18 @@ export default class Supdock {
           term === choice.split('-')[1].trim()
         ) {
           this.default()
-          return
         }
 
         // Ask the user for confirmation
-        const confirmation = await this.prompt(
-          `Are you sure you want to execute '${command}' for container '${choice}'`,
-          ['Yes', 'No']
-        )
+        if (ConfigHelper.get('ask-for-confirmation')) {
+          const confirmation = await this.prompt(
+            `Are you sure you want to execute '${command}' for container '${choice}'`,
+            ['Yes', 'No']
+          )
 
-        if (confirmation.choice === 'No') {
-          error('Exiting on request of user...')
+          if (confirmation.choice === 'No') {
+            error('Exiting on request of user...')
+          }
         }
       } else {
         // Multiple results returned from fuzzy search so ask user for confirmation
@@ -243,6 +245,13 @@ export default class Supdock {
       switch (command) {
         case 'prune':
           this.spawn('docker', ['system', 'prune', '-f'])
+          return
+        case 'enable':
+        case 'disable':
+          for (const key of Object.keys(nonFlags)) {
+            await ConfigHelper.set(key, command === 'enable')
+            info(`Config '${key}' ${command === 'enable' ? 'enabled' : 'disabled'}`)
+          }
           return
       }
     }
