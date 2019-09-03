@@ -265,7 +265,7 @@ export default class Supdock {
           return
         case 'enable':
         case 'disable':
-          for (const key of Object.keys(nonFlags)) {
+          for (const key of nonFlags) {
             await ConfigHelper.set(key, command === 'enable')
             info(`Config '${key}' ${command === 'enable' ? 'enabled' : 'disabled'}`)
           }
