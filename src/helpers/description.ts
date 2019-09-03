@@ -1,5 +1,5 @@
-import { version } from '../../package.json';
-import Commands from '../types/Commands.js';
+import { version } from '../../package.json'
+import Commands from '../types/Commands.js' /* eslint-disable-line */
 
 const generateCommandDescriptions = (
   commands: Commands,
@@ -7,8 +7,8 @@ const generateCommandDescriptions = (
 ) => {
   return commandNames
     .map(command => `\t${command}\t\t${commands[command].description}`)
-    .join('\n');
-};
+    .join('\n')
+}
 
 export const generateGeneralDescription = (
   commands: Commands,
@@ -17,7 +17,7 @@ export const generateGeneralDescription = (
   const commandDescriptions = generateCommandDescriptions(
     commands,
     commandNames
-  );
+  )
   return `NAME:
 \tsupdock - What's Up Dock(er)?
 
@@ -33,22 +33,22 @@ ${commandDescriptions}
 
 GLOBAL OPTIONS:
 \t--help, -h\tshow help
-\t--version, -v\tprint the version`;
-};
+\t--version, -v\tprint the version`
+}
 
 export const generateFlagDescriptions = (
   commands: Commands,
   command: string
 ) => {
-  const descriptions: string[] = [];
+  const descriptions: string[] = []
   if (commands[command] && commands[command].flags) {
     for (const flag of commands[command].flags!) {
       if (flag.length === 1) {
-        descriptions.push(`      --${flag[0]}`);
+        descriptions.push(`      --${flag[0]}`)
       } else {
-        descriptions.push(`  -${flag[0]}, --${flag[1]}`);
+        descriptions.push(`  -${flag[0]}, --${flag[1]}`)
       }
     }
   }
-  return descriptions.join('\n');
-};
+  return descriptions.join('\n')
+}

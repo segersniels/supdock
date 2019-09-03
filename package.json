@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc --skipLibCheck ; pkg -t node10 dist/index.js -o ./bin/supdock",
     "build:ci": "tsc --skipLibCheck ; pkg dist/index.js --out-path ./bin ; ./scripts/rename.sh",
-    "lint": "standardx index.ts src/*.ts src/**/*.ts",
-    "lint:fix": "standardx --fix index.ts src/*.ts src/**/*.ts",
+    "lint": "standard index.ts src/*.ts src/**/*.ts",
+    "lint:fix": "standard --fix index.ts src/*.ts src/**/*.ts",
     "check:typescript": "tsc --noEmit --skipLibCheck --project .",
     "nuke": "rm -rf node_modules ; npm install"
   },
@@ -47,49 +47,11 @@
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
     "pkg": "^4.4.0",
-    "standardx": "^5.0.0",
+    "standard": "^14.1.0",
     "typescript": "^3.5.3"
   },
-  "standardx": {
+  "standard": {
     "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint/eslint-plugin"
-    ]
-  },
-  "eslintConfig": {
-    "rules": {
-      "quotes": [
-        "error",
-        "single"
-      ],
-      "semi": [
-        "error",
-        "always"
-      ],
-      "indent": [
-        "error",
-        2,
-        {
-          "SwitchCase": 1
-        }
-      ],
-      "object-curly-newline": [
-        "error",
-        {
-          "multiline": true
-        }
-      ],
-      "no-trailing-spaces": 2,
-      "comma-dangle": [
-        "error",
-        "only-multiline"
-      ],
-      "space-before-function-paren": [
-        "error",
-        "never"
-      ],
-      "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": "error"
-    }
+    "plugins": ["@typescript-eslint/eslint-plugin"]
   }
 }
