@@ -12,10 +12,12 @@ async function run () {
     } else {
       supdock.usage()
     }
+    return
   }
 
   if (flags.version || flags.v) {
     supdock.version()
+    return
   }
 
   // Fallback to default Docker execution if command is unknown to Supdock

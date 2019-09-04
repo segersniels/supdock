@@ -28,5 +28,9 @@ export const warn = (msg: string) => {
 
 export const error = (msg: string) => {
   log(chalk.red(msg))
-  process.exit(1)
+
+  // Don't exit when testing
+  if (process.env.NODE_ENV !== 'test') {
+    process.exit(1)
+  }
 }

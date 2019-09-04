@@ -67,14 +67,14 @@ export default class Supdock {
   public usage (command?: string) {
     if (!command) {
       const commandNames = Object.keys(this.commands)
-      logAndForget(generateGeneralDescription(this.commands, commandNames))
+      log(generateGeneralDescription(this.commands, commandNames))
     } else {
       this.commandUsage(command)
     }
   }
 
   public version () {
-    logAndForget(version)
+    log(version)
   }
 
   public getCustomCommands () {
@@ -87,7 +87,7 @@ export default class Supdock {
     // When command has custom usage defined log that instead of throwing the unknown command to docker
     if (usage) {
       this.spawn('docker', usage.split(' '))
-      process.exit(0)
+      return
     }
 
     // Allow commands to have their own detailed usage information when a complete custom command
@@ -110,8 +110,6 @@ export default class Supdock {
         info(`\n${metadata.extraUsageInfo}`)
       }
     }
-
-    process.exit(0)
   }
 
   private executeInParallel (command: string, type: string) {
@@ -282,6 +280,12 @@ export default class Supdock {
         choices,
         nonFlags
       )
+
+      // Unable to determine choice
+      if (!choice) {
+        return
+      }
+
       const id = choice.split('-')[0].trim()
 
       // Define custom command logic if needed for specific commands
