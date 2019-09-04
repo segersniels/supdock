@@ -2,6 +2,8 @@
 import { writeFileSync, readFileSync } from 'fs'
 import { Configuration } from '../interfaces/Configuration' /* eslint-disable-line */
 import { error } from './logger'
+import { sync } from 'mkdirp'
+import { dirname } from 'path'
 
 const homedir = require('os').homedir()
 const path = `${homedir}/.supdock/config.json`
@@ -36,6 +38,7 @@ export const set = (key: string, value: boolean) => {
   if (typeof (defaultConfig as any)[key] === 'undefined') {
     error(`Invalid config '${key}' detected`)
   }
+  sync(dirname(path))
   writeFileSync(path, JSON.stringify({
     ...config,
     [key]: value
