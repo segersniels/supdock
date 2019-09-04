@@ -16,7 +16,9 @@ const getFlagArguments = () => {
     if (command && metadata[command].flags) {
       const commandFlags = flatten(metadata[command].flags)
       if (commandFlags.includes(key)) {
-        nonFlags.push(argv[key])
+        if (typeof argv[key] !== 'boolean') {
+          nonFlags.push(argv[key])
+        }
         flags[key] = true
         continue
       }
