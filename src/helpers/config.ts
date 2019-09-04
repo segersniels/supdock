@@ -7,7 +7,7 @@ const homedir = require('os').homedir()
 const path = `${homedir}/.supdock/config.json`
 const defaultConfig: Configuration = {
   'ask-for-confirmation': true,
-  'allow-fuzzy-search': true
+  'allow-fuzzy-search': false
 }
 
 const read = () => {
