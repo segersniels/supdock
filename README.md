@@ -85,7 +85,7 @@ The config file is stored at `${HOME}/.supdock/config.json`.
 
 
 ```
-Usage:	docker enable [OPTIONS]
+Usage:	supdock enable [OPTIONS]
 
   Enable certain supdock functionality
 
