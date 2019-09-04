@@ -54,11 +54,12 @@ export const generateFlagDescriptions = (
 }
 
 /* eslint-disable no-tabs */
-export const generateCustomCommandDescription = (command: string, description: string, options: string[] | undefined) => {
+export const generateCustomCommandDescription = (command: string, description: string, options: any | undefined) => {
   let customCommandDescription = `\nUsage:	docker ${command} [OPTIONS]\n\n  ${description}\n\n`
-  if (options) {
+  if (Object.keys(options).length) {
+    const availableOptions = Object.keys(options).map(key => `${key}  (${options[key]})`)
     customCommandDescription += `Options:
-    ${options.join('\n    ')}`
+    ${availableOptions.join('\n    ')}`
   }
   return customCommandDescription
 }
