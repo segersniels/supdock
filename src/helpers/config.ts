@@ -33,7 +33,7 @@ export const get = (key: string): Promise<string | boolean> => {
 
 export const set = (key: string, value: boolean) => {
   const config: any = read()
-  if (!(defaultConfig as any)[key]) {
+  if (typeof (defaultConfig as any)[key] === 'undefined') {
     error(`Invalid config '${key}' detected`)
   }
   writeFileSync(path, JSON.stringify({
