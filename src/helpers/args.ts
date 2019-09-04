@@ -13,7 +13,7 @@ const getFlagArguments = () => {
       continue
     }
     // Make sure we correctly parse custom flags, for now these are boolean flags so parse them correctly
-    if (command && metadata[command].flags) {
+    if (command && metadata[command] && metadata[command].flags) {
       const commandFlags = flatten(metadata[command].flags)
       if (commandFlags.includes(key)) {
         if (typeof argv[key] !== 'boolean') {
