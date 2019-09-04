@@ -1,6 +1,6 @@
 {
   "name": "supdock",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "What's Up Dock(er)?",
   "main": "index.js",
   "scripts": {
@@ -36,7 +36,8 @@
     "fuzzy-search": "^3.0.1",
     "inquirer": "^5.1.0",
     "lodash.flatten": "^4.4.0",
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "mkdirp": "^0.5.1"
   },
   "bin": {
     "supdock": "index.js"
@@ -45,6 +46,7 @@
     "@types/fuzzy-search": "^2.1.0",
     "@types/inquirer": "0.0.43",
     "@types/lodash.flatten": "^4.4.6",
+    "@types/mkdirp": "^0.5.2",
     "@types/node": "^11.9.4",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
