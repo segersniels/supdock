@@ -1,5 +1,6 @@
 import chalk from 'chalk'
-const log = console.log
+
+export const log = console.log
 
 export const logAndForget = (msg: string) => {
   log(msg)

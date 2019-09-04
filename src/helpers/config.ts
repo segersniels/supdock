@@ -6,7 +6,8 @@ import { error } from './logger'
 const homedir = require('os').homedir()
 const path = `${homedir}/.supdock/config.json`
 const defaultConfig: Configuration = {
-  'ask-for-confirmation': true
+  'ask-for-confirmation': true,
+  'allow-fuzzy-search': true
 }
 
 const read = () => {
@@ -22,6 +23,9 @@ const read = () => {
 export const get = (key: string): Promise<string | boolean> => {
   const config: any = read()
   if (typeof config[key] === 'undefined') {
+    if ((defaultConfig as any)[key]) {
+      return (defaultConfig as any)[key]
+    }
     error(`Unable to retrieve ${key} from the config`)
   }
   return config[key]
@@ -29,6 +33,9 @@ export const get = (key: string): Promise<string | boolean> => {
 
 export const set = (key: string, value: boolean) => {
   const config: any = read()
+  if (!(defaultConfig as any)[key]) {
+    error(`Invalid config '${key}' detected`)
+  }
   writeFileSync(path, JSON.stringify({
     ...config,
     [key]: value

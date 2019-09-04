@@ -1,7 +1,7 @@
 import { execSync, spawn, spawnSync } from 'child_process'
 import * as inquirer from 'inquirer'
 import { version } from '../package.json'
-import { info, logAndForget, warn, error } from './helpers/logger'
+import { info, warn, error, log } from './helpers/logger'
 import metadata from './metadata'
 import Command from './interfaces/Command' /* eslint-disable-line */
 import Commands from './types/Commands' /* eslint-disable-line */
@@ -40,7 +40,9 @@ export default class Supdock {
     const passedFlags = Object.keys(args.flags)
     const allowedFlags: string[] = flatten(flags!)
 
-    // When flag passed is not a valid custom flag or other arguments are being passed default to normal docker
+    // When flag passed is not a valid custom flag
+    // or other arguments are being passed default to normal docker
+    // or allowed custom passing like fuzzy-searching or passing nonFlag arguments
     if (
       !customPassing &&
       ((passedFlags.length > 0 &&
@@ -203,48 +205,60 @@ export default class Supdock {
     command: string,
     choices: string[],
     nonFlags: any
-  ) {
-    let choice
+  ): Promise<string | undefined> {
     const { question, customPassing } = this.commands[command]
 
+    // Try to fuzzy match the given search term
     if (customPassing && nonFlags.length === 1) {
+      // When fuzzy searching is disabled make sure we passthrough back to docker so we don't hinder docker behaviour
+      if (!ConfigHelper.get('allow-fuzzy-search')) {
+        this.default()
+        return
+      }
+
+      let choice: string
       const term = nonFlags[0]
       const choicesAfterFuzzySearching = await this.fuzzySearch(choices, term)
 
-      // Check if the nonFlags passed completely match an id or name
-      // We don't want to ask for confirmation in this case
-      if (choicesAfterFuzzySearching.length === 1) {
-        choice = choicesAfterFuzzySearching[0]
-        if (
-          term === choice.split('-')[0].trim() ||
-          term === choice.split('-')[1].trim()
-        ) {
-          this.default()
-        }
-
-        // Ask the user for confirmation
-        if (ConfigHelper.get('ask-for-confirmation')) {
-          const confirmation = await this.prompt(
-            `Are you sure you want to execute '${command}' for container '${choice}'`,
-            ['Yes', 'No']
-          )
-
-          if (confirmation.choice === 'No') {
-            error('Exiting on request of user...')
+      switch (choicesAfterFuzzySearching.length) {
+        case 0:
+          return // Fuzzy search unsuccessful to determine a match
+        case 1:
+          // Check if the nonFlags passed completely match an id or name
+          // We don't want to ask for confirmation in this case
+          choice = choicesAfterFuzzySearching[0]
+          if (
+            term === choice.split('-')[0].trim() ||
+            term === choice.split('-')[1].trim()
+          ) {
+            this.default()
           }
-        }
-      } else {
-        // Multiple results returned from fuzzy search so ask user for confirmation
-        choice = (await this.prompt(
-          `Search '${term}' returned more than one result, please make a choice from the list below.`,
-          choicesAfterFuzzySearching
-        )).choice
+
+          // Ask the user for confirmation
+          if (ConfigHelper.get('ask-for-confirmation')) {
+            const confirmation = await this.prompt(
+              `Are you sure you want to execute '${command}' for container '${choice}'`,
+              ['Yes', 'No']
+            )
+
+            if (confirmation.choice === 'No') {
+              error('Exiting on request of user...')
+              return
+            }
+          }
+          break
+        default:
+          choice = (await this.prompt(
+            `Search '${term}' returned more than one result, please make a choice from the list below.`,
+            choicesAfterFuzzySearching
+          )).choice
       }
-    } else {
-      choice = (await this.prompt(question!, choices)).choice
+
+      return choice
     }
 
-    return choice
+    // Default behaviour just ask question and prompt for choice
+    return (await this.prompt(question!, choices)).choice
   }
 
   private async execute (
