@@ -12,8 +12,10 @@ import {
 } from './helpers/description'
 import * as FuzzySearch from 'fuzzy-search'
 import * as ConfigHelper from './helpers/config'
-import flatten = require('lodash.flatten');
+import { traceFunction } from './helpers/trace'
+import flatten = require('lodash.flatten')
 
+@traceFunction()
 export default class Supdock {
   private commands: Commands
 
