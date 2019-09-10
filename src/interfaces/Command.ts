@@ -8,10 +8,11 @@ interface Command {
   flags?: string[][];
   type?: CommandAlias;
   extraUsageInfo?: string;
-  customPassing?: boolean;
   usage?: string;
   custom?: boolean;
   options?: any;
+  allowFuzzySearching?: boolean;
+  parallelExecution?: boolean;
 }
 
 export default Command;

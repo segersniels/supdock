@@ -24,13 +24,16 @@ export default class Supdock {
   }
 
   public async run (args: any) {
-    const { type, flags, customPassing } = this.commands[args.command]
+    const {
+      type,
+      flags,
+      custom,
+      parallelExecution,
+      allowFuzzySearching
+    } = this.commands[args.command]
 
     // Fire and forget the following commands in background when 'all' is passed as nonFlag
-    if (
-      args.nonFlags.includes('all') &&
-      ['start', 'restart', 'stop'].includes(args.command)
-    ) {
+    if (args.nonFlags.includes('all') && parallelExecution) {
       this.executeInParallel(args.command, type!)
       return
     }
@@ -46,10 +49,10 @@ export default class Supdock {
     // or other arguments are being passed default to normal docker
     // or allowed custom passing like fuzzy-searching or passing nonFlag arguments
     if (
-      !customPassing &&
+      !custom &&
       ((passedFlags.length > 0 &&
         !passedFlags.find(flag => allowedFlags.includes(flag))) ||
-        !promptEnabled)
+        (!promptEnabled && !allowFuzzySearching))
     ) {
       this.default()
       return
@@ -208,17 +211,17 @@ export default class Supdock {
     choices: string[],
     nonFlags: any
   ): Promise<string | undefined> {
-    const { question, customPassing } = this.commands[command]
+    const { question, allowFuzzySearching } = this.commands[command]
 
     // Try to fuzzy match the given search term
-    if (customPassing && nonFlags.length === 1) {
+    if (allowFuzzySearching && nonFlags.length === 1) {
       // When fuzzy searching is disabled make sure we passthrough back to docker so we don't hinder docker behaviour
       if (!ConfigHelper.get('allow-fuzzy-search')) {
-        this.default()
+        this.default() /* eslint-disable-line */
         return
       }
 
-      let choice: string
+      let choice: string | undefined
       const term = nonFlags[0]
       const choicesAfterFuzzySearching = await this.fuzzySearch(choices, term)
 
@@ -231,9 +234,14 @@ export default class Supdock {
           choice = choicesAfterFuzzySearching[0]
           if (
             term === choice.split('-')[0].trim() ||
-            term === choice.split('-')[1].trim()
+            term === choice.split('-')[1].trim() ||
+            choice
+              .split('-')[0]
+              .trim()
+              .startsWith(term)
           ) {
             this.default()
+            return
           }
 
           // Ask the user for confirmation
@@ -250,6 +258,22 @@ export default class Supdock {
           }
           break
         default:
+          // Check if one of the choices match the search term
+          if (
+            choicesAfterFuzzySearching.find(
+              choice =>
+                term === choice.split('-')[0].trim() ||
+                term === choice.split('-')[1].trim() ||
+                choice
+                  .split('-')[0]
+                  .trim()
+                  .startsWith(term)
+            )
+          ) {
+            this.default()
+            return
+          }
+
           choice = (await this.prompt(
             `Search '${term}' returned more than one result, please make a choice from the list below.`,
             choicesAfterFuzzySearching
