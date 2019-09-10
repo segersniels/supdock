@@ -36,6 +36,7 @@
     "fuzzy-search": "^3.0.1",
     "inquirer": "^5.1.0",
     "lodash.flatten": "^4.4.0",
+    "manakin": "^0.5.2",
     "minimist": "^1.2.0",
     "mkdirp": "^0.5.1"
   },
