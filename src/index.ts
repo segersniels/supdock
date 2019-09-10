@@ -314,8 +314,8 @@ export default class Supdock {
         case 'stop':
           if (flags.includes('-f') || flags.includes('--force')) {
             this.spawn('docker', ['rm', ...flags, id])
+            return
           }
-          return
       }
 
       // Normal execution of command
