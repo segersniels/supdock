@@ -211,7 +211,7 @@ export default class Supdock {
     choices: string[],
     nonFlags: any
   ): Promise<string | undefined> {
-    const { question, allowFuzzySearching } = this.commands[command]
+    const { question, allowFuzzySearching, custom } = this.commands[command]
 
     // Try to fuzzy match the given search term
     if (allowFuzzySearching && nonFlags.length === 1) {
@@ -233,12 +233,13 @@ export default class Supdock {
           // We don't want to ask for confirmation in this case
           choice = choicesAfterFuzzySearching[0]
           if (
-            term === choice.split('-')[0].trim() ||
-            term === choice.split('-')[1].trim() ||
-            choice
-              .split('-')[0]
-              .trim()
-              .startsWith(term)
+            (term === choice.split('-')[0].trim() ||
+              term === choice.split('-')[1].trim() ||
+              choice
+                .split('-')[0]
+                .trim()
+                .startsWith(term)) &&
+            !custom
           ) {
             this.default()
             return
@@ -262,12 +263,13 @@ export default class Supdock {
           if (
             choicesAfterFuzzySearching.find(
               choice =>
-                term === choice.split('-')[0].trim() ||
-                term === choice.split('-')[1].trim() ||
-                choice
-                  .split('-')[0]
-                  .trim()
-                  .startsWith(term)
+                (term === choice.split('-')[0].trim() ||
+                  term === choice.split('-')[1].trim() ||
+                  choice
+                    .split('-')[0]
+                    .trim()
+                    .startsWith(term)) &&
+                !custom
             )
           ) {
             this.default()
@@ -305,7 +307,9 @@ export default class Supdock {
         case 'disable':
           for (const key of nonFlags) {
             await ConfigHelper.set(key, command === 'enable')
-            info(`Config '${key}' ${command === 'enable' ? 'enabled' : 'disabled'}`)
+            info(
+              `Config '${key}' ${command === 'enable' ? 'enabled' : 'disabled'}`
+            )
           }
           return
       }
