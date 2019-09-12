@@ -11,16 +11,18 @@ import {
   generateCustomCommandDescription
 } from './helpers/description'
 import * as FuzzySearch from 'fuzzy-search'
-import * as ConfigHelper from './helpers/config'
 import { traceFunction } from './helpers/trace'
+import Config from './helpers/config'
 import flatten = require('lodash.flatten')
 
 @traceFunction()
 export default class Supdock {
   private commands: Commands
+  private config: Config
 
   constructor () {
     this.commands = metadata
+    this.config = new Config()
   }
 
   public async run (args: any) {
@@ -216,7 +218,7 @@ export default class Supdock {
     // Try to fuzzy match the given search term
     if (allowFuzzySearching && nonFlags.length === 1) {
       // When fuzzy searching is disabled make sure we passthrough back to docker so we don't hinder docker behaviour
-      if (!ConfigHelper.get('allow-fuzzy-search')) {
+      if (!this.config.get('allow-fuzzy-search')) {
         this.default() /* eslint-disable-line */
         return
       }
@@ -246,7 +248,7 @@ export default class Supdock {
           }
 
           // Ask the user for confirmation
-          if (ConfigHelper.get('ask-for-confirmation')) {
+          if (this.config.get('ask-for-confirmation')) {
             const confirmation = await this.prompt(
               `Are you sure you want to execute '${command}' for container '${choice}'`,
               ['Yes', 'No']
@@ -305,8 +307,19 @@ export default class Supdock {
           return
         case 'enable':
         case 'disable':
+          if (!nonFlags.length) {
+            const { inactive, active } = this.config
+            if ((command === 'enable' && !inactive.length) || (command === 'disable' && !active.length)) {
+              error(`No options found to ${command}`)
+            }
+            const { choice } = await this.prompt(
+              `Which config value would you like to ${command}?`,
+              command === 'enable' ? this.config.inactive : this.config.active
+            )
+            nonFlags = [choice]
+          }
           for (const key of nonFlags) {
-            await ConfigHelper.set(key, command === 'enable')
+            await this.config.set(key, command === 'enable')
             info(
               `Config '${key}' ${command === 'enable' ? 'enabled' : 'disabled'}`
             )

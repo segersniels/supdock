@@ -33,28 +33,27 @@
   "homepage": "https://github.com/segersniels/supdock-ts#readme",
   "dependencies": {
     "chalk": "^2.4.2",
+    "configstore": "^5.0.0",
     "debug": "^4.1.1",
     "fuzzy-search": "^3.0.1",
     "inquirer": "^5.1.0",
     "lodash.flatten": "^4.4.0",
-    "minimist": "^1.2.0",
-    "mkdirp": "^0.5.1"
+    "minimist": "^1.2.0"
   },
   "bin": {
     "supdock": "index.js"
   },
   "devDependencies": {
+    "@types/configstore": "^4.0.0",
     "@types/debug": "^4.1.5",
     "@types/fuzzy-search": "^2.1.0",
     "@types/inquirer": "0.0.43",
     "@types/lodash.flatten": "^4.4.6",
-    "@types/mkdirp": "^0.5.2",
     "@types/node": "^11.9.4",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
     "pkg": "^4.4.0",
     "standard": "^14.1.0",
-    "ts-node": "^8.3.0",
     "typescript": "^3.5.3"
   },
   "standard": {
