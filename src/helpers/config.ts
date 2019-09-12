@@ -36,7 +36,7 @@ export default class Config {
     return value
   }
 
-  public set = (key: string, value: string | boolean | number) => {
+  public set = (key: string, value: boolean) => {
     if (typeof (defaultConfig as any)[key] === 'undefined') {
       error(`Invalid config '${key}' detected`)
     }
