@@ -28,7 +28,7 @@ export default class Config {
     return this.keys.filter(key => !this.config.get(key))
   }
 
-  public get = (key: string) => {
+  public get = (key: string): boolean => {
     const value = this.config.get(key)
     if (typeof value === 'undefined') {
       error(`Unable to retrieve ${key} from the config`)
