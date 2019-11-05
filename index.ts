@@ -15,7 +15,7 @@ async function run () {
     return
   }
 
-  if (flags.version || flags.v) {
+  if ((flags.version || flags.v) && !command) {
     supdock.version()
     return
   }
