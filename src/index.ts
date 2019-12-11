@@ -3,17 +3,17 @@ import * as inquirer from 'inquirer'
 import { version } from '../package.json'
 import { info, warn, error, log } from './helpers/logger'
 import metadata from './metadata'
-import Command from './interfaces/Command' /* eslint-disable-line */
-import Commands from './types/Commands' /* eslint-disable-line */
+import Command from "./interfaces/Command" /* eslint-disable-line */
+import Commands from "./types/Commands" /* eslint-disable-line */
 import {
   generateFlagDescriptions,
   generateGeneralDescription,
   generateCustomCommandDescription
 } from './helpers/description'
-import * as FuzzySearch from 'fuzzy-search'
+import FuzzySearch from 'fuzzy-search'
 import { traceFunction } from './helpers/trace'
 import Config from './helpers/config'
-import flatten = require('lodash.flatten')
+import flatten from 'lodash.flatten'
 
 @traceFunction()
 export default class Supdock {
@@ -203,7 +203,9 @@ export default class Supdock {
   private async fuzzySearch (choices: string[], term: string) {
     const searches = new FuzzySearch(choices).search(term)
     if (searches.length === 0) {
-      error(`Was not able to match with container or image for search: ${term}`)
+      error(
+        `Was not able to match with container or image for search: ${term}`
+      )
     }
     return searches
   }
@@ -278,10 +280,12 @@ export default class Supdock {
             return
           }
 
-          choice = (await this.prompt(
-            `Search '${term}' returned more than one result, please make a choice from the list below.`,
-            choicesAfterFuzzySearching
-          )).choice
+          choice = (
+            await this.prompt(
+              `Search '${term}' returned more than one result, please make a choice from the list below.`,
+              choicesAfterFuzzySearching
+            )
+          ).choice
       }
 
       return choice
@@ -309,7 +313,10 @@ export default class Supdock {
         case 'disable':
           if (!nonFlags.length) {
             const { inactive, active } = this.config
-            if ((command === 'enable' && !inactive.length) || (command === 'disable' && !active.length)) {
+            if (
+              (command === 'enable' && !inactive.length) ||
+              (command === 'disable' && !active.length)
+            ) {
               error(`No options found to ${command}`)
             }
             const { choice } = await this.prompt(

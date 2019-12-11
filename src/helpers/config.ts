@@ -2,7 +2,7 @@ import { Configuration } from '../interfaces/Configuration' /* eslint-disable-li
 import { error } from './logger'
 import { name } from '../../package.json'
 import { homedir } from 'os'
-import * as Configstore from 'configstore'
+import Configstore from 'configstore'
 
 const defaultConfig: Configuration = {
   'ask-for-confirmation': true,
