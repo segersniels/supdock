@@ -6,7 +6,8 @@ import * as Configstore from 'configstore'
 
 const defaultConfig: Configuration = {
   'ask-for-confirmation': true,
-  'allow-fuzzy-search': false
+  'allow-fuzzy-search': false,
+  'enable-short-logs': false
 }
 
 export default class Config {

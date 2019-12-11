@@ -359,6 +359,13 @@ export default class Supdock {
             this.spawn('docker', ['rm', ...flags, id])
             return
           }
+          break
+        case 'logs':
+          if (this.config.get('enable-short-logs')) {
+            this.spawn('docker', [command, '--tail', '500', ...flags, id])
+            return
+          }
+          break
       }
 
       // Normal execution of command
