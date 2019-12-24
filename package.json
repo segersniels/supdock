@@ -57,7 +57,7 @@
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^2.3.0",
-    "pkg": "^4.4.0",
+    "pkg": "^4.4.2",
     "prettier": "^1.19.1",
     "typescript": "^3.5.3"
   }
