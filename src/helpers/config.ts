@@ -1,5 +1,5 @@
 import { Configuration } from '../interfaces/Configuration' /* eslint-disable-line */
-import { error } from './logger';
+import { error } from './util';
 import { name } from '../../package.json';
 import { homedir } from 'os';
 import Configstore from 'configstore';
