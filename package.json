@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc --skipLibCheck ; pkg -t node10 dist/index.js -o ./bin/supdock",
     "build:ci": "tsc --skipLibCheck ; pkg dist/index.js --out-path ./bin ; ./scripts/rename.sh",
-    "lint": "standard index.ts src/*.ts src/**/*.ts",
-    "lint:fix": "standard --fix index.ts src/*.ts src/**/*.ts",
+    "lint": "eslint '**/*.{ts,tsx}' && tsc",
+    "lint:fix": "eslint '**/*.{ts,tsx}' --fix",
     "check:typescript": "tsc --noEmit --skipLibCheck --project .",
     "nuke": "rm -rf node_modules ; npm install"
   },
@@ -52,14 +52,13 @@
     "@types/node": "^11.9.4",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
+    "eslint": "^6.7.2",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.17.0",
+    "eslint-plugin-react-hooks": "^2.3.0",
     "pkg": "^4.4.0",
-    "standard": "^14.1.0",
+    "prettier": "^1.19.1",
     "typescript": "^3.5.3"
-  },
-  "standard": {
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint/eslint-plugin"
-    ]
   }
 }
