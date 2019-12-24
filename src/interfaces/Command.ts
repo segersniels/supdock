@@ -1,4 +1,3 @@
-/* eslint-disable */
 import CommandAlias from '../enums/CommandAlias';
 
 interface Command {

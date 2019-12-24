@@ -29,5 +29,4 @@ async function run() {
   await supdock.run({ command, flags, nonFlags });
 }
 
-// tslint:disable-next-line: no-floating-promises
 run();

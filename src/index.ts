@@ -3,8 +3,8 @@ import * as inquirer from 'inquirer';
 import { version } from '../package.json';
 import { info, warn, error, log, traceFunction, exit } from './helpers/util';
 import metadata from './metadata';
-import Command from './interfaces/Command'; /* eslint-disable-line */
-import Commands from './types/Commands'; /* eslint-disable-line */
+import Command from './interfaces/Command';
+import Commands from './types/Commands';
 import {
   generateFlagDescriptions,
   generateGeneralDescription,

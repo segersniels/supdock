@@ -1,4 +1,3 @@
-/* eslint-disable */
 const enum CommandAlias {
   RUNNING_CONTAINERS = 'docker ps --format "{{.ID}} - {{.Names}}"',
   ALL_CONTAINERS = 'docker ps --format "{{.ID}} - {{.Names}}" --all',
@@ -6,4 +5,4 @@ const enum CommandAlias {
   IMAGES = 'docker images --format "{{.ID}} - {{.Repository}}"',
 }
 
-export default CommandAlias
+export default CommandAlias;

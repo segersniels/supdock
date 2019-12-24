@@ -1,5 +1,5 @@
 import { version } from '../../package.json';
-import Commands from '../types/Commands.js' /* eslint-disable-line */
+import Commands from '../types/Commands.js';
 
 const generateCommandDescriptions = (
   commands: Commands,
@@ -53,7 +53,6 @@ export const generateFlagDescriptions = (
   return descriptions.join('\n');
 };
 
-/* eslint-disable no-tabs */
 export const generateCustomCommandDescription = (
   command: string,
   description: string,

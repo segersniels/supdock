@@ -1,4 +1,4 @@
-import { Configuration } from '../interfaces/Configuration' /* eslint-disable-line */
+import { Configuration } from '../interfaces/Configuration';
 import { error } from './util';
 import { name } from '../../package.json';
 import { homedir } from 'os';

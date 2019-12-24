@@ -1,5 +1,5 @@
 import CommandAlias from '../enums/CommandAlias';
-import Commands from '../types/Commands' /* eslint-disable-line */
+import Commands from '../types/Commands';
 import { possibleValues } from '../interfaces/Configuration';
 
 const metadata: Commands = {
