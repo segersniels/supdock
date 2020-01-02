@@ -49,16 +49,16 @@
     "@types/fuzzy-search": "^2.1.0",
     "@types/inquirer": "0.0.43",
     "@types/lodash.flatten": "^4.4.6",
-    "@types/node": "^11.9.4",
-    "@typescript-eslint/eslint-plugin": "^2.0.0",
-    "@typescript-eslint/parser": "^2.0.0",
+    "@types/node": "^11.15.3",
+    "@typescript-eslint/eslint-plugin": "^2.14.0",
+    "@typescript-eslint/parser": "^2.14.0",
     "eslint": "^6.7.2",
-    "eslint-config-prettier": "^6.7.0",
+    "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^2.3.0",
     "pkg": "^4.4.2",
     "prettier": "^1.19.1",
-    "typescript": "^3.5.3"
+    "typescript": "^3.7.4"
   }
 }
