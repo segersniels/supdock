@@ -13,6 +13,7 @@ import {
 import FuzzySearch from 'fuzzy-search';
 import Config from './helpers/config';
 import flatten from 'lodash.flatten';
+import ConfigOptions from './enums/ConfigOptions';
 
 @traceFunction()
 export default class Supdock {
@@ -27,6 +28,7 @@ export default class Supdock {
   constructor() {
     this.commands = metadata;
     this.config = new Config();
+    this.config.migrate();
   }
 
   public async run(args: any) {
@@ -172,7 +174,7 @@ export default class Supdock {
           }
           break;
         case 'logs':
-          if (this.config.get('enable-short-logs')) {
+          if (this.config.get(ConfigOptions.SHORT_LOGS)) {
             this.spawn('docker', [command, '--tail', '500', ...flags, id]);
             return;
           }
@@ -304,7 +306,7 @@ export default class Supdock {
 
   private fuzzySearch = async (choices: string[]) => {
     // When fuzzy searching is disabled make sure we passthrough back to docker so we don't hinder docker behaviour
-    if (!this.config.get('allow-fuzzy-search')) {
+    if (!this.config.get(ConfigOptions.FUZZY_SEARCH)) {
       this.default();
       exit();
     }
@@ -337,7 +339,7 @@ export default class Supdock {
         }
 
         // Ask the user for confirmation
-        if (this.config.get('ask-for-confirmation')) {
+        if (this.config.get(ConfigOptions.CAUTION_CHECK)) {
           const confirmation = await this.prompt(
             `Are you sure you want to execute '${this.command}' for container '${choice}'`,
             ['Yes', 'No'],

@@ -1,5 +1,7 @@
+import ConfigOptions from '../enums/ConfigOptions';
+
 export interface Configuration {
-  'ask-for-confirmation': boolean;
-  'allow-fuzzy-search': boolean;
-  'enable-short-logs': boolean;
+  [ConfigOptions.CAUTION_CHECK]: boolean;
+  [ConfigOptions.FUZZY_SEARCH]: boolean;
+  [ConfigOptions.SHORT_LOGS]: boolean;
 }

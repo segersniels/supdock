@@ -1,12 +1,13 @@
 import CommandAlias from '../enums/CommandAlias';
+import ConfigOptions from '../enums/ConfigOptions';
 import Commands from '../types/Commands';
 
 const configOptions = {
-  'ask-for-confirmation':
+  [ConfigOptions.CAUTION_CHECK]:
     'When fuzzy searching is enabled we ask the user for confirmation before we execute the command. Default: enabled',
-  'allow-fuzzy-search': 'Disable fuzzy searching. Default: disabled',
-  'enable-short-logs':
-    'Enforce a more readable log by limiting the length to 500 lines. Default: disabled',
+  [ConfigOptions.FUZZY_SEARCH]: 'Disable fuzzy searching. Default: disabled',
+  [ConfigOptions.SHORT_LOGS]:
+    'Enforce a more readable log by default limiting the length to 500 lines. Default: disabled',
 };
 
 const metadata: Commands = {
