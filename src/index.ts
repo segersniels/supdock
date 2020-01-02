@@ -217,7 +217,9 @@ export default class Supdock {
     const flagDescriptions = generateFlagDescriptions(this.commands, command);
     if (flagDescriptions.length > 0) {
       const metadata: Command = this.commands[command];
-      info(`\nOptions (supdock):\n${flagDescriptions}`);
+      info(
+        `\nOptions supported through prompt (supdock):\n${flagDescriptions}`,
+      );
       if (metadata.extraUsageInfo) {
         info(`\n${metadata.extraUsageInfo}`);
       }
