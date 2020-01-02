@@ -179,9 +179,9 @@ export default class Supdock {
             return;
           }
           break;
-        default:
-          this.spawn('docker', [command, ...flags, id]);
       }
+
+      this.spawn('docker', [command, ...flags, id]);
     } else {
       warn(commandError!);
     }
