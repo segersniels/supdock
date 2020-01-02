@@ -2,8 +2,6 @@
 
 [![CircleCI](https://circleci.com/gh/segersniels/supdock-ts/tree/master.svg?style=svg)](https://circleci.com/gh/segersniels/supdock-ts/tree/master)[![npm](https://img.shields.io/npm/dm/supdock.svg)](https://www.npmjs.com/package/supdock)
 
-> Rework to Typescript in progress. There might be inconsistencies and broken things popping up. Feel free to report these by making an issue. Feel free to temporarily use the Golang version of Supdock: [https://github.com/segersniels/supdock-go](https://github.com/segersniels/supdock-go).
-
 What's Up, Dock(er)? A slightly more visual way to interact with the docker daemon. Supdock is a wrapper for the docker command meaning you can still use all of the other `docker` commands without issues.
 
 <p align="center">
