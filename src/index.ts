@@ -211,7 +211,6 @@ export default class Supdock {
     // When a standard docker command log the default docker usage info first
     if (!usage && !custom) {
       this.default();
-      exit();
     }
 
     // Only log extra stuff if there are actual custom flags for the command
