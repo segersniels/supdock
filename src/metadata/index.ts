@@ -1,6 +1,13 @@
 import CommandAlias from '../enums/CommandAlias';
 import Commands from '../types/Commands';
-import { possibleValues } from '../interfaces/Configuration';
+
+const configOptions = {
+  'ask-for-confirmation':
+    'When fuzzy searching is enabled we ask the user for confirmation before we execute the command. Default: enabled',
+  'allow-fuzzy-search': 'Disable fuzzy searching. Default: disabled',
+  'enable-short-logs':
+    'Enforce a more readable log by limiting the length to 500 lines. Default: disabled',
+};
 
 const metadata: Commands = {
   logs: {
@@ -116,12 +123,12 @@ const metadata: Commands = {
   enable: {
     description: 'Enable certain supdock functionality',
     custom: true,
-    options: possibleValues,
+    options: configOptions,
   },
   disable: {
     description: 'Disable certain supdock functionality',
     custom: true,
-    options: possibleValues,
+    options: configOptions,
   },
 };
 
