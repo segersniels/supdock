@@ -4,8 +4,8 @@
   "description": "What's Up Dock(er)?",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --skipLibCheck ; pkg -t node12 dist/index.js -o ./bin/supdock",
-    "build:ci": "tsc --skipLibCheck ; pkg -t node12 dist/index.js --out-path ./bin ; ./scripts/rename.sh",
+    "build": "tsc --skipLibCheck ; pkg dist/index.js -o ./bin/supdock",
+    "build:ci": "tsc --skipLibCheck ; pkg dist/index.js --out-path ./bin ; ./scripts/rename.sh",
     "lint": "eslint '**/*.{ts,tsx}' && tsc",
     "lint:fix": "eslint '**/*.{ts,tsx}' --fix",
     "check:typescript": "tsc --noEmit --skipLibCheck --project .",
