@@ -243,7 +243,7 @@ export default class Supdock {
   }
 
   private parseFlags(flags: any) {
-    const parsed: any[] = [];
+    const parsed: string[] = [];
 
     for (const flag of Object.keys(flags)) {
       // If prompt flag has been passed and is allowed for the command strip it from the further execution flags
