@@ -102,10 +102,10 @@ export default class Supdock {
     }
   }
 
-  private async executeNoPromptCommands(command: string) {
+  private async executeNoPromptCommands(command: string, flags: string[]) {
     switch (command) {
       case 'prune':
-        this.spawn('docker', ['system', 'prune', '-f']);
+        this.spawn('docker', ['system', 'prune', '-f', ...flags]);
         break;
       case 'enable':
       case 'disable': {
@@ -143,7 +143,7 @@ export default class Supdock {
 
     // Commands without prompt
     if (!question && !commandError) {
-      await this.executeNoPromptCommands(command);
+      await this.executeNoPromptCommands(command, flags);
     }
 
     // Generate the choices for command type
