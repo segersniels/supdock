@@ -119,6 +119,7 @@ const metadata: Commands = {
     description:
       'Remove stopped containers and dangling images. For more detailed usage refer to "docker system prune -h"',
     usage: 'system prune --help',
+    flags: [['volumes'], ['a', 'all']],
     custom: true,
   },
   enable: {
