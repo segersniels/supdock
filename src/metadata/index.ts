@@ -132,6 +132,16 @@ const metadata: Commands = {
     custom: true,
     options: configOptions,
   },
+  top: {
+    description: 'Display the running processes of a container',
+    question: 'Which container would you like to see the running processes of?',
+    type: CommandAlias.RUNNING_CONTAINERS,
+  },
+  port: {
+    description: 'List port mappings or a specific mapping for the container',
+    question: 'Which container would you like to see the the port mappings of?',
+    type: CommandAlias.RUNNING_CONTAINERS,
+  },
 };
 
 export default metadata;
