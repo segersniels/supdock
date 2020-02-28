@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/segersniels/supdock-ts.git"
+    "url": "git+https://github.com/segersniels/supdock.git"
   },
   "keywords": [
     "docker",
@@ -28,9 +28,9 @@
   "author": "Niels Segers",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/segersniels/supdock-ts/issues"
+    "url": "https://github.com/segersniels/supdock/issues"
   },
-  "homepage": "https://github.com/segersniels/supdock-ts#readme",
+  "homepage": "https://github.com/segersniels/supdock#readme",
   "dependencies": {
     "chalk": "^2.4.2",
     "configstore": "^5.0.0",
