@@ -4,15 +4,6 @@ import { log } from 'helpers/util';
 import { generateGeneralDescription } from 'helpers/description';
 import metadata from 'metadata';
 
-// Commands
-import Docker from 'commands/docker';
-import Ssh from 'commands/ssh';
-import Logs from 'commands/logs';
-import Config from 'commands/config';
-import Env from 'commands/env';
-import Prune from 'commands/prune';
-import Stop from 'commands/stop';
-
 const run = async () => {
   const { command, flags } = parseArguments();
 
@@ -22,32 +13,32 @@ const run = async () => {
   }
 
   if ((flags.version || flags.v) && !command) {
-    return new Docker(command).version();
+    await new (await import('commands/docker')).default(command).version();
   }
 
   // Ugly repetitive code since pkg doesn't work well with dynamic importing
   switch (command) {
     case 'ssh':
-      await new Ssh().run();
+      await new (await import('commands/ssh')).default().run();
       break;
     case 'prune':
-      await new Prune().run();
+      await new (await import('commands/prune')).default().run();
       break;
     case 'env':
-      await new Env().run();
+      await new (await import('commands/env')).default().run();
       break;
     case 'stop':
-      await new Stop().run();
+      await new (await import('commands/stop')).default().run();
       break;
     case 'logs':
-      await new Logs().run();
+      await new (await import('commands/logs')).default().run();
       break;
     case 'enable':
     case 'disable':
-      await new Config(command).run();
+      await new (await import('commands/config')).default(command).run();
       break;
     default:
-      await new Docker(command).run();
+      await new (await import('commands/docker')).default(command).run();
   }
 };
 
