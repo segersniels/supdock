@@ -85,6 +85,7 @@ const metadata: Commands = {
       ['v', 'volumes'],
     ],
     type: CommandAlias.STOPPED_CONTAINERS,
+    allowFuzzySearching: true,
   },
   rmi: {
     description: 'Remove an image',
@@ -99,6 +100,7 @@ const metadata: Commands = {
     error: 'no images available',
     flags: [['H', 'human'], ['q', 'quiet'], ['no-trunc']],
     type: CommandAlias.ALL_CONTAINERS,
+    allowFuzzySearching: true,
   },
   stats: {
     description: 'See the stats of a container',
@@ -106,6 +108,7 @@ const metadata: Commands = {
     error: 'no containers available',
     flags: [['p', 'prompt'], ['no-stream'], ['no-trunc']],
     type: CommandAlias.RUNNING_CONTAINERS,
+    allowFuzzySearching: true,
   },
   inspect: {
     description: 'Inspect a container',
@@ -136,11 +139,13 @@ const metadata: Commands = {
     description: 'Display the running processes of a container',
     question: 'Which container would you like to see the running processes of?',
     type: CommandAlias.RUNNING_CONTAINERS,
+    allowFuzzySearching: true,
   },
   port: {
     description: 'List port mappings or a specific mapping for the container',
     question: 'Which container would you like to see the the port mappings of?',
     type: CommandAlias.RUNNING_CONTAINERS,
+    allowFuzzySearching: true,
   },
 };
 
