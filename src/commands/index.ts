@@ -217,6 +217,8 @@ export class Command {
       });
       child.unref();
     });
+
+    return ids;
   }
 
   public execute() {
