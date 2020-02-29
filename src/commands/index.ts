@@ -17,6 +17,7 @@ export interface MockingConfig {
   determineChoice?: () => string;
   parseFlags?: () => string[];
   prompt?: () => { choice: string };
+  nonFlags?: string[];
 }
 
 interface Internal {
@@ -68,6 +69,7 @@ export class Command {
 
     // Flags
     this.args = parseArguments();
+    this.args.nonFlags = config?.nonFlags || this.args.nonFlags;
     this.allowedFlags = flatten(this.metadata?.flags) || [];
     this.flags = this.internal.parseFlags(this.args.flags);
   }
