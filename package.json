@@ -35,6 +35,9 @@
     "url": "https://github.com/segersniels/supdock/issues"
   },
   "homepage": "https://github.com/segersniels/supdock#readme",
+  "bin": {
+    "supdock": "index.js"
+  },
   "dependencies": {
     "chalk": "^2.4.2",
     "configstore": "^5.0.0",
@@ -43,9 +46,6 @@
     "inquirer": "^5.1.0",
     "lodash.flatten": "^4.4.0",
     "minimist": "^1.2.0"
-  },
-  "bin": {
-    "supdock": "index.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
