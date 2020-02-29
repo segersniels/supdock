@@ -207,7 +207,9 @@ export class Command {
       true,
     );
 
-    const ids = this.createChoices().map(choice => choice.split('-')[0].trim());
+    const ids: string[] = this.internal
+      .createChoices()
+      .map((choice: string) => choice.split('-')[0].trim());
     ids.forEach(id => {
       const child = spawn('docker', [this.command, id], {
         detached: true,
