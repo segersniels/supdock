@@ -221,8 +221,8 @@ export class Command {
     return ids;
   }
 
-  public execute() {
-    this.spawn('docker', [this.command, ...this.flags, this.id]);
+  public execute(): any {
+    return this.spawn('docker', [this.command, ...this.flags, this.id]);
   }
 
   public async run() {
