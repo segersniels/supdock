@@ -310,7 +310,7 @@ export class Command {
 
     // When a standard docker command log the default docker usage info first
     if (!usage && !custom) {
-      return this.default();
+      this.default();
     }
 
     const generateFlagDescriptions = () => {
