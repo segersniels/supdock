@@ -1,5 +1,5 @@
 import { Command } from './index';
-import { traceFunction, error, info } from '../helpers/util';
+import { traceFunction, error, info } from 'helpers/util';
 
 @traceFunction()
 export default class Config extends Command {

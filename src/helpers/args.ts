@@ -1,4 +1,4 @@
-import metadata from '../metadata';
+import metadata from 'metadata';
 import flatten = require('lodash.flatten');
 const argv = require('minimist')(process.argv.slice(2));
 

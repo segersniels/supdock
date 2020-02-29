@@ -1,9 +1,9 @@
-import { Configuration } from '../interfaces/Configuration';
+import { Configuration } from 'interfaces/Configuration';
 import { error } from './util';
-import { name } from '../../package.json';
+import { name } from 'package';
 import { homedir } from 'os';
 import Configstore from 'configstore';
-import ConfigOptions from '../enums/ConfigOptions';
+import ConfigOptions from 'enums/ConfigOptions';
 
 // When config is being adjusted make sure we keep track of the old values and names
 const migrations: { [key: string]: any } = {

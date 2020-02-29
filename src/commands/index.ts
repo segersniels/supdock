@@ -1,15 +1,15 @@
 import { spawnSync, execSync, spawn } from 'child_process';
-import CommandType from '../interfaces/Command';
-import { parseArguments } from '../helpers/args';
+import CommandType from 'interfaces/Command';
+import { parseArguments } from 'helpers/args';
 import flatten from 'lodash.flatten';
-import metadata from '../metadata';
-import ConfigOptions from '../enums/ConfigOptions';
+import metadata from 'metadata';
+import ConfigOptions from 'enums/ConfigOptions';
 import * as inquirer from 'inquirer';
-import { error, traceFunction, exit, info, log } from '../helpers/util';
+import { error, traceFunction, exit, info, log } from 'helpers/util';
 import FuzzySearch from 'fuzzy-search';
-import Config from '../helpers/config';
-import { generateCustomCommandDescription } from '../helpers/description';
-import { version } from '../../package.json';
+import Config from 'helpers/config';
+import { generateCustomCommandDescription } from 'helpers/description';
+import { version } from 'package';
 
 @traceFunction()
 export class Command {

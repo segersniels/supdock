@@ -1,16 +1,16 @@
-import { parseArguments } from './src/helpers/args';
-import { log } from './src/helpers/util';
-import { generateGeneralDescription } from './src/helpers/description';
-import metadata from './src/metadata';
+import { parseArguments } from 'helpers/args';
+import { log } from 'helpers/util';
+import { generateGeneralDescription } from 'helpers/description';
+import metadata from 'metadata';
 
 // Commands
-import Docker from './src/commands/docker';
-import Ssh from './src/commands/ssh';
-import Logs from './src/commands/logs';
-import Config from './src/commands/config';
-import Env from './src/commands/env';
-import Prune from './src/commands/prune';
-import Stop from './src/commands/stop';
+import Docker from 'commands/docker';
+import Ssh from 'commands/ssh';
+import Logs from 'commands/logs';
+import Config from 'commands/config';
+import Env from 'commands/env';
+import Prune from 'commands/prune';
+import Stop from 'commands/stop';
 
 const run = async () => {
   const { command, flags } = parseArguments();

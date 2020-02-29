@@ -1,6 +1,6 @@
 import { Command } from './index';
-import { traceFunction } from '../helpers/util';
-import ConfigOptions from '../enums/ConfigOptions';
+import { traceFunction } from 'helpers/util';
+import ConfigOptions from 'enums/ConfigOptions';
 
 @traceFunction()
 export default class Logs extends Command {

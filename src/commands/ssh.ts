@@ -1,5 +1,5 @@
 import { Command } from './index';
-import { traceFunction } from '../helpers/util';
+import { traceFunction } from 'helpers/util';
 
 @traceFunction()
 export default class Ssh extends Command {

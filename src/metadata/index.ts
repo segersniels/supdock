@@ -1,6 +1,6 @@
-import CommandAlias from '../enums/CommandAlias';
-import ConfigOptions from '../enums/ConfigOptions';
-import Commands from '../types/Commands';
+import CommandAlias from 'enums/CommandAlias';
+import ConfigOptions from 'enums/ConfigOptions';
+import Commands from 'types/Commands';
 
 const configOptions = {
   [ConfigOptions.CAUTION_CHECK]:

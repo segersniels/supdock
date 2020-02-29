@@ -1,5 +1,5 @@
-import { version } from '../../package.json';
-import Commands from '../types/Commands.js';
+import { version } from 'package';
+import Commands from 'types/Commands.js';
 
 const generateCommandDescriptions = (
   commands: Commands,
