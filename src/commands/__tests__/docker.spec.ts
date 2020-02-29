@@ -14,4 +14,20 @@ describe('docker', () => {
     });
     expect(await command.run()).to.eql('docker ps --help');
   });
+
+  it('should correctly execute supdock prompt command', async () => {
+    const command = new Docker('start', {
+      createChoices: () => ['123 - abc', '456 - foo', '789 - bar'],
+      determineChoice: () => '456 - foo',
+    });
+    expect(await command.run()).to.eql('docker start 456');
+  });
+
+  it('should correctly execute parallel prompt command', async () => {
+    const command = new Docker('start', {
+      createChoices: () => ['123 - abc', '456 - foo', '789 - bar'],
+      nonFlags: ['all'],
+    });
+    expect(await command.run()).to.eql(['123', '456', '789']);
+  });
 });
