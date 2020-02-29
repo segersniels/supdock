@@ -16,8 +16,10 @@ Repetitive use of `docker ps`, `docker logs`, `docker stats` and `docker exec -t
 
 ## Changelog
 
-### 2.4.1
+### 2.4.2
 - Speed improvements
+
+### 2.4.1
 - `port` and `top` commands
 - More commands now support fuzzy searching
 
