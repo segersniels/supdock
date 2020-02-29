@@ -19,6 +19,7 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: yarn check:typescript
       - run: yarn lint
+      - run: yarn test
       - run: yarn compile
       - run: |
           yarn build:ci
