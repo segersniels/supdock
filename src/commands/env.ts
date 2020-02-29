@@ -1,13 +1,14 @@
-import { Command } from './index';
+import { Command, MockingConfig } from './index';
 import { traceFunction } from 'helpers/util';
 
 @traceFunction()
 export default class Env extends Command {
-  constructor() {
-    super('env');
+  constructor(config?: MockingConfig) {
+    super('env', config);
   }
 
   public async execute() {
-    this.spawn('docker', ['exec', '-ti', this.id, 'env']);
+    const args = ['exec', '-ti', this.id, 'env'];
+    return this.spawn('docker', args);
   }
 }

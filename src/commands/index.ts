@@ -10,12 +10,29 @@ import FuzzySearch from 'fuzzy-search';
 import Config from 'helpers/config';
 import { generateCustomCommandDescription } from 'helpers/description';
 import { version } from 'package';
+import { parseOutput } from 'helpers/test';
+
+export interface MockingConfig {
+  createChoices?: () => string[];
+  determineChoice?: () => string;
+  parseFlags?: () => string[];
+  prompt?: () => { choice: string };
+}
+
+interface Internal {
+  createChoices: Function;
+  determineChoice: Function;
+  parseFlags: Function;
+  prompt: Function;
+}
 
 @traceFunction()
 export class Command {
   private command: string;
   private allowedFlags: string[];
   private metadata: CommandType;
+  public internal: Internal;
+  public mocking: boolean;
   public config: Config;
   public args: {
     command: any;
@@ -25,7 +42,7 @@ export class Command {
   public id: string;
   public flags: string[];
 
-  constructor(command: string) {
+  constructor(command: string, config?: MockingConfig) {
     // Metadata
     this.command = command;
     this.metadata = metadata[command];
@@ -34,12 +51,25 @@ export class Command {
     this.config = new Config();
     this.config.migrate();
 
+    // Mocking
+    this.mocking = config !== undefined;
+    this.internal = {
+      parseFlags: this.mocking
+        ? config?.parseFlags ||
+          function() {
+            return [];
+          }
+        : this.parseFlags.bind(this),
+      createChoices: config?.createChoices || this.createChoices.bind(this),
+      determineChoice:
+        config?.determineChoice || this.determineChoice.bind(this),
+      prompt: config?.prompt || this.prompt.bind(this),
+    };
+
     // Flags
-    if (command && this.metadata) {
-      this.args = parseArguments();
-      this.allowedFlags = flatten(this.metadata.flags) || [];
-      this.flags = this.parseFlags(this.args.flags);
-    }
+    this.args = parseArguments();
+    this.allowedFlags = flatten(this.metadata?.flags) || [];
+    this.flags = this.internal.parseFlags(this.args.flags);
   }
 
   private parseFlags(flags: any) {
@@ -193,27 +223,29 @@ export class Command {
   public async run() {
     // Default docker command
     if (!this.metadata) {
-      this.default();
-      return;
+      return this.default();
     }
 
     // Usage requested
-    if (this.args.flags.help || this.args.flags.h) {
-      this.usage();
-      return;
+    if (
+      this.args.flags.help ||
+      this.args.flags.h ||
+      this.flags.includes('--help') ||
+      this.flags.includes('-h')
+    ) {
+      return this.usage();
     }
 
     // Some commands allow passing 'all' as a valid option. eg. start, stop and restart.
     // These can bypass everything custom and just be fired early
     if (this.args.nonFlags.includes('all') && this.metadata.parallelExecution) {
-      this.parallel();
-      return;
+      return this.parallel();
     }
 
-    const choices = this.createChoices();
+    const choices = this.internal.createChoices();
     if (choices.length > 0) {
       // Extract the id from the choice that was made or given
-      const choice = await this.determineChoice(choices);
+      const choice = await this.internal.determineChoice(choices);
 
       // Unable to determine choice
       if (!choice) {
@@ -221,12 +253,15 @@ export class Command {
       }
 
       this.id = choice.split('-')[0].trim();
-      this.execute();
+      return this.execute();
     }
   }
 
   public default(options: string[] = process.argv.slice(2)) {
-    this.spawn('docker', options);
+    return this.spawn(
+      'docker',
+      this.mocking ? [this.command, ...this.flags] : options,
+    );
   }
 
   public prompt(message: string, choices: string[]): any {
@@ -241,15 +276,12 @@ export class Command {
   }
 
   public spawn(command: string, args: string[]) {
-    spawnSync(command, args, { stdio: 'inherit' });
+    return this.mocking
+      ? parseOutput(args)
+      : spawnSync(command, args, { stdio: 'inherit' });
   }
 
   public usage() {
-    if (!this.metadata) {
-      this.default();
-      return;
-    }
-
     const {
       custom,
       usage,
@@ -260,8 +292,7 @@ export class Command {
 
     // When command has custom usage defined log that instead of throwing the unknown command to docker
     if (usage) {
-      this.spawn('docker', usage.split(' '));
-      return;
+      return this.spawn('docker', usage.split(' '));
     }
 
     // Allow commands to have their own detailed usage information when a complete custom command
@@ -274,7 +305,7 @@ export class Command {
 
     // When a standard docker command log the default docker usage info first
     if (!usage && !custom) {
-      this.default();
+      return this.default();
     }
 
     const generateFlagDescriptions = () => {
@@ -301,6 +332,8 @@ export class Command {
         info(`\n${extraUsageInfo}`);
       }
     }
+
+    return;
   }
 
   public version() {

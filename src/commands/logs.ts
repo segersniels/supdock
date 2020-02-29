@@ -1,19 +1,20 @@
-import { Command } from './index';
+import { Command, MockingConfig } from './index';
 import { traceFunction } from 'helpers/util';
 import ConfigOptions from 'enums/ConfigOptions';
 
 @traceFunction()
 export default class Logs extends Command {
-  constructor() {
-    super('logs');
+  constructor(config?: MockingConfig) {
+    super('logs', config);
   }
 
   public async execute() {
     if (this.config.get(ConfigOptions.SHORT_LOGS)) {
-      this.spawn('docker', ['logs', '--tail', '500', ...this.flags, this.id]);
-      return;
+      const args = ['logs', '--tail', '500', ...this.flags, this.id];
+      return this.spawn('docker', args);
     }
 
-    this.spawn('docker', ['logs', ...this.flags, this.id]);
+    const args = ['logs', ...this.flags, this.id];
+    return this.spawn('docker', args);
   }
 }

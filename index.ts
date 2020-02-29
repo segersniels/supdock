@@ -15,21 +15,13 @@ import Stop from 'commands/stop';
 const run = async () => {
   const { command, flags } = parseArguments();
 
-  if (flags.help || flags.h) {
-    if (!command) {
-      const commands = Object.keys(metadata);
-      log(generateGeneralDescription(metadata, commands));
-    } else {
-      const docker = new Docker(command);
-      docker.usage();
-    }
-    return;
+  if ((flags.help || flags.h) && !command) {
+    const commands = Object.keys(metadata);
+    return log(generateGeneralDescription(metadata, commands));
   }
 
   if ((flags.version || flags.v) && !command) {
-    const docker = new Docker(command);
-    docker.version();
-    return;
+    return new Docker(command).version();
   }
 
   // Ugly repetitive code since pkg doesn't work well with dynamic importing
