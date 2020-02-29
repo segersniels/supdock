@@ -15,6 +15,13 @@ describe('docker', () => {
     expect(await command.run()).to.eql('docker ps --help');
   });
 
+  it('should correctly log usage of supdock command', async () => {
+    const command = new Docker('start', {
+      parseFlags: () => ['--help'],
+    });
+    await command.run();
+  });
+
   it('should correctly execute supdock prompt command', async () => {
     const command = new Docker('start', {
       createChoices: () => ['123 - abc', '456 - foo', '789 - bar'],
