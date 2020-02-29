@@ -12,13 +12,14 @@ jobs:
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
-      - run: npm install
+      - run: yarn install
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: npm run check:typescript
-      - run: npm run lint
+      - run: yarn check:typescript
+      - run: yarn lint
+      - run: yarn compile
       - run: |
           npm run build:ci
           ./bin/supdock-linux --help
