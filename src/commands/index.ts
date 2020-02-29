@@ -261,7 +261,7 @@ export class Command {
     // When command has custom usage defined log that instead of throwing the unknown command to docker
     if (usage) {
       this.spawn('docker', usage.split(' '));
-      // return;
+      return;
     }
 
     // Allow commands to have their own detailed usage information when a complete custom command
