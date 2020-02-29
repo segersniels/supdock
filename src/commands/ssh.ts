@@ -11,12 +11,10 @@ export default class Ssh extends Command {
 
   constructor(config?: MockingConfig, extended?: ExtendedConfig) {
     super('ssh', config);
-    if (this.mocking) {
-      this.extended = {
-        determineShell:
-          extended?.determineShell || this.determineShell.bind(this),
-      };
-    }
+    this.extended = {
+      determineShell:
+        extended?.determineShell || this.determineShell.bind(this),
+    };
   }
 
   private async determineShell() {
