@@ -114,8 +114,7 @@ export class Command {
 
     // Try to fuzzy match the given search term
     if (allowFuzzySearching && this.args.nonFlags.length === 1) {
-      const choice = await this.fuzzySearch(choices);
-      return choice;
+      return await this.fuzzySearch(choices);
     }
 
     // Default behaviour just ask question and prompt for choice
