@@ -16,6 +16,14 @@ Repetitive use of `docker ps`, `docker logs`, `docker stats` and `docker exec -t
 
 ## Changelog
 
+### 2.4.0
+- Speed improvements
+- `port` and `top` commands
+- More commands now support fuzzy searching
+
+Since the internal code changed quite a bit some bugs might have snuck in.
+To report bugs run `supdock` with the `DEBUG=*` environment variable and create an issue with the output.
+
 ### 2.3.0
 
 - Internal cleanup of code
