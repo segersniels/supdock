@@ -16,7 +16,7 @@ const getFlagArguments = () => {
     if (command && metadata[command] && metadata[command].flags) {
       const commandFlags = flatten(metadata[command].flags);
       if (commandFlags.includes(key)) {
-        if (typeof argv[key] !== 'boolean') {
+        if (typeof argv[key] !== 'boolean' && !nonFlags.includes(argv[key])) {
           nonFlags.push(argv[key]);
         }
         flags[key] = true;
@@ -30,6 +30,10 @@ const getFlagArguments = () => {
 
 const getNonFlagArguments = () => {
   for (const key of argv._.slice(1, argv._.length)) {
+    if (nonFlags.includes(key)) {
+      continue;
+    }
+
     nonFlags.push(key);
   }
   return nonFlags;
