@@ -21,7 +21,7 @@ jobs:
       - run: yarn lint
       - run: yarn compile
       - run: |
-          npm run build:ci
+          yarn build:ci
           ./bin/supdock-linux --help
       - persist_to_workspace:
           root: ~/supdock
