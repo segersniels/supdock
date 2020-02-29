@@ -6,7 +6,7 @@
   "scripts": {
     "compile": "tsc --skipLibCheck ; babel dist -d dist",
     "build": "pkg dist/index.js --target node12 -o ./bin/supdock",
-    "build:ci": "pkg dist/index.js --target node12 --out-path ./bin ; ./scripts/rename.sh",
+    "build:ci": "pkg dist/index.js --targets node12-linux-x64,node12-macos-x64,node12-win-x64 --out-path ./bin ; ./scripts/rename.sh",
     "lint": "eslint '**/*.{ts,tsx}' && tsc",
     "lint:fix": "eslint '**/*.{ts,tsx}' --fix",
     "check:typescript": "tsc --noEmit --skipLibCheck --project .",
