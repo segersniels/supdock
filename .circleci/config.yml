@@ -44,10 +44,10 @@ jobs:
             VERSION=$(./bin/supdock-linux --version)
             ./ghr_v0.12.1_linux_amd64/ghr -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} ${VERSION} bin/ || true
       - run:
-          name: 'NPM release'
+          name: 'NPM/yarn release'
           command: |
             echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/supdock/dist/.npmrc
-            cp README.md dist/README.md ; cd dist ; npm publish || true
+            yarn publish:ci || true
 
 workflows:
   version: 2
