@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { parseArguments } from 'helpers/args';
 import { log } from 'helpers/util';
 import { generateGeneralDescription } from 'helpers/description';
