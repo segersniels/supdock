@@ -14,23 +14,13 @@ Repetitive use of `docker ps`, `docker logs`, `docker stats` and `docker exec -t
 <p align="center">
 <img src="https://i.imgur.com/moY077k.gif" width="450">
 
-## Changelog
+## Alias
 
-### 2.4.2
-- Speed improvements
+If you don't want to use `supdock` and `docker` separately you can just set an alias.
 
-### 2.4.1
-- `port` and `top` commands
-- More commands now support fuzzy searching
-
-Since the internal code changed quite a bit some bugs might have snuck in.
-To report bugs run `supdock` with the `DEBUG=*` environment variable and create an issue with the output.
-
-### 2.3.0
-
-- Internal cleanup of code
-- Config reusability optimisations and backwards compatibility
-- New `short-logs` config option to set a default limit of 500 lines to the `logs` command
+```bash
+alias docker="supdock"
+```
 
 ## Installation
 
@@ -52,11 +42,25 @@ npm install -g supdock
 yarn global add supdock
 ```
 
-If you don't want to use `supdock` and `docker` separately you can just set an alias.
+## Changelog
 
-```bash
-alias docker="supdock"
-```
+### 2.4.2
+
+- Speed improvements
+
+### 2.4.1
+
+- `port` and `top` commands
+- More commands now support fuzzy searching
+
+Since the internal code changed quite a bit some bugs might have snuck in.
+To report bugs run `supdock` with the `DEBUG=*` environment variable and create an issue with the output.
+
+### 2.3.0
+
+- Internal cleanup of code
+- Config reusability optimisations and backwards compatibility
+- New `short-logs` config option to set a default limit of 500 lines to the `logs` command
 
 ## Usage
 
