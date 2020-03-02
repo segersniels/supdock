@@ -3,7 +3,6 @@
   "version": "2.4.4-beta.0",
   "description": "What's Up Dock(er)?",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
     "compile": "tsc --skipLibCheck ; babel dist -d dist",
     "build": "pkg dist/index.js --target node12 -o ./bin/supdock",

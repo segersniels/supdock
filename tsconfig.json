@@ -24,8 +24,7 @@
       "metadata": ["metadata/index.ts"],
       "*": ["src/*"],
       "package": ["package.json"]
-    },
-    "declaration": true
+    }
   },
   "exclude": ["node_modules", "**/node_modules/*"]
 }
