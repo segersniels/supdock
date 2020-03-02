@@ -2,7 +2,7 @@
   "name": "supdock",
   "version": "2.4.3",
   "description": "What's Up Dock(er)?",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "compile": "tsc --skipLibCheck ; babel dist -d dist",
     "build": "pkg dist/index.js --target node12 -o ./bin/supdock",
@@ -12,8 +12,8 @@
     "check:typescript": "tsc --noEmit --skipLibCheck --project .",
     "nuke": "rm -rf node_modules ; yarn install",
     "test": "NODE_ENV=test mocha -r ts-node/register -r tsconfig-paths/register --recursive --exclude './node_modules/**/*.spec.ts' './**/*.spec.ts' --exit",
-    "publish:ci": "cp README.md dist/README.md ; cd dist ; yarn publish",
-    "publish:beta": "cd dist ; yarn publish --tag beta"
+    "publish:ci": "yarn publish",
+    "publish:beta": "yarn publish --tag beta"
   },
   "repository": {
     "type": "git",
@@ -36,7 +36,7 @@
   },
   "homepage": "https://github.com/segersniels/supdock#readme",
   "bin": {
-    "supdock": "index.js"
+    "supdock": "dist/index.js"
   },
   "dependencies": {
     "chalk": "^2.4.2",
