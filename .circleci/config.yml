@@ -47,7 +47,7 @@ jobs:
           name: 'NPM/yarn release'
           command: |
             echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/supdock/dist/.npmrc
-            yarn publish:ci || true
+            yarn publish:${CIRCLE_BRANCH} || true
 
 workflows:
   version: 2
@@ -61,3 +61,4 @@ workflows:
             branches:
               only:
                 - master
+                - beta
