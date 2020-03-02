@@ -33,7 +33,7 @@ mv supdock-<os> /usr/local/bin/supdock
 chmod +x /usr/local/bin/supdock
 ```
 
-If speed/performance is important to you I recommend using the binary release instead of installing through npm or yarn as the bundled binary is a bit and more responsive.
+If speed/performance is important to you I recommend using the binary release instead of installing through npm or yarn as the bundled binary is a bit more responsive.
 
 ### NPM
 
