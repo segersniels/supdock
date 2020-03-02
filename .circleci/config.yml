@@ -37,6 +37,9 @@ jobs:
       - attach_workspace:
           at: ~/supdock
       - run:
+          name: 'Checking if on correct branch'
+          command: ./scripts/check.sh
+      - run:
           name: 'GitHub release'
           command: ./scripts/github-release.sh
       - run:
