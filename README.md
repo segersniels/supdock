@@ -82,12 +82,15 @@ alias docker="supdock"
   	prune		Remove stopped containers and dangling images. For more detailed usage refer to 'docker system prune -h'
   	enable		Enable certain supdock functionality
   	disable		Disable certain supdock functionality
+    ...
   	help, h		Shows a list of commands or help for one command
 
   GLOBAL OPTIONS:
   	--help, -h	show help
   	--version, -v	print the version
 ```
+
+Usage above can differ from the actual usage shown by the command.
 
 ### Configuration
 
