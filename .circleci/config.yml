@@ -45,7 +45,7 @@ jobs:
       - run:
           name: 'NPM/yarn release'
           command: |
-            echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/supdock/dist/.npmrc
+            echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/supdock/.npmrc
             yarn publish:${CIRCLE_BRANCH} || true
 
 workflows:
