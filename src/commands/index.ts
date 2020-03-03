@@ -4,13 +4,13 @@ import { parseArguments } from 'helpers/args';
 import flatten from 'lodash.flatten';
 import metadata from 'metadata';
 import ConfigOptions from 'enums/ConfigOptions';
-import * as inquirer from 'inquirer';
 import { error, traceFunction, exit, info, log } from 'helpers/util';
 import FuzzySearch from 'fuzzy-search';
 import Config from 'helpers/config';
 import { generateCustomCommandDescription } from 'helpers/description';
 import { version } from 'package';
 import { parseOutput } from 'helpers/test';
+import prompts from 'prompts';
 
 export interface MockingConfig {
   createChoices?: () => string[];
@@ -269,15 +269,13 @@ export class Command {
     );
   }
 
-  public prompt(message: string, choices: string[]): any {
-    return inquirer.prompt([
-      {
-        type: 'list',
-        name: 'choice',
-        message,
-        choices,
-      },
-    ]);
+  public prompt(message: string, choices: string[]) {
+    return prompts({
+      type: 'select',
+      name: 'choice',
+      message,
+      choices: choices.map(c => ({ title: c, value: c })),
+    });
   }
 
   public spawn(command: string, args: string[]) {
