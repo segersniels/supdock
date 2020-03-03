@@ -120,7 +120,7 @@ export class Command {
     }
 
     // Default behaviour just ask question and prompt for choice
-    const { choice } = await this.prompt(question!, choices);
+    const { choice } = await this.internal.prompt(question!, choices);
     return choice;
   }
 
@@ -160,7 +160,7 @@ export class Command {
 
         // Ask the user for confirmation
         if (this.config.get(ConfigOptions.CAUTION_CHECK)) {
-          const confirmation = await this.prompt(
+          const confirmation = await this.internal.prompt(
             `Are you sure you want to execute '${this.command}' for container '${choice}'`,
             ['Yes', 'No'],
           );
@@ -190,7 +190,7 @@ export class Command {
         }
 
         choice = (
-          await this.prompt(
+          await this.internal.prompt(
             `Search '${term}' returned more than one result, please make a choice from the list below.`,
             choicesAfterFuzzySearching,
           )
