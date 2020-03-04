@@ -8,10 +8,10 @@ describe('prune', () => {
     expect(await command.run()).to.eql('docker system prune -f');
   });
 
-  it('should correctly strip --info', async () => {
+  it('should correctly return info', async () => {
     const command = new Prune({
       parseFlags: () => ['--info'],
     });
-    expect(await command.run()).to.eql('docker system prune -f');
+    expect(await command.run()).to.eql('docker system df');
   });
 });
