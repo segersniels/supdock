@@ -11,12 +11,10 @@ export default class Prune extends Command {
     // Log additional information
     if (this.flags.includes('--info')) {
       const args = ['system', 'df'];
-      this.spawn('docker', args);
-      // Remove the info flag for further execution
-      this.flags = this.flags.filter(flag => flag !== '--info');
+      return this.spawn('docker', args);
     }
 
     const args = ['system', 'prune', '-f', ...this.flags];
-    return this.spawn('docker', args) as any;
+    return this.spawn('docker', args);
   }
 }
