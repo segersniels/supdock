@@ -4,7 +4,7 @@ import { parseArguments } from 'helpers/args';
 import flatten from 'lodash.flatten';
 import metadata from 'metadata';
 import ConfigOptions from 'enums/ConfigOptions';
-import { error, traceFunction, exit, info, log } from 'helpers/util';
+import { error, traceFunction, info, log } from 'helpers/util';
 import FuzzySearch from 'fuzzy-search';
 import Config from 'helpers/config';
 import { generateCustomCommandDescription } from 'helpers/description';
@@ -127,8 +127,7 @@ export class Command {
   private fuzzySearch = async (choices: string[]) => {
     // When fuzzy searching is disabled make sure we passthrough back to docker so we don't hinder docker behaviour
     if (!this.config.get(ConfigOptions.FUZZY_SEARCH)) {
-      this.default();
-      exit();
+      return this.default();
     }
 
     let choice: string;
@@ -154,8 +153,7 @@ export class Command {
               .startsWith(term)) &&
           !this.metadata.custom
         ) {
-          this.default();
-          exit();
+          return this.default();
         }
 
         // Ask the user for confirmation
@@ -167,7 +165,6 @@ export class Command {
 
           if (confirmation.choice === 'No') {
             error('Exiting on request of user...');
-            exit();
           }
         }
         break;
@@ -185,8 +182,7 @@ export class Command {
               !this.metadata.custom,
           )
         ) {
-          this.default();
-          exit();
+          return this.default();
         }
 
         choice = (
