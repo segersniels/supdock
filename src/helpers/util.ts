@@ -30,11 +30,7 @@ export const warn = (msg: string) => {
 
 export const error = (msg: string) => {
   log(chalk.red(msg));
-
-  // Don't exit when testing
-  if (process.env.NODE_ENV !== 'test') {
-    process.exit(1);
-  }
+  process.exit(1);
 };
 
 // Allows debug tracing of a function to locate where things go wrong
