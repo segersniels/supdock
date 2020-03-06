@@ -242,9 +242,12 @@ export class Command {
     }
 
     const choices = this.internal.createChoices();
-    if (choices.length > 0) {
-      // Extract the id from the choice that was made or given
-      const choice = await this.internal.determineChoice(choices);
+    if (!choices.length) {
+      return error(
+        this.metadata.error ||
+          `unable to generate choices to execute command '${this.command}'`,
+      );
+    }
 
       // Unable to determine choice
       if (!choice) {
