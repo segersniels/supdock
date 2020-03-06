@@ -109,9 +109,7 @@ export class Command {
       .filter(line => line);
   }
 
-  private async determineChoice(
-    choices: string[],
-  ): Promise<string | undefined> {
+  private async determineChoice(choices: string[]) {
     const { question, allowFuzzySearching } = this.metadata;
 
     // Try to fuzzy match the given search term
