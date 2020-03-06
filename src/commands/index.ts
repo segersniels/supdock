@@ -249,14 +249,16 @@ export class Command {
       );
     }
 
-      // Unable to determine choice
-      if (!choice) {
-        return;
-      }
+    // Extract the id from the choice that was made or given
+    const choice = await this.internal.determineChoice(choices);
 
-      this.id = choice.split('-')[0].trim();
-      return this.execute();
+    // Unable to determine choice or defaulted to docker
+    if (!choice || typeof choice !== 'string') {
+      return;
     }
+
+    this.id = choice.split('-')[0].trim();
+    return this.execute();
   }
 
   public default(options: string[] = process.argv.slice(2)) {
