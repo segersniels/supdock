@@ -7,7 +7,7 @@
     "dist"
   ],
   "scripts": {
-    "compile": "tsc ; babel dist -d dist",
+    "compile": "ncc build index.ts -o dist",
     "build": "pkg dist/index.js --target node12 -o ./bin/supdock",
     "build:ci": "pkg dist/index.js --targets node12-linux-x64,node12-macos-x64,node12-win-x64 --out-path ./bin ; ./scripts/rename.sh",
     "lint": "eslint '**/*.{ts,tsx}' && tsc",
