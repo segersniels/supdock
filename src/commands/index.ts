@@ -30,8 +30,8 @@ interface Internal {
 @traceFunction()
 export class Command {
   private command: string;
-  private allowedFlags: string[];
-  private metadata: CommandType;
+  public metadata: CommandType;
+  public allowedFlags: string[];
   public internal: Internal;
   public mocking: boolean;
   public config: Config;
@@ -295,6 +295,9 @@ export class Command {
   }
 
   public spawn(command: string, args: string[]) {
+    // Filter out all falsy arguments
+    args = args.filter(arg => arg);
+
     return this.mocking
       ? parseOutput(args)
       : spawnSync(command, args, { stdio: 'inherit' });

@@ -18,6 +18,9 @@ const run = async () => {
 
   // Ugly repetitive code since pkg doesn't work well with dynamic importing
   switch (command) {
+    case 'stats':
+      await new (await import('commands/stats')).default().run();
+      break;
     case 'ssh':
       await new (await import('commands/ssh')).default().run();
       break;

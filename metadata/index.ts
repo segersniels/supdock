@@ -106,7 +106,7 @@ const metadata: Commands = {
     description: 'See the stats of a container',
     question: 'Which containers would you like to see that stats of?',
     error: 'no containers available',
-    flags: [['p', 'prompt'], ['no-stream'], ['no-trunc']],
+    flags: [['p', 'prompt']],
     type: CommandAlias.RUNNING_CONTAINERS,
     allowFuzzySearching: true,
   },
