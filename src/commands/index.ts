@@ -216,7 +216,7 @@ export class Command {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  public async init(): Promise<any> {}
+  public async inject(): Promise<any> {}
 
   public async run() {
     // Default docker command
@@ -241,7 +241,7 @@ export class Command {
     }
 
     // Custom initialisation logic passed
-    await this.init();
+    await this.inject();
 
     if (this.shouldPrompt) {
       const choices = this.internal.createChoices();
