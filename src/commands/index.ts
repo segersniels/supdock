@@ -214,7 +214,7 @@ export class Command {
     return this.spawn('docker', [this.command, ...this.flags, this.id]);
   }
 
-  public async check() {
+  public async run() {
     // Default docker command
     if (!this.metadata) {
       return this.default();
@@ -236,10 +236,6 @@ export class Command {
       return this.parallel();
     }
 
-    return;
-  }
-
-  public async determine() {
     const choices = this.internal.createChoices();
     if (!choices.length) {
       return error(
@@ -257,19 +253,6 @@ export class Command {
     }
 
     this.id = choice.split('-')[0].trim();
-
-    return;
-  }
-
-  /**
-   * Split up into multiple steps to make extending of the behaviour easier without having to copy paste duplicate code
-   *  - check: do all the default checks before we start prompting the user for which container/image he wants to execute command for
-   *  - determine: ask the user for the id through prompt
-   *  - execute: execute the command
-   */
-  public async run() {
-    await this.check();
-    await this.determine();
     return this.execute();
   }
 
