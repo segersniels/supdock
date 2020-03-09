@@ -5,11 +5,10 @@ import { traceFunction } from 'helpers/util';
 export default class Stats extends Command {
   constructor(config?: MockingConfig) {
     super('stats', config);
+    this.shouldPrompt = false;
   }
 
-  public async run() {
-    await this.check();
-
+  public async init() {
     if (this.flags.includes('--all')) {
       return this.spawn('docker', ['stats', '--all']);
     }
@@ -18,13 +17,13 @@ export default class Stats extends Command {
       this.allowedFlags.includes('prompt') &&
       (this.flags.includes('-p') || this.flags.includes('--prompt'))
     ) {
-      await this.determine();
+      this.shouldPrompt = true;
       // Filter out the prompt flag for further execution
       this.flags = this.flags.filter(
         flag => !['--prompt', '-p'].includes(flag),
       );
     }
 
-    return this.execute();
+    return;
   }
 }
