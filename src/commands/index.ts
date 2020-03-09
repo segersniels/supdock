@@ -42,6 +42,7 @@ export class Command {
   };
   public id: string;
   public flags: string[];
+  public shouldPrompt = true;
 
   constructor(command: string, config?: MockingConfig) {
     // Metadata
@@ -244,15 +245,26 @@ export class Command {
       );
     }
 
-    // Extract the id from the choice that was made or given
-    const choice = await this.internal.determineChoice(choices);
+    if (this.shouldPrompt) {
+      const choices = this.internal.createChoices();
+      if (!choices.length) {
+        return error(
+          this.metadata.error ||
+            `unable to generate choices to execute command '${this.command}'`,
+        );
+      }
 
-    // Unable to determine choice or defaulted to docker
-    if (!choice || typeof choice !== 'string') {
-      return;
+      // Extract the id from the choice that was made or given
+      const choice = await this.internal.determineChoice(choices);
+
+      // Unable to determine choice or defaulted to docker
+      if (!choice || typeof choice !== 'string') {
+        return;
+      }
+
+      this.id = choice.split('-')[0].trim();
     }
 
-    this.id = choice.split('-')[0].trim();
     return this.execute();
   }
 
