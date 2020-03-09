@@ -215,6 +215,9 @@ export class Command {
     return this.spawn('docker', [this.command, ...this.flags, this.id]);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  public async init(): Promise<any> {}
+
   public async run() {
     // Default docker command
     if (!this.metadata) {
@@ -237,13 +240,8 @@ export class Command {
       return this.parallel();
     }
 
-    const choices = this.internal.createChoices();
-    if (!choices.length) {
-      return error(
-        this.metadata.error ||
-          `unable to generate choices to execute command '${this.command}'`,
-      );
-    }
+    // Custom initialisation logic passed
+    await this.init();
 
     if (this.shouldPrompt) {
       const choices = this.internal.createChoices();
