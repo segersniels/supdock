@@ -78,14 +78,9 @@ export class Command {
     const parsed: string[] = [];
 
     for (const flag of Object.keys(flags)) {
-      // If prompt flag has been passed and is allowed for the command strip it from the further execution flags
-      if (['p', 'prompt'].includes(flag) && this.allowedFlags.includes(flag)) {
-        continue;
-      }
-
       // Minimist parses --no-<flag> variables to a boolean flag with value false with the --no prefix stripped
       // So we have to readd the prefix
-      if (this.allowedFlags.includes(`no-${flag}`) && !flags[flag]) {
+      if (!flags[flag]) {
         parsed.push(`--no-${flag}`);
         continue;
       }
