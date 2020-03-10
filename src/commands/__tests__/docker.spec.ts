@@ -5,7 +5,7 @@ import ConfigOptions from 'enums/ConfigOptions';
 import Config from 'commands/config';
 
 describe('docker', () => {
-  describe('fuzzy disabled', async () => {
+  describe('fuzzy disabled (default config)', async () => {
     const command = new Config('disable', {
       prompt: () => ({ choice: ConfigOptions.FUZZY_SEARCH }),
     });
@@ -64,10 +64,15 @@ describe('docker', () => {
   });
 
   describe('fuzzy enabled', async () => {
-    const command = new Config('enable', {
+    const enable = new Config('enable', {
       prompt: () => ({ choice: ConfigOptions.FUZZY_SEARCH }),
     });
-    await command.run();
+    await enable.run();
+
+    const check = new Config('disable', {
+      prompt: () => ({ choice: ConfigOptions.CAUTION_CHECK }),
+    });
+    await check.run();
 
     it('should correctly fuzzy match the fully matched name', async () => {
       const command = new Docker('start', {
