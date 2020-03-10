@@ -255,9 +255,16 @@ export class Command {
       // Extract the id from the choice that was made or given
       const choice = await this.internal.determineChoice(choices);
 
-      // Unable to determine choice or defaulted to docker
-      if (!choice || typeof choice !== 'string') {
-        return;
+      // Unable to determine choice or when defaulted to docker
+      // When testing we want to test if we defaulted correctly in some cases
+      // So in this case just return the defaulted command when testing
+      if (
+        !choice ||
+        typeof choice !== 'string' ||
+        (process.env.NODE_ENV === 'test' &&
+          choice.startsWith(`docker ${this.command}`))
+      ) {
+        return choice;
       }
 
       this.id = choice.split('-')[0].trim();
