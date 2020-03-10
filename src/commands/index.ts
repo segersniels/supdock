@@ -34,12 +34,12 @@ export class Command {
   public allowedFlags: string[];
   public internal: Internal;
   public mocking: boolean;
-  public config: Config;
+  public config: Config = new Config();
   public args: {
     command: any;
     flags: any;
     nonFlags: string[];
-  };
+  } = parseArguments();
   public id: string;
   public flags: string[];
   public shouldPrompt = true;
@@ -50,7 +50,6 @@ export class Command {
     this.metadata = metadata[command];
 
     // Config
-    this.config = new Config();
     this.config.migrate();
 
     // Mocking
@@ -69,7 +68,6 @@ export class Command {
     };
 
     // Flags
-    this.args = parseArguments();
     this.args.nonFlags = config?.nonFlags || this.args.nonFlags;
     this.allowedFlags = flatten(this.metadata?.flags) || [];
     this.flags = this.internal.parseFlags(this.args.flags);
