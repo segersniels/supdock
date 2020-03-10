@@ -96,24 +96,25 @@ export class Command {
     return parsed;
   }
 
-  private createChoices() {
-    return execSync(this.metadata.type!, { maxBuffer: 1024 * 10000 })
-      .toString()
-      .split('\n')
-      .filter(line => line);
-  }
+  private parallel() {
+    info('Asynchronous execution of command is happening in the background');
+    info(
+      `Some containers might take longer than others to ${this.command}`,
+      true,
+    );
 
-  private async determineChoice(choices: string[]) {
-    const { question, allowFuzzySearching } = this.metadata;
+    const ids: string[] = this.internal
+      .createChoices()
+      .map((choice: string) => choice.split('-')[0].trim());
+    ids.forEach(id => {
+      const child = spawn('docker', [this.command, id], {
+        detached: true,
+        stdio: 'ignore',
+      });
+      child.unref();
+    });
 
-    // Try to fuzzy match the given search term
-    if (allowFuzzySearching && this.args.nonFlags.length === 1) {
-      return await this.fuzzySearch(choices);
-    }
-
-    // Default behaviour just ask question and prompt for choice
-    const { choice } = await this.internal.prompt(question!, choices);
-    return choice;
+    return ids;
   }
 
   private fuzzySearch = async (choices: string[]) => {
@@ -188,114 +189,31 @@ export class Command {
     return choice;
   };
 
-  private parallel() {
-    info('Asynchronous execution of command is happening in the background');
-    info(
-      `Some containers might take longer than others to ${this.command}`,
-      true,
-    );
+  private async determineChoice(choices: string[]) {
+    const { question, allowFuzzySearching } = this.metadata;
 
-    const ids: string[] = this.internal
-      .createChoices()
-      .map((choice: string) => choice.split('-')[0].trim());
-    ids.forEach(id => {
-      const child = spawn('docker', [this.command, id], {
-        detached: true,
-        stdio: 'ignore',
-      });
-      child.unref();
-    });
+    // Try to fuzzy match the given search term
+    if (allowFuzzySearching && this.args.nonFlags.length === 1) {
+      return await this.fuzzySearch(choices);
+    }
 
-    return ids;
+    // Default behaviour just ask question and prompt for choice
+    const { choice } = await this.internal.prompt(question!, choices);
+    return choice;
   }
 
-  public execute(): any {
-    return this.spawn('docker', [this.command, ...this.flags, this.id]);
+  private createChoices() {
+    return execSync(this.metadata.type!, { maxBuffer: 1024 * 10000 })
+      .toString()
+      .split('\n')
+      .filter(line => line);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   public async inject(): Promise<any> {}
 
-  public async run() {
-    // Default docker command
-    if (!this.metadata) {
-      return this.default();
-    }
-
-    // Usage requested
-    if (
-      this.args.flags.help ||
-      this.args.flags.h ||
-      this.flags.includes('--help') ||
-      this.flags.includes('-h')
-    ) {
-      return this.usage();
-    }
-
-    // Some commands allow passing 'all' as a valid option. eg. start, stop and restart.
-    // These can bypass everything custom and just be fired early
-    if (this.args.nonFlags.includes('all') && this.metadata.parallelExecution) {
-      return this.parallel();
-    }
-
-    // Custom initialisation logic passed
-    await this.inject();
-
-    if (this.shouldPrompt) {
-      const choices = this.internal.createChoices();
-      if (!choices.length) {
-        return error(
-          this.metadata.error ||
-            `unable to generate choices to execute command '${this.command}'`,
-        );
-      }
-
-      // Extract the id from the choice that was made or given
-      const choice = await this.internal.determineChoice(choices);
-
-      // Unable to determine choice or when defaulted to docker
-      // When testing we want to test if we defaulted correctly in some cases
-      // So in this case just return the defaulted command when testing
-      if (
-        !choice ||
-        typeof choice !== 'string' ||
-        (process.env.NODE_ENV === 'test' &&
-          choice.startsWith(`docker ${this.command}`))
-      ) {
-        return choice;
-      }
-
-      this.id = choice.split('-')[0].trim();
-    }
-
-    return this.execute();
-  }
-
-  public default(options: string[] = process.argv.slice(2)) {
-    return this.spawn(
-      'docker',
-      this.mocking
-        ? [this.command, ...this.flags, ...this.args.nonFlags]
-        : options,
-    );
-  }
-
-  public prompt(message: string, choices: string[]) {
-    return prompts({
-      type: 'select',
-      name: 'choice',
-      message,
-      choices: choices.map(c => ({ title: c, value: c })),
-    });
-  }
-
-  public spawn(command: string, args: string[]) {
-    // Filter out all falsy arguments
-    args = args.filter(arg => arg);
-
-    return this.mocking
-      ? parseOutput(args)
-      : spawnSync(command, args, { stdio: 'inherit' });
+  public version() {
+    log(version);
   }
 
   public usage() {
@@ -353,7 +271,89 @@ export class Command {
     return;
   }
 
-  public version() {
-    log(version);
+  public prompt(message: string, choices: string[]) {
+    return prompts({
+      type: 'select',
+      name: 'choice',
+      message,
+      choices: choices.map(c => ({ title: c, value: c })),
+    });
+  }
+
+  public spawn(command: string, args: string[]) {
+    // Filter out all falsy arguments
+    args = args.filter(arg => arg);
+
+    return this.mocking
+      ? parseOutput(args)
+      : spawnSync(command, args, { stdio: 'inherit' });
+  }
+
+  public default(options: string[] = process.argv.slice(2)) {
+    return this.spawn(
+      'docker',
+      this.mocking
+        ? [this.command, ...this.flags, ...this.args.nonFlags]
+        : options,
+    );
+  }
+
+  public execute(): any {
+    return this.spawn('docker', [this.command, ...this.flags, this.id]);
+  }
+
+  public async run() {
+    // Default docker command
+    if (!this.metadata) {
+      return this.default();
+    }
+
+    // Usage requested
+    if (
+      this.args.flags.help ||
+      this.args.flags.h ||
+      this.flags.includes('--help') ||
+      this.flags.includes('-h')
+    ) {
+      return this.usage();
+    }
+
+    // Some commands allow passing 'all' as a valid option. eg. start, stop and restart.
+    // These can bypass everything custom and just be fired early
+    if (this.args.nonFlags.includes('all') && this.metadata.parallelExecution) {
+      return this.parallel();
+    }
+
+    // Custom initialisation logic passed
+    await this.inject();
+
+    if (this.shouldPrompt) {
+      const choices = this.internal.createChoices();
+      if (!choices.length) {
+        return error(
+          this.metadata.error ||
+            `unable to generate choices to execute command '${this.command}'`,
+        );
+      }
+
+      // Extract the id from the choice that was made or given
+      const choice = await this.internal.determineChoice(choices);
+
+      // Unable to determine choice or when defaulted to docker
+      // When testing we want to test if we defaulted correctly in some cases
+      // So in this case just return the defaulted command when testing
+      if (
+        !choice ||
+        typeof choice !== 'string' ||
+        (process.env.NODE_ENV === 'test' &&
+          choice.startsWith(`docker ${this.command}`))
+      ) {
+        return choice;
+      }
+
+      this.id = choice.split('-')[0].trim();
+    }
+
+    return this.execute();
   }
 }
