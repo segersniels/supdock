@@ -276,7 +276,9 @@ export class Command {
   public default(options: string[] = process.argv.slice(2)) {
     return this.spawn(
       'docker',
-      this.mocking ? [this.command, ...this.flags] : options,
+      this.mocking
+        ? [this.command, ...this.flags, ...this.args.nonFlags]
+        : options,
     );
   }
 
