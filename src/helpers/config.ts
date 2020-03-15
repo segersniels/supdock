@@ -1,12 +1,13 @@
-import { Configuration } from 'interfaces/Configuration';
 import { error } from './util';
 import { name } from 'package';
 import { homedir } from 'os';
 import Configstore from 'configstore';
 import ConfigOptions from 'enums/ConfigOptions';
 
+export type Configuration = Record<string, boolean>;
+
 // When config is being adjusted make sure we keep track of the old values and names
-const migrations: { [key: string]: any } = {
+const migrations: Record<string, Record<string, string>> = {
   '1': {
     [ConfigOptions.CAUTION_CHECK]: 'ask-for-confirmation',
     [ConfigOptions.FUZZY_SEARCH]: 'allow-fuzzy-search',

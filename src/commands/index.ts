@@ -1,8 +1,7 @@
 import { spawnSync, execSync, spawn } from 'child_process';
-import CommandType from 'interfaces/Command';
 import { parseArguments } from 'helpers/args';
 import flatten from 'lodash.flatten';
-import metadata from 'metadata';
+import { default as metadata, Metadata } from 'metadata';
 import ConfigOptions from 'enums/ConfigOptions';
 import { error, traceFunction, info, log } from 'helpers/util';
 import FuzzySearch from 'fuzzy-search';
@@ -30,7 +29,7 @@ interface Internal {
 @traceFunction()
 export class Command {
   private command: string;
-  public metadata: CommandType;
+  public metadata: Metadata;
   public allowedFlags: string[];
   public internal: Internal;
   public mocking: boolean;

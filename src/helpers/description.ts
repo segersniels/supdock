@@ -1,5 +1,5 @@
 import { version } from 'package';
-import Commands from 'types/Commands.js';
+import { Commands } from 'metadata';
 
 const generateCommandDescriptions = (
   commands: Commands,
