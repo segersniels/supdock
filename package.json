@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "chalk": "^3.0.0",
-    "configstore": "^5.0.0",
+    "configstore": "^5.0.1",
     "debug": "^4.1.1",
     "fuzzy-search": "^3.0.2",
     "lodash.flatten": "^4.4.0",
