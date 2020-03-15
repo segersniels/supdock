@@ -96,4 +96,8 @@ export default class Config {
     }
     this.config.set(key, value);
   };
+
+  public list = () => {
+    return this.config.all;
+  };
 }
