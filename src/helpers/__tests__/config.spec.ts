@@ -1,12 +1,11 @@
 import 'mocha';
-import fs from 'fs';
-import Config, { PATH } from 'helpers/config';
+import Config, { deleteConfig } from 'helpers/config';
 import { expect } from 'chai';
 import ConfigOptions from 'enums/ConfigOptions';
 
 describe('config', () => {
-  beforeEach(() => {
-    fs.unlinkSync(PATH);
+  afterEach(() => {
+    deleteConfig();
   });
 
   it('should correctly migrate old settings', () => {

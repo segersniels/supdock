@@ -1,8 +1,13 @@
 import 'mocha';
 import Config from 'commands/config';
 import ConfigOptions from 'enums/ConfigOptions';
+import { deleteConfig } from 'helpers/config';
 
 describe('config', () => {
+  afterEach(() => {
+    deleteConfig();
+  });
+
   it('should correctly enable', async () => {
     const command = new Config('enable', {
       prompt: () => ({ choice: ConfigOptions.CAUTION_CHECK }),

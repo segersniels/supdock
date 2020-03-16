@@ -3,8 +3,13 @@ import Logs from 'commands/logs';
 import Config from 'commands/config';
 import { expect } from 'chai';
 import ConfigOptions from 'enums/ConfigOptions';
+import { deleteConfig } from 'helpers/config';
 
 describe('logs', async () => {
+  afterEach(() => {
+    deleteConfig();
+  });
+
   const config = new Config('disable', {
     prompt: () => ({ choice: ConfigOptions.SHORT_LOGS }),
   });

@@ -3,8 +3,13 @@ import Docker from 'commands/docker';
 import { expect } from 'chai';
 import ConfigOptions from 'enums/ConfigOptions';
 import Config from 'commands/config';
+import { deleteConfig } from 'helpers/config';
 
 describe('docker', () => {
+  afterEach(() => {
+    deleteConfig();
+  });
+
   describe('fuzzy disabled (default config)', async () => {
     const command = new Config('disable', {
       prompt: () => ({ choice: ConfigOptions.FUZZY_SEARCH }),
