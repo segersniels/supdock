@@ -4,11 +4,6 @@ import { homedir } from 'os';
 import Configstore from 'configstore';
 import ConfigOptions from 'enums/ConfigOptions';
 
-export const PATH =
-  process.env.NODE_ENV !== 'test'
-    ? `${homedir()}/.supdock/config.json`
-    : `${__dirname}/../../.config/config.json`;
-
 export type Configuration = Record<string, boolean>;
 
 // When config is being adjusted make sure we keep track of the old values and names
@@ -26,6 +21,11 @@ const defaultConfig: Configuration = {
   [ConfigOptions.SHORT_LOGS]: false,
 };
 
+const configPath =
+  process.env.NODE_ENV !== 'test'
+    ? `${homedir()}/.supdock/config.json`
+    : `${__dirname}/../../.config/config.json`;
+
 export default class Config {
   private initialConfig: Configuration;
 
@@ -35,10 +35,7 @@ export default class Config {
 
   private get config(): Configstore {
     return new Configstore(name, this.initialConfig, {
-      configPath:
-        process.env.NODE_ENV !== 'test'
-          ? `${homedir()}/.supdock/config.json`
-          : `${__dirname}/../../.config/config.json`,
+      configPath,
     });
   }
 
