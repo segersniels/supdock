@@ -3,6 +3,7 @@ import { name } from 'package';
 import { homedir } from 'os';
 import Configstore from 'configstore';
 import ConfigOptions from 'enums/ConfigOptions';
+import fs from 'fs';
 
 export type Configuration = Record<string, boolean>;
 
@@ -98,3 +99,16 @@ export default class Config {
     return this.config.all;
   };
 }
+
+export const deleteConfig = () => {
+  if (process.env.NODE_ENV !== 'test') {
+    throw new Error(
+      'Trying to delete the config outside of a testing environment',
+    );
+  }
+
+  // delete the config
+  fs.unlinkSync(configPath);
+  // clean up the parent directory
+  fs.rmdirSync(configPath.replace('/config.json', ''));
+};
