@@ -1,5 +1,5 @@
 import { version } from 'package';
-import { Commands } from 'metadata';
+import { default as metadata, Commands } from 'metadata';
 
 const generateCommandDescriptions = (
   commands: Commands,
@@ -36,13 +36,10 @@ GLOBAL OPTIONS:
 \t--version, -v\tprint the version`;
 };
 
-export const generateFlagDescriptions = (
-  commands: Commands,
-  command: string,
-) => {
+export const generateFlagDescriptions = (command: string) => {
   const descriptions: string[] = [];
-  if (commands[command] && commands[command].flags) {
-    for (const flag of commands[command].flags!) {
+  if (metadata[command] && metadata[command].flags) {
+    for (const flag of metadata[command].flags!) {
       if (flag.length === 1) {
         descriptions.push(`      --${flag[0]}`);
       } else {

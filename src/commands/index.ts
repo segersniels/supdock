@@ -6,7 +6,10 @@ import ConfigOptions from 'enums/ConfigOptions';
 import { error, traceFunction, info, log } from 'helpers/util';
 import FuzzySearch from 'fuzzy-search';
 import Config from 'helpers/config';
-import { generateCustomCommandDescription } from 'helpers/description';
+import {
+  generateFlagDescriptions,
+  generateCustomCommandDescription,
+} from 'helpers/description';
 import { version } from 'package';
 import { parseOutput } from 'helpers/test';
 import prompts from 'prompts';
@@ -242,22 +245,8 @@ export class Command {
       this.default();
     }
 
-    const generateFlagDescriptions = () => {
-      const descriptions: string[] = [];
-      if (this.metadata.flags) {
-        for (const flag of this.metadata.flags!) {
-          if (flag.length === 1) {
-            descriptions.push(`      --${flag[0]}`);
-          } else {
-            descriptions.push(`  -${flag[0]}, --${flag[1]}`);
-          }
-        }
-      }
-      return descriptions.join('\n');
-    };
-
     // Only log extra stuff if there are actual custom flags for the command
-    const flagDescriptions = generateFlagDescriptions();
+    const flagDescriptions = generateFlagDescriptions(this.command);
     if (flagDescriptions.length > 0) {
       info(
         `\nOptions supported through prompt (supdock):\n${flagDescriptions}`,
