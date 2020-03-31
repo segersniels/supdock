@@ -41,15 +41,6 @@
   "bin": {
     "supdock": "dist/index.js"
   },
-  "dependencies": {
-    "chalk": "^3.0.0",
-    "configstore": "^5.0.1",
-    "debug": "^4.1.1",
-    "fuzzy-search": "^3.0.2",
-    "lodash.flatten": "^4.4.0",
-    "minimist": "^1.2.5",
-    "prompts": "^2.3.1"
-  },
   "devDependencies": {
     "@types/chai": "^4.2.9",
     "@types/configstore": "^4.0.0",
@@ -63,12 +54,19 @@
     "@typescript-eslint/parser": "^2.14.0",
     "@zeit/ncc": "^0.21.1",
     "chai": "^4.2.0",
+    "chalk": "^3.0.0",
+    "configstore": "^5.0.1",
+    "debug": "^4.1.1",
     "eslint": "^6.7.2",
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-prettier": "^3.1.1",
+    "fuzzy-search": "^3.0.2",
+    "lodash.flatten": "^4.4.0",
+    "minimist": "^1.2.5",
     "mocha": "^7.1.0",
     "pkg": "^4.4.3",
     "prettier": "^1.19.1",
+    "prompts": "^2.3.1",
     "ts-node": "^8.6.2",
     "tsconfig-paths": "^3.9.0",
     "typescript": "^3.7.4"
