@@ -24,7 +24,14 @@ alias docker="supdock"
 
 ## Installation
 
-### Binary (recommended)
+### NPM
+
+```bash
+npm install -g supdock
+yarn global add supdock
+```
+
+### Binary
 
 Grab a binary from the [releases](https://github.com/segersniels/supdock-ts/releases) page and move it into your desired bin (eg. /usr/local/bin) location.
 
@@ -33,16 +40,13 @@ mv supdock-<os> /usr/local/bin/supdock
 chmod +x /usr/local/bin/supdock
 ```
 
-If speed/performance is important to you I recommend using the binary release instead of installing through npm or yarn as the bundled binary is a bit more responsive.
-
-### NPM
-
-```bash
-npm install -g supdock
-yarn global add supdock
-```
-
 ## Changelog
+
+### 2.4.6
+- A lot of internal code cleanup since last changelog
+- Minor bugfixes
+- Speed optimizations
+- Now has 0 external dependencies since everything is contained within supdock
 
 ### 2.4.2
 
