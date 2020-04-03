@@ -25,8 +25,7 @@ describe('logs', async () => {
       determineChoice: '456 - foo',
     });
 
-    const command = new Logs();
-    expect(await command.run()).to.eql('docker logs 456');
+    expect(await new Logs().run()).to.eql('docker logs 456');
   });
 
   it('should correctly execute when passing --follow', async () => {
@@ -40,8 +39,7 @@ describe('logs', async () => {
       },
     });
 
-    const command = new Logs();
-    expect(await command.run()).to.eql('docker logs --follow 456');
+    expect(await new Logs().run()).to.eql('docker logs --follow 456');
   });
 
   it('should append short logs flags', async () => {
@@ -49,8 +47,7 @@ describe('logs', async () => {
       prompt: { choice: ConfigOptions.SHORT_LOGS },
     });
 
-    const config = new Config('enable');
-    await config.run();
+    await new Config('enable').run();
 
     mock(Logs.prototype, sandbox, {
       createChoices: ['123 - abc', '456 - foo', '789 - bar'],
@@ -62,7 +59,8 @@ describe('logs', async () => {
       },
     });
 
-    const command = new Logs();
-    expect(await command.run()).to.eql('docker logs --tail 500 --follow 456');
+    expect(await new Logs().run()).to.eql(
+      'docker logs --tail 500 --follow 456',
+    );
   });
 });

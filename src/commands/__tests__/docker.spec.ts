@@ -17,8 +17,7 @@ describe('docker', () => {
       mock(Config.prototype, sandbox, {
         prompt: { choice: ConfigOptions.FUZZY_SEARCH },
       });
-      const command = new Config('disable');
-      await command.run();
+      await new Config('disable').run();
 
       mock(Docker.prototype, sandbox);
     });
@@ -29,8 +28,7 @@ describe('docker', () => {
     });
 
     it('should correctly passthrough to docker', async () => {
-      const command = new Docker('ps');
-      expect(await command.run()).to.eql('docker ps');
+      expect(await new Docker('ps').run()).to.eql('docker ps');
     });
 
     it('should correctly log usage', async () => {
@@ -42,8 +40,7 @@ describe('docker', () => {
         },
       });
 
-      const command = new Docker('ps');
-      expect(await command.run()).to.eql('docker ps --help');
+      expect(await new Docker('ps').run()).to.eql('docker ps --help');
     });
 
     it('should correctly log usage of supdock command', async () => {
@@ -55,8 +52,7 @@ describe('docker', () => {
         },
       });
 
-      const command = new Docker('start');
-      await command.run();
+      await new Docker('start').run();
     });
 
     it('should correctly execute supdock prompt command', async () => {
@@ -65,8 +61,7 @@ describe('docker', () => {
         determineChoice: '456 - foo',
       });
 
-      const command = new Docker('start');
-      expect(await command.run()).to.eql('docker start 456');
+      expect(await new Docker('start').run()).to.eql('docker start 456');
     });
 
     it('should correctly execute parallel prompt command', async () => {
@@ -77,8 +72,7 @@ describe('docker', () => {
         },
       });
 
-      const command = new Docker('start');
-      expect(await command.run()).to.eql(['123', '456', '789']);
+      expect(await new Docker('start').run()).to.eql(['123', '456', '789']);
     });
 
     it('should correctly passthrough to docker when fuzzy search is not enabled', async () => {
@@ -89,8 +83,7 @@ describe('docker', () => {
         },
       });
 
-      const command = new Docker('start');
-      expect(await command.run()).to.eql('docker start 123');
+      expect(await new Docker('start').run()).to.eql('docker start 123');
     });
   });
 
@@ -102,15 +95,13 @@ describe('docker', () => {
       mock(Config.prototype, sandbox, {
         prompt: { choice: ConfigOptions.FUZZY_SEARCH },
       });
-      const command = new Config('enable');
-      await command.run();
+      await new Config('enable').run();
 
       // Disable caution
       mock(Config.prototype, sandbox, {
         prompt: { choice: ConfigOptions.CAUTION_CHECK },
       });
-      const check = new Config('disable');
-      await check.run();
+      await new Config('disable').run();
     });
 
     afterEach(() => {
@@ -126,8 +117,7 @@ describe('docker', () => {
         },
       });
 
-      const command = new Docker('start');
-      expect(await command.run()).to.eql('docker start abc');
+      expect(await new Docker('start').run()).to.eql('docker start abc');
     });
 
     it('should correctly fuzzy match when typing part of the name', async () => {
@@ -138,8 +128,7 @@ describe('docker', () => {
         },
       });
 
-      const command = new Docker('start');
-      expect(await command.run()).to.eql('docker start 123');
+      expect(await new Docker('start').run()).to.eql('docker start 123');
     });
 
     it('should correctly fuzzy match when id is fully matched', async () => {
@@ -150,8 +139,7 @@ describe('docker', () => {
         },
       });
 
-      const command = new Docker('start');
-      expect(await command.run()).to.eql('docker start 456');
+      expect(await new Docker('start').run()).to.eql('docker start 456');
     });
   });
 });

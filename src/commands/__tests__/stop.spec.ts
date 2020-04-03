@@ -21,8 +21,7 @@ describe('stop', () => {
       determineChoice: '456 - foo',
     });
 
-    const command = new Stop();
-    expect(await command.run()).to.eql('docker stop 456');
+    expect(await new Stop().run()).to.eql('docker stop 456');
   });
 
   it('should correctly execute with --force flag', async () => {
@@ -36,7 +35,6 @@ describe('stop', () => {
       },
     });
 
-    const command = new Stop();
-    expect(await command.run()).to.eql('docker rm --force 456');
+    expect(await new Stop().run()).to.eql('docker rm --force 456');
   });
 });

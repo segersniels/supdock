@@ -17,8 +17,7 @@ describe('prune', () => {
   });
 
   it('should correctly execute', async () => {
-    const command = new Prune();
-    expect(await command.run()).to.eql('docker system prune -f');
+    expect(await new Prune().run()).to.eql('docker system prune -f');
   });
 
   it('should correctly return info', async () => {
@@ -30,7 +29,6 @@ describe('prune', () => {
       },
     });
 
-    const command = new Prune();
-    expect(await command.run()).to.eql('docker system df');
+    expect(await new Prune().run()).to.eql('docker system df');
   });
 });

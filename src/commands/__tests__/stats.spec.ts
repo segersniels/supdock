@@ -17,8 +17,7 @@ describe('stats', () => {
   });
 
   it('should correctly execute', async () => {
-    const command = new Stats();
-    expect(await command.run()).to.eql('docker stats');
+    expect(await new Stats().run()).to.eql('docker stats');
   });
 
   it('should correctly execute with --all flag', async () => {
@@ -30,8 +29,7 @@ describe('stats', () => {
       },
     });
 
-    const command = new Stats();
-    expect(await command.run()).to.eql('docker stats --all');
+    expect(await new Stats().run()).to.eql('docker stats --all');
   });
 
   it('should correctly prompt when passing --prompt flag', async () => {
@@ -45,7 +43,6 @@ describe('stats', () => {
       determineChoice: '456 - foo',
     });
 
-    const command = new Stats();
-    expect(await command.run()).to.eql('docker stats 456');
+    expect(await new Stats().run()).to.eql('docker stats 456');
   });
 });

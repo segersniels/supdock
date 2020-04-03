@@ -22,7 +22,6 @@ describe('env', () => {
       determineShell: { choice: 'bash' },
     });
 
-    const command = new Ssh();
-    expect(await command.run()).to.eql(`docker exec -ti 456 bash`);
+    expect(await new Ssh().run()).to.eql(`docker exec -ti 456 bash`);
   });
 });

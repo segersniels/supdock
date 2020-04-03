@@ -22,8 +22,7 @@ describe('config', () => {
       prompt: { choice: ConfigOptions.CAUTION_CHECK },
     });
 
-    const command = new Config('enable');
-    await command.run();
+    await new Config('enable').run();
   });
 
   it('should correctly disable', async () => {
@@ -31,8 +30,7 @@ describe('config', () => {
       prompt: { choice: ConfigOptions.CAUTION_CHECK },
     });
 
-    const command = new Config('disable');
-    await command.run();
+    await new Config('disable').run();
   });
 
   it('should correctly log usage of fully custom command', async () => {
@@ -44,7 +42,6 @@ describe('config', () => {
       },
     });
 
-    const command = new Config('disable');
-    await command.run();
+    await new Config('disable').run();
   });
 });

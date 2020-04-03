@@ -21,7 +21,6 @@ describe('env', () => {
       determineChoice: '456 - foo',
     });
 
-    const command = new Env();
-    expect(await command.run()).to.eql('docker exec -ti 456 env');
+    expect(await new Env().run()).to.eql('docker exec -ti 456 env');
   });
 });
