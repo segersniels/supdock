@@ -1,10 +1,10 @@
-import { Command, MockingConfig } from './index';
+import { Command } from './index';
 import { traceFunction } from 'helpers/util';
 
 @traceFunction()
 export default class Stop extends Command {
-  constructor(config?: MockingConfig) {
-    super('stop', config);
+  constructor() {
+    super('stop');
   }
 
   public async execute() {

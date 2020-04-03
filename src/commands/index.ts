@@ -14,28 +14,12 @@ import { version } from 'package';
 import { parseOutput } from 'helpers/test';
 import prompts from 'prompts';
 
-export interface MockingConfig {
-  createChoices?: () => string[];
-  determineChoice?: () => string;
-  parseFlags?: () => string[];
-  prompt?: () => { choice: string };
-  nonFlags?: string[];
-}
-
-interface Internal {
-  createChoices: Function;
-  determineChoice: Function;
-  parseFlags: Function;
-  prompt: Function;
-}
-
 @traceFunction()
 export class Command {
   private command: string;
+  private mocking: boolean;
   public metadata: Metadata;
   public allowedFlags: string[];
-  public internal: Internal;
-  public mocking: boolean;
   public config: Config = new Config();
   public args: {
     command: any;
@@ -46,7 +30,7 @@ export class Command {
   public flags: string[];
   public shouldPrompt = true;
 
-  constructor(command: string, config?: MockingConfig) {
+  constructor(command: string) {
     // Metadata
     this.command = command;
     this.metadata = metadata[command];
@@ -55,24 +39,11 @@ export class Command {
     this.config.migrate();
 
     // Mocking
-    this.mocking = config !== undefined;
-    this.internal = {
-      parseFlags: this.mocking
-        ? config?.parseFlags ||
-          function() {
-            return [];
-          }
-        : this.parseFlags.bind(this),
-      createChoices: config?.createChoices || this.createChoices.bind(this),
-      determineChoice:
-        config?.determineChoice || this.determineChoice.bind(this),
-      prompt: config?.prompt || this.prompt.bind(this),
-    };
+    this.mocking = process.env.NODE_ENV === 'test';
 
     // Flags
-    this.args.nonFlags = config?.nonFlags || this.args.nonFlags;
     this.allowedFlags = flatten(this.metadata?.flags) || [];
-    this.flags = this.internal.parseFlags(this.args.flags);
+    this.flags = this.parseFlags(this.args.flags);
   }
 
   private parseFlags(flags: any) {
@@ -105,9 +76,9 @@ export class Command {
       true,
     );
 
-    const ids: string[] = this.internal
-      .createChoices()
-      .map((choice: string) => choice.split('-')[0].trim());
+    const ids: string[] = this.createChoices().map((choice: string) =>
+      choice.split('-')[0].trim(),
+    );
     ids.forEach(id => {
       const child = spawn('docker', [this.command, id], {
         detached: true,
@@ -153,7 +124,7 @@ export class Command {
 
         // Ask the user for confirmation
         if (this.config.get(ConfigOptions.CAUTION_CHECK)) {
-          const confirmation = await this.internal.prompt(
+          const confirmation = await this.prompt(
             `Are you sure you want to execute '${this.command}' for container '${choice}'`,
             ['Yes', 'No'],
           );
@@ -181,7 +152,7 @@ export class Command {
         }
 
         choice = (
-          await this.internal.prompt(
+          await this.prompt(
             `Search '${term}' returned more than one result, please make a choice from the list below.`,
             choicesAfterFuzzySearching,
           )
@@ -191,7 +162,7 @@ export class Command {
     return choice;
   };
 
-  private async determineChoice(choices: string[]) {
+  public async determineChoice(choices: string[]) {
     const { question, allowFuzzySearching } = this.metadata;
 
     // Try to fuzzy match the given search term
@@ -200,11 +171,11 @@ export class Command {
     }
 
     // Default behaviour just ask question and prompt for choice
-    const { choice } = await this.internal.prompt(question!, choices);
+    const { choice } = await this.prompt(question!, choices);
     return choice;
   }
 
-  private createChoices() {
+  public createChoices() {
     return execSync(this.metadata.type!, { maxBuffer: 1024 * 10000 })
       .toString()
       .split('\n')
@@ -316,7 +287,7 @@ export class Command {
     await this.inject();
 
     if (this.shouldPrompt) {
-      const choices = this.internal.createChoices();
+      const choices = this.createChoices();
       if (!choices.length) {
         return error(
           this.metadata.error ||
@@ -325,7 +296,7 @@ export class Command {
       }
 
       // Extract the id from the choice that was made or given
-      const choice = await this.internal.determineChoice(choices);
+      const choice = await this.determineChoice(choices);
 
       // Unable to determine choice or when defaulted to docker
       // When testing we want to test if we defaulted correctly in some cases

@@ -4,45 +4,65 @@ import Config from 'commands/config';
 import { expect } from 'chai';
 import ConfigOptions from 'enums/ConfigOptions';
 import { deleteConfig } from 'helpers/config';
+import sinon from 'sinon';
+import { mock } from 'helpers/test';
 
 describe('logs', async () => {
+  let sandbox: sinon.SinonSandbox;
+
+  beforeEach(() => {
+    sandbox = sinon.createSandbox();
+  });
+
   afterEach(() => {
+    sandbox.restore();
     deleteConfig();
   });
 
-  const config = new Config('disable', {
-    prompt: () => ({ choice: ConfigOptions.SHORT_LOGS }),
-  });
-  await config.run();
-
   it('should correctly execute', async () => {
-    const command = new Logs({
-      createChoices: () => ['123 - abc', '456 - foo', '789 - bar'],
-      determineChoice: () => '456 - foo',
+    mock(Logs.prototype, sandbox, {
+      createChoices: ['123 - abc', '456 - foo', '789 - bar'],
+      determineChoice: '456 - foo',
     });
+
+    const command = new Logs();
     expect(await command.run()).to.eql('docker logs 456');
   });
 
   it('should correctly execute when passing --follow', async () => {
-    const command = new Logs({
-      createChoices: () => ['123 - abc', '456 - foo', '789 - bar'],
-      determineChoice: () => '456 - foo',
-      parseFlags: () => ['--follow'],
+    mock(Logs.prototype, sandbox, {
+      createChoices: ['123 - abc', '456 - foo', '789 - bar'],
+      determineChoice: '456 - foo',
+      args: {
+        flags: {
+          follow: true,
+        },
+      },
     });
+
+    const command = new Logs();
     expect(await command.run()).to.eql('docker logs --follow 456');
   });
 
   it('should append short logs flags', async () => {
-    const config = new Config('enable', {
-      prompt: () => ({ choice: ConfigOptions.SHORT_LOGS }),
+    mock(Config.prototype, sandbox, {
+      prompt: { choice: ConfigOptions.SHORT_LOGS },
     });
+
+    const config = new Config('enable');
     await config.run();
 
-    const command = new Logs({
-      createChoices: () => ['123 - abc', '456 - foo', '789 - bar'],
-      determineChoice: () => '456 - foo',
-      parseFlags: () => ['--follow'],
+    mock(Logs.prototype, sandbox, {
+      createChoices: ['123 - abc', '456 - foo', '789 - bar'],
+      determineChoice: '456 - foo',
+      args: {
+        flags: {
+          follow: true,
+        },
+      },
     });
+
+    const command = new Logs();
     expect(await command.run()).to.eql('docker logs --tail 500 --follow 456');
   });
 });

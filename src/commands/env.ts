@@ -1,10 +1,10 @@
-import { Command, MockingConfig } from './index';
+import { Command } from './index';
 import { traceFunction } from 'helpers/util';
 
 @traceFunction()
 export default class Env extends Command {
-  constructor(config?: MockingConfig) {
-    super('env', config);
+  constructor() {
+    super('env');
   }
 
   public async execute() {

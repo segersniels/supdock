@@ -1,11 +1,11 @@
-import { Command, MockingConfig } from './index';
+import { Command } from './index';
 import { traceFunction } from 'helpers/util';
 import ConfigOptions from 'enums/ConfigOptions';
 
 @traceFunction()
 export default class Logs extends Command {
-  constructor(config?: MockingConfig) {
-    super('logs', config);
+  constructor() {
+    super('logs');
   }
 
   public async execute() {

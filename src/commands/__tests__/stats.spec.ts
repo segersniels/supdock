@@ -1,26 +1,51 @@
 import 'mocha';
 import Stats from 'commands/stats';
 import { expect } from 'chai';
+import sinon from 'sinon';
+import { mock } from 'helpers/test';
 
 describe('stats', () => {
+  let sandbox: sinon.SinonSandbox;
+
+  beforeEach(() => {
+    sandbox = sinon.createSandbox();
+    mock(Stats.prototype, sandbox);
+  });
+
+  afterEach(() => {
+    sandbox.restore();
+  });
+
   it('should correctly execute', async () => {
-    const command = new Stats({});
+    const command = new Stats();
     expect(await command.run()).to.eql('docker stats');
   });
 
   it('should correctly execute with --all flag', async () => {
-    const command = new Stats({
-      parseFlags: () => ['--all'],
+    mock(Stats.prototype, sandbox, {
+      args: {
+        flags: {
+          all: true,
+        },
+      },
     });
+
+    const command = new Stats();
     expect(await command.run()).to.eql('docker stats --all');
   });
 
   it('should correctly prompt when passing --prompt flag', async () => {
-    const command = new Stats({
-      parseFlags: () => ['--prompt'],
-      createChoices: () => ['123 - abc', '456 - foo', '789 - bar'],
-      determineChoice: () => '456 - foo',
+    mock(Stats.prototype, sandbox, {
+      args: {
+        flags: {
+          prompt: true,
+        },
+      },
+      createChoices: ['123 - abc', '456 - foo', '789 - bar'],
+      determineChoice: '456 - foo',
     });
+
+    const command = new Stats();
     expect(await command.run()).to.eql('docker stats 456');
   });
 });

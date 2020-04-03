@@ -1,12 +1,12 @@
-import { Command, MockingConfig } from './index';
+import { Command } from './index';
 import { traceFunction, error, info } from 'helpers/util';
 
 @traceFunction()
 export default class Config extends Command {
   private type: string;
 
-  constructor(type: string, config?: MockingConfig) {
-    super(type, config);
+  constructor(type: string) {
+    super(type);
     this.type = type;
   }
 
@@ -29,7 +29,7 @@ export default class Config extends Command {
       ) {
         error(`No options found to ${this.type}`);
       }
-      const { choice } = await this.internal.prompt(
+      const { choice } = await this.prompt(
         `Which config value would you like to ${this.type}?`,
         this.type === 'enable' ? this.config.inactive : this.config.active,
       );

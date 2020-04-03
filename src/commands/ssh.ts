@@ -1,23 +1,13 @@
-import { Command, MockingConfig } from './index';
+import { Command } from './index';
 import { traceFunction } from 'helpers/util';
-
-interface ExtendedConfig {
-  determineShell: Function;
-}
 
 @traceFunction()
 export default class Ssh extends Command {
-  private extended: ExtendedConfig;
-
-  constructor(config?: MockingConfig, extended?: ExtendedConfig) {
-    super('ssh', config);
-    this.extended = {
-      determineShell:
-        extended?.determineShell || this.determineShell.bind(this),
-    };
+  constructor() {
+    super('ssh');
   }
 
-  private async determineShell() {
+  public async determineShell() {
     return await this.prompt('Which shell is the container using?', [
       'bash',
       'ash',
@@ -25,7 +15,7 @@ export default class Ssh extends Command {
   }
 
   public async execute() {
-    const { choice } = await this.extended.determineShell();
+    const { choice } = await this.determineShell();
     const args = ['exec', '-ti', this.id.trim(), choice];
     return this.spawn('docker', args);
   }

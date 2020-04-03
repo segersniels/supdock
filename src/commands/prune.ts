@@ -1,10 +1,10 @@
-import { Command, MockingConfig } from './index';
+import { Command } from './index';
 import { traceFunction } from 'helpers/util';
 
 @traceFunction()
 export default class Prune extends Command {
-  constructor(config?: MockingConfig) {
-    super('prune', config);
+  constructor() {
+    super('prune');
   }
 
   public async run() {

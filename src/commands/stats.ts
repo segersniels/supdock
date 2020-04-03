@@ -1,10 +1,10 @@
-import { Command, MockingConfig } from './index';
+import { Command } from './index';
 import { traceFunction } from 'helpers/util';
 
 @traceFunction()
 export default class Stats extends Command {
-  constructor(config?: MockingConfig) {
-    super('stats', config);
+  constructor() {
+    super('stats');
     this.shouldPrompt = false;
   }
 
