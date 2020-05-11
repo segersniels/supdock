@@ -15,7 +15,7 @@ import { parseOutput } from 'helpers/test';
 import prompts from 'prompts';
 
 @traceFunction()
-export class Command {
+export default class Command {
   private command: string;
   private mocking: boolean;
   public metadata: Metadata;

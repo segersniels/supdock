@@ -1,4 +1,4 @@
-import { Command } from './index';
+import Command from 'commands';
 import { traceFunction } from 'helpers/util';
 import ConfigOptions from 'enums/ConfigOptions';
 
