@@ -21,7 +21,6 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "metadata": ["metadata/index.ts"],
       "*": ["src/*"],
       "package": ["package.json"]
     }

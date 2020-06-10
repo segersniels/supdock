@@ -81,6 +81,14 @@ const metadata: Commands = {
     custom: true,
     allowFuzzySearching: true,
   },
+  cat: {
+    description: 'Echo the contents of a file using cat on a container',
+    question: 'Which container would you like to cat?',
+    error: 'no containers available',
+    type: CommandAlias.RUNNING_CONTAINERS,
+    custom: true,
+    allowFuzzySearching: true,
+  },
   env: {
     description: 'See the environment variables of a running container',
     question:
