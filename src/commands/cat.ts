@@ -20,6 +20,10 @@ export default class Cat extends Command {
     let file;
     const choices = this.createChoices();
     const choice = await this.determineChoice(choices);
+    if (!choice) {
+      return;
+    }
+
     this.id = choice.split('-')[0].trim();
 
     if (this.args.nonFlags.length > 1) {
