@@ -166,7 +166,7 @@ export default class Command {
     const { question, allowFuzzySearching } = this.metadata;
 
     // Try to fuzzy match the given search term
-    if (allowFuzzySearching && this.args.nonFlags.length === 1) {
+    if (allowFuzzySearching && this.args.nonFlags.length >= 1) {
       return await this.fuzzySearch(choices);
     }
 

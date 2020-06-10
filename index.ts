@@ -40,6 +40,9 @@ const run = async () => {
     case 'disable':
       await new (await import('commands/config')).default(command).run();
       break;
+    case 'cat':
+      await new (await import('commands/cat')).default().run();
+      break;
     default:
       await new (await import('commands/docker')).default(command).run();
   }
