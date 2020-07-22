@@ -8,7 +8,7 @@ export default class Stats extends Command {
     this.shouldPrompt = false;
   }
 
-  public async inject() {
+  public async run() {
     if (this.flags.includes('--all')) {
       return this.spawn('docker', ['stats', '--all']);
     }
@@ -24,6 +24,6 @@ export default class Stats extends Command {
       );
     }
 
-    return;
+    return super.run();
   }
 }
