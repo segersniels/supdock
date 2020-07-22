@@ -2,7 +2,7 @@ version: 2
 defaults: &defaults
   working_directory: ~/supdock
   docker:
-    - image: circleci/node:10
+    - image: circleci/node:12
 
 jobs:
   build:
