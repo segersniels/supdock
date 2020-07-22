@@ -52,7 +52,7 @@ describe('docker', () => {
         },
       });
 
-      await new Docker('start').run();
+      await new Docker('start').usage();
     });
 
     it('should correctly execute supdock prompt command', async () => {
