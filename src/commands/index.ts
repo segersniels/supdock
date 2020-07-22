@@ -182,9 +182,6 @@ export default class Command {
       .filter(line => line);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  public async inject(): Promise<any> {}
-
   public version() {
     log(version);
   }
@@ -282,9 +279,6 @@ export default class Command {
     if (this.args.nonFlags.includes('all') && this.metadata.parallelExecution) {
       return this.parallel();
     }
-
-    // Custom initialisation logic passed
-    await this.inject();
 
     if (this.shouldPrompt) {
       const choices = this.createChoices();
