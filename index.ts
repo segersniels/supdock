@@ -4,48 +4,63 @@ import { log } from 'helpers/util';
 import { generateGeneralDescription } from 'helpers/description';
 import metadata from 'metadata';
 
+interface SimplifiedExec {
+  run: () => Promise<any>;
+  usage: () => void;
+  version: () => void;
+}
+
 const run = async () => {
   const { command, flags } = parseArguments();
 
-  if ((flags.help || flags.h) && !command) {
-    const commands = Object.keys(metadata);
-    return log(generateGeneralDescription(metadata, commands));
-  }
-
-  if ((flags.version || flags.v) && !command) {
-    await new (await import('commands/docker')).default(command).version();
-  }
-
   // Ugly repetitive code since pkg doesn't work well with dynamic importing
+  let exec: SimplifiedExec | null = null;
   switch (command) {
     case 'stats':
-      await new (await import('commands/stats')).default().run();
+      exec = new (await import('commands/stats')).default();
       break;
     case 'ssh':
-      await new (await import('commands/ssh')).default().run();
+      exec = new (await import('commands/ssh')).default();
       break;
     case 'prune':
-      await new (await import('commands/prune')).default().run();
+      exec = new (await import('commands/prune')).default();
       break;
     case 'env':
-      await new (await import('commands/env')).default().run();
+      exec = new (await import('commands/env')).default();
       break;
     case 'stop':
-      await new (await import('commands/stop')).default().run();
+      exec = new (await import('commands/stop')).default();
       break;
     case 'logs':
-      await new (await import('commands/logs')).default().run();
+      exec = new (await import('commands/logs')).default();
       break;
     case 'enable':
     case 'disable':
-      await new (await import('commands/config')).default(command).run();
+      exec = new (await import('commands/config')).default(command);
       break;
     case 'cat':
-      await new (await import('commands/cat')).default().run();
+      exec = new (await import('commands/cat')).default();
       break;
     default:
-      await new (await import('commands/docker')).default(command).run();
+      exec = new (await import('commands/docker')).default(command);
   }
+
+  // Usage requested
+  if (flags.help || flags.h) {
+    if (!command) {
+      const commands = Object.keys(metadata);
+      return log(generateGeneralDescription(metadata, commands));
+    }
+
+    exec.usage();
+  }
+
+  // Version requested
+  if ((flags.version || flags.v) && !command) {
+    exec.version();
+  }
+
+  exec.run();
 };
 
 run();

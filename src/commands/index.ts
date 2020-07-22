@@ -264,16 +264,6 @@ export default class Command {
       return this.default();
     }
 
-    // Usage requested
-    if (
-      this.args.flags.help ||
-      this.args.flags.h ||
-      this.flags.includes('--help') ||
-      this.flags.includes('-h')
-    ) {
-      return this.usage();
-    }
-
     // Some commands allow passing 'all' as a valid option. eg. start, stop and restart.
     // These can bypass everything custom and just be fired early
     if (this.args.nonFlags.includes('all') && this.metadata.parallelExecution) {
