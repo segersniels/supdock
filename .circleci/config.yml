@@ -49,6 +49,7 @@ jobs:
       - run:
           name: 'GitHub release'
           command: |
+            VERSION=$(cat ~/supdock/package.json |grep version)
             if ! [[ "${VERSION}" == *"beta"* ]]; then
               ./scripts/github-release.sh
             fi
