@@ -14,7 +14,7 @@ interface SimplifiedExec {
   const { command, flags } = parseArguments();
 
   // Ugly repetitive code since pkg doesn't work well with dynamic importing
-  let exec: SimplifiedExec | null = null;
+  let exec: SimplifiedExec;
   switch (command) {
     case 'stats':
       exec = new (await import('commands/stats')).default();
