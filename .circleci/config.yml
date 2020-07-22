@@ -48,7 +48,10 @@ jobs:
             fi
       - run:
           name: 'GitHub release'
-          command: ./scripts/github-release.sh
+          command: |
+            if ! [[ "${VERSION}" == *"beta"* ]]; then
+              ./scripts/github-release.sh
+            fi
 
 workflows:
   version: 2
