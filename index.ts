@@ -52,12 +52,12 @@ interface SimplifiedExec {
       return log(generateGeneralDescription(metadata, commands));
     }
 
-    exec.usage();
+    return exec.usage();
   }
 
   // Version requested
   if ((flags.version || flags.v) && !command) {
-    exec.version();
+    return exec.version();
   }
 
   exec.run();
