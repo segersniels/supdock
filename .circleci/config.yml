@@ -36,17 +36,19 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/supdock
+      - run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/supdock/.npmrc
       - run:
-          name: 'Checking if on correct branch'
-          command: ./scripts/check.sh
+          name: 'yarn Release'
+          command: |
+            VERSION=$(cat ~/supdock/package.json |grep version)
+            if [[ "${VERSION}" == *"beta"* ]]; then
+              yarn publish:beta
+            else
+              yarn publish:master
+            fi
       - run:
           name: 'GitHub release'
           command: ./scripts/github-release.sh
-      - run:
-          name: 'NPM/yarn release'
-          command: |
-            echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/supdock/.npmrc
-            yarn publish:${CIRCLE_BRANCH} || true
 
 workflows:
   version: 2
@@ -60,4 +62,3 @@ workflows:
             branches:
               only:
                 - master
-                - beta
