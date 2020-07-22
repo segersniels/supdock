@@ -10,7 +10,7 @@ interface SimplifiedExec {
   version: () => void;
 }
 
-const run = async () => {
+(async () => {
   const { command, flags } = parseArguments();
 
   // Ugly repetitive code since pkg doesn't work well with dynamic importing
@@ -61,6 +61,4 @@ const run = async () => {
   }
 
   exec.run();
-};
-
-run();
+})();
