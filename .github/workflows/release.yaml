@@ -1,0 +1,67 @@
+name: Release
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Cache target
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Cache
+        uses: actions/cache@v1
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-
+      - run: yarn install
+      - run: yarn check:typescript
+      - run: yarn lint
+      - run: yarn test
+      - run: yarn compile
+      - name: Build and see if executable works
+        run: |
+          yarn build:ci
+          ./bin/supdock-linux --help
+      - name: Persist artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: built_dirs
+          path: |
+            bin
+            dist
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Grab persisted artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: built_dirs
+      - name: Configure registry
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+      - name: Release Yarn
+        run: |
+          VERSION=$(cat package.json |grep version)
+          if [[ "${VERSION}" == *"beta"* ]]; then
+            yarn publish:beta
+          else
+            yarn publish:master
+          fi
+      - name: Release Github
+        run: |
+          VERSION=$(cat package.json |grep version)
+          if ! [[ "${VERSION}" == *"beta"* ]]; then
+            ./scripts/github-release.sh
+          fi
