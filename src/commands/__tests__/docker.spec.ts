@@ -64,17 +64,6 @@ describe('docker', () => {
       expect(await new Docker('start').run()).to.eql('docker start 456');
     });
 
-    it('should correctly execute parallel prompt command', async () => {
-      mock(Docker.prototype, sandbox, {
-        createChoices: ['123 - abc', '456 - foo', '789 - bar'],
-        args: {
-          nonFlags: ['all'],
-        },
-      });
-
-      expect(await new Docker('start').run()).to.eql(['123', '456', '789']);
-    });
-
     it('should correctly passthrough to docker when fuzzy search is not enabled', async () => {
       mock(Docker.prototype, sandbox, {
         createChoices: ['123 - abc', '456 - foo', '789 - bar'],
