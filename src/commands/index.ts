@@ -137,15 +137,18 @@ export default class Command {
 
         // Ask the user for confirmation
         if (this.config.get(ConfigOptions.CAUTION_CHECK)) {
-          const confirmation = await this.prompt(
-            `Are you sure you want to execute '${this.command}' for container '${choice}'`,
-            ['Yes', 'No'],
-          );
+          const confirmation = await prompts({
+            type: 'confirm',
+            name: 'choice',
+            message: `Are you sure you want to execute '${this.command}' for container '${choice}'`,
+            initial: true,
+          });
 
-          if (confirmation.choice === 'No') {
+          if (!confirmation.choice) {
             throw new ExecutionError('Exiting on request of user...');
           }
         }
+
         break;
       default:
         // Check if one of the choices match the search term
