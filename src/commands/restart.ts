@@ -10,9 +10,7 @@ export default class Restart extends Command {
   private errorHandler = new ErrorHandler();
 
   constructor() {
-    super('restart', {
-      catchExecutionErrors: false, // Disable the default error catching so we can handle it ourselves
-    });
+    super('restart');
   }
 
   public async run() {

@@ -13,10 +13,6 @@ import prompts from 'prompts';
 import { ExecutionError } from 'helpers/errors';
 import CommandAlias from 'enums/CommandAlias';
 
-interface OptionalExecutionProps {
-  catchExecutionErrors?: boolean;
-}
-
 @UtilHelper.traceFunction()
 export default class Command {
   private command: string;
@@ -32,9 +28,8 @@ export default class Command {
   public id: string;
   public flags: string[];
   public shouldPrompt = true;
-  public catchExecutionErrors: boolean;
 
-  constructor(command: string, optional?: OptionalExecutionProps) {
+  constructor(command: string) {
     // Metadata
     this.command = command;
     this.metadata = metadata[command];
@@ -48,9 +43,6 @@ export default class Command {
     // Flags
     this.allowedFlags = flatten(this.metadata?.flags) || [];
     this.flags = this.parseFlags(this.args.flags);
-
-    // Error handling
-    this.catchExecutionErrors = optional?.catchExecutionErrors ?? true;
   }
 
   private parseFlags(flags: any) {
