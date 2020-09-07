@@ -30,8 +30,14 @@ interface SimplifiedExec {
     case 'env':
       exec = new (await import('commands/env')).default();
       break;
+    case 'start':
+      exec = new (await import('commands/start')).default();
+      break;
     case 'stop':
       exec = new (await import('commands/stop')).default();
+      break;
+    case 'restart':
+      exec = new (await import('commands/restart')).default();
       break;
     case 'logs':
       exec = new (await import('commands/logs')).default();
@@ -42,9 +48,6 @@ interface SimplifiedExec {
       break;
     case 'cat':
       exec = new (await import('commands/cat')).default();
-      break;
-    case 'restart':
-      exec = new (await import('commands/restart')).default();
       break;
     default:
       exec = new (await import('commands/docker')).default(command);

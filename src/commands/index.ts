@@ -68,7 +68,7 @@ export default class Command {
     return parsed;
   }
 
-  private parallel() {
+  public parallel() {
     UtilHelper.info(
       'Asynchronous execution of command is happening in the background',
     );
@@ -270,15 +270,9 @@ export default class Command {
   }
 
   public async run() {
-    // Default docker command
+    // No metadata found for request command, pass to default docker exection
     if (!this.metadata) {
       return this.default();
-    }
-
-    // Some commands allow passing 'all' as a valid option. eg. start, stop and restart.
-    // These can bypass everything custom and just be fired early
-    if (this.args.nonFlags.includes('all') && this.metadata.parallelExecution) {
-      return this.parallel();
     }
 
     if (this.shouldPrompt) {

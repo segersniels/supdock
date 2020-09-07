@@ -14,4 +14,12 @@ export default class Stop extends Command {
 
     return this.spawn('docker', ['stop', ...this.flags, this.id]);
   }
+
+  public async run() {
+    if (this.args.nonFlags.includes('all') && this.metadata.parallelExecution) {
+      return this.parallel();
+    }
+
+    return await super.run();
+  }
 }

@@ -15,7 +15,14 @@ export default class Restart extends Command {
 
   public async run() {
     try {
-      await super.run();
+      if (
+        this.args.nonFlags.includes('all') &&
+        this.metadata.parallelExecution
+      ) {
+        return this.parallel();
+      }
+
+      return await super.run();
     } catch (err) {
       this.errorHandler.catch(err, async err => {
         if (err.message.includes('Was not able to match with container')) {
