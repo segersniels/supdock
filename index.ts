@@ -41,6 +41,9 @@ interface SimplifiedExec {
     case 'cat':
       exec = new (await import('commands/cat')).default();
       break;
+    case 'restart':
+      exec = new (await import('commands/restart')).default();
+      break;
     default:
       exec = new (await import('commands/docker')).default(command);
   }
