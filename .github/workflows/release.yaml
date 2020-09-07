@@ -51,17 +51,14 @@ jobs:
           name: built_dirs
       - name: Configure registry
         run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-      - name: Release Yarn
+      - name: Get current package.json version
+        id: current_version
+        uses: martinbeentjes/npm-get-version-action@master
+      - name: Release beta
+        if: contains(steps.current_version.outputs.current-version, 'beta')
+        run: yarn publish:beta
+      - name: Release
+        if: "!contains(steps.current_version.outputs.current-version, 'beta')"
         run: |
-          VERSION=$(cat package.json |grep version)
-          if [[ "${VERSION}" == *"beta"* ]]; then
-            yarn publish:beta
-          else
-            yarn publish:master
-          fi
-      - name: Release Github
-        run: |
-          VERSION=$(cat package.json |grep version)
-          if ! [[ "${VERSION}" == *"beta"* ]]; then
-            ./scripts/github-release.sh
-          fi
+          yarn publish:master
+          ./scripts/github-release.sh
