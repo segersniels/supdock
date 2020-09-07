@@ -92,6 +92,7 @@ export default class Config {
     if (typeof (defaultConfig as any)[key] === 'undefined') {
       error(`Invalid config '${key}' detected`);
     }
+
     this.config.set(key, value);
   };
 

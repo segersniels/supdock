@@ -80,6 +80,7 @@ export default class Command {
     const ids: string[] = this.createChoices().map((choice: string) =>
       choice.split('-')[0].trim(),
     );
+
     ids.forEach(id => {
       const child = spawn('docker', [this.command, id], {
         detached: true,
@@ -112,6 +113,7 @@ export default class Command {
         // Check if the nonFlags passed completely match an id or name
         // We don't want to ask for confirmation in this case
         choice = choicesAfterFuzzySearching[0];
+
         if (
           (term === choice.split('-')[0].trim() ||
             term === choice.split('-')[1].trim() ||
@@ -226,10 +228,12 @@ export default class Command {
     const flagDescriptions = DescriptionHelper.generateFlagDescriptions(
       this.command,
     );
+
     if (flagDescriptions.length > 0) {
       UtilHelper.info(
         `\nOptions supported through prompt (supdock):\n${flagDescriptions}`,
       );
+
       if (extraUsageInfo) {
         UtilHelper.info(`\n${extraUsageInfo}`);
       }
@@ -277,6 +281,7 @@ export default class Command {
 
     if (this.shouldPrompt) {
       const choices = this.createChoices();
+
       if (!choices.length) {
         throw new ExecutionError(
           this.metadata.error ||

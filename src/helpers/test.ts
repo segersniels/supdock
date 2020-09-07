@@ -24,6 +24,7 @@ export function mock<T extends Record<string, any>>(
 
   // Mock all the remaining overrides
   delete functionOverrides?.args;
+
   if (functionOverrides) {
     Object.keys(functionOverrides).forEach(f => {
       sandbox.stub(classToMock, f).returns(functionOverrides[f]);

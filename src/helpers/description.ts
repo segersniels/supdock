@@ -38,6 +38,7 @@ GLOBAL OPTIONS:
 
 export const generateFlagDescriptions = (command: string) => {
   const descriptions: string[] = [];
+
   if (metadata[command] && metadata[command].flags) {
     for (const flag of metadata[command].flags!) {
       if (flag.length === 1) {
@@ -47,6 +48,7 @@ export const generateFlagDescriptions = (command: string) => {
       }
     }
   }
+
   return descriptions.join('\n');
 };
 
@@ -56,6 +58,7 @@ export const generateCustomCommandDescription = (
   options: any | undefined,
 ) => {
   let customCommandDescription = `\nUsage:	docker ${command} [OPTIONS]\n\n  ${description}\n\n`;
+
   if (options && Object.keys(options).length) {
     const availableOptions = Object.keys(options).map(
       key => `${key}  (${options[key]})`,
@@ -63,5 +66,6 @@ export const generateCustomCommandDescription = (
     customCommandDescription += `Options:
     ${availableOptions.join('\n    ')}`;
   }
+
   return customCommandDescription;
 };
