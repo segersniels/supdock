@@ -1,31 +1,26 @@
 import { spawnSync, execSync, spawn } from 'child_process';
-import { parseArguments } from 'helpers/args';
+import * as ArgsHelper from 'helpers/args';
 import flatten from 'lodash.flatten';
 import { default as metadata, Metadata } from 'metadata';
 import ConfigOptions from 'enums/ConfigOptions';
-import { traceFunction, info, log } from 'helpers/util';
+import * as UtilHelper from 'helpers/util';
 import FuzzySearch from 'fuzzy-search';
 import Config from 'helpers/config';
-import {
-  generateFlagDescriptions,
-  generateCustomCommandDescription,
-} from 'helpers/description';
+import * as DescriptionHelper from 'helpers/description';
 import { version } from 'package';
-import { parseOutput } from 'helpers/test';
+import * as TestHelper from 'helpers/test';
 import prompts from 'prompts';
-import ErrorHandler, { ExecutionError } from 'helpers/errors';
+import { ExecutionError } from 'helpers/errors';
 import CommandAlias from 'enums/CommandAlias';
 
 interface OptionalExecutionProps {
   catchExecutionErrors?: boolean;
 }
 
-@traceFunction()
+@UtilHelper.traceFunction()
 export default class Command {
   private command: string;
   private mocking: boolean;
-  public catchExecutionErrors: boolean;
-  public errorHandler: ErrorHandler;
   public metadata: Metadata;
   public allowedFlags: string[];
   public config: Config = new Config();
@@ -33,10 +28,11 @@ export default class Command {
     command: any;
     flags: any;
     nonFlags: string[];
-  } = parseArguments();
+  } = ArgsHelper.parseArguments();
   public id: string;
   public flags: string[];
   public shouldPrompt = true;
+  public catchExecutionErrors: boolean;
 
   constructor(command: string, optional?: OptionalExecutionProps) {
     // Metadata
@@ -54,7 +50,6 @@ export default class Command {
     this.flags = this.parseFlags(this.args.flags);
 
     // Error handling
-    this.errorHandler = new ErrorHandler();
     this.catchExecutionErrors = optional?.catchExecutionErrors ?? true;
   }
 
@@ -82,8 +77,10 @@ export default class Command {
   }
 
   private parallel() {
-    info('Asynchronous execution of command is happening in the background');
-    info(
+    UtilHelper.info(
+      'Asynchronous execution of command is happening in the background',
+    );
+    UtilHelper.info(
       `Some containers might take longer than others to ${this.command}`,
       true,
     );
@@ -199,7 +196,7 @@ export default class Command {
   }
 
   public version() {
-    log(version);
+    UtilHelper.log(version);
   }
 
   public usage() {
@@ -219,8 +216,12 @@ export default class Command {
     // Allow commands to have their own detailed usage information when a complete custom command
     // Overwritten by usage alias above
     if (custom && !usage) {
-      info(
-        generateCustomCommandDescription(this.command, description, options),
+      UtilHelper.info(
+        DescriptionHelper.generateCustomCommandDescription(
+          this.command,
+          description,
+          options,
+        ),
       );
     }
 
@@ -230,13 +231,15 @@ export default class Command {
     }
 
     // Only log extra stuff if there are actual custom flags for the command
-    const flagDescriptions = generateFlagDescriptions(this.command);
+    const flagDescriptions = DescriptionHelper.generateFlagDescriptions(
+      this.command,
+    );
     if (flagDescriptions.length > 0) {
-      info(
+      UtilHelper.info(
         `\nOptions supported through prompt (supdock):\n${flagDescriptions}`,
       );
       if (extraUsageInfo) {
-        info(`\n${extraUsageInfo}`);
+        UtilHelper.info(`\n${extraUsageInfo}`);
       }
     }
 
@@ -257,7 +260,7 @@ export default class Command {
     args = args.filter(arg => arg);
 
     return this.mocking
-      ? parseOutput(args)
+      ? TestHelper.parseOutput(args)
       : spawnSync(command, args, { stdio: 'inherit' });
   }
 
@@ -275,56 +278,44 @@ export default class Command {
   }
 
   public async run() {
-    try {
-      // Default docker command
-      if (!this.metadata) {
-        return this.default();
-      }
-
-      // Some commands allow passing 'all' as a valid option. eg. start, stop and restart.
-      // These can bypass everything custom and just be fired early
-      if (
-        this.args.nonFlags.includes('all') &&
-        this.metadata.parallelExecution
-      ) {
-        return this.parallel();
-      }
-
-      if (this.shouldPrompt) {
-        const choices = this.createChoices();
-        if (!choices.length) {
-          throw new ExecutionError(
-            this.metadata.error ||
-              `Unable to generate choices to execute command '${this.command}'`,
-          );
-        }
-
-        // Extract the id from the choice that was made or given
-        const choice = await this.determineChoice(choices);
-
-        // Unable to determine choice or when defaulted to docker
-        // When testing we want to test if we defaulted correctly in some cases
-        // So in this case just return the defaulted command when testing
-        if (
-          !choice ||
-          typeof choice !== 'string' ||
-          (process.env.NODE_ENV === 'test' &&
-            choice.startsWith(`docker ${this.command}`))
-        ) {
-          return choice;
-        }
-
-        this.id = choice.split('-')[0].trim();
-      }
-
-      return this.execute();
-    } catch (err) {
-      // Allows extending custom try catch behaviour for other commands
-      if (!this.catchExecutionErrors) {
-        throw err;
-      }
-
-      this.errorHandler.catch(err);
+    // Default docker command
+    if (!this.metadata) {
+      return this.default();
     }
+
+    // Some commands allow passing 'all' as a valid option. eg. start, stop and restart.
+    // These can bypass everything custom and just be fired early
+    if (this.args.nonFlags.includes('all') && this.metadata.parallelExecution) {
+      return this.parallel();
+    }
+
+    if (this.shouldPrompt) {
+      const choices = this.createChoices();
+      if (!choices.length) {
+        throw new ExecutionError(
+          this.metadata.error ||
+            `Unable to generate choices to execute command '${this.command}'`,
+        );
+      }
+
+      // Extract the id from the choice that was made or given
+      const choice = await this.determineChoice(choices);
+
+      // Unable to determine choice or when defaulted to docker
+      // When testing we want to test if we defaulted correctly in some cases
+      // So in this case just return the defaulted command when testing
+      if (
+        !choice ||
+        typeof choice !== 'string' ||
+        (process.env.NODE_ENV === 'test' &&
+          choice.startsWith(`docker ${this.command}`))
+      ) {
+        return choice;
+      }
+
+      this.id = choice.split('-')[0].trim();
+    }
+
+    return this.execute();
   }
 }

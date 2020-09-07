@@ -3,9 +3,12 @@ import { traceFunction, error } from 'helpers/util';
 import prompts from 'prompts';
 import CommandAlias from 'enums/CommandAlias';
 import { SpawnSyncReturns } from 'child_process';
+import ErrorHandler from 'helpers/errors';
 
 @traceFunction()
 export default class Restart extends Command {
+  private errorHandler = new ErrorHandler();
+
   constructor() {
     super('restart', {
       catchExecutionErrors: false, // Disable the default error catching so we can handle it ourselves
@@ -36,18 +39,16 @@ export default class Restart extends Command {
             const { start } = await prompts({
               type: 'confirm',
               name: 'start',
-              message:
-                'The container does not seem to be running. Do you want to start it instead?',
+              message: `The container (${found}) does not seem to be running. Do you want to start it instead?`,
               initial: true,
             });
 
-            // Start the requested container
-            if (start) {
-              return this.spawn('docker', [
-                'start',
-                found.split('-')[0].trim(),
-              ]);
+            if (!start) {
+              return;
             }
+
+            // Start the requested container
+            return this.spawn('docker', ['start', found.split('-')[0].trim()]);
           }
 
           return error(err.message);

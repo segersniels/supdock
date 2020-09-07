@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-import { parseArguments } from 'helpers/args';
-import { log } from 'helpers/util';
-import { generateGeneralDescription } from 'helpers/description';
+import * as ArgsHelper from 'helpers/args';
+import * as UtilHelper from 'helpers/util';
+import * as DescriptionHelper from 'helpers/description';
 import metadata from 'metadata';
+import ErrorHandler from 'helpers/errors';
 
 interface SimplifiedExec {
   run: () => Promise<any>;
@@ -11,7 +12,8 @@ interface SimplifiedExec {
 }
 
 (async () => {
-  const { command, flags } = parseArguments();
+  const { command, flags } = ArgsHelper.parseArguments();
+  const errorHandler = new ErrorHandler();
 
   // Ugly repetitive code since pkg doesn't work well with dynamic importing
   let exec: SimplifiedExec;
@@ -52,7 +54,9 @@ interface SimplifiedExec {
   if (flags.help || flags.h) {
     if (!command) {
       const commands = Object.keys(metadata);
-      return log(generateGeneralDescription(metadata, commands));
+      return UtilHelper.log(
+        DescriptionHelper.generateGeneralDescription(metadata, commands),
+      );
     }
 
     return exec.usage();
@@ -63,5 +67,9 @@ interface SimplifiedExec {
     return exec.version();
   }
 
-  exec.run();
+  try {
+    exec.run();
+  } catch (err) {
+    errorHandler.catch(err);
+  }
 })();
