@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import sinon from 'sinon';
 import { mock } from 'helpers/test';
 
-describe('stop', () => {
+describe('start', () => {
   let sandbox: sinon.SinonSandbox;
 
   beforeEach(() => {
