@@ -72,7 +72,7 @@ jobs:
         with:
           name: artifacts
       - name: Release NPM
-        run: yarn publish:master || true
+        run: yarn publish:master
       - name: Create Github Release
         id: create_release
         uses: actions/create-release@v1
