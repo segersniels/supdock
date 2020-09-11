@@ -59,12 +59,12 @@ jobs:
         if: contains(steps.current_version.outputs.current-version, 'beta')
         run: yarn publish:beta
       - name: Release NPM
-        if: "!contains(steps.current_version.outputs.current-version, 'beta')"
         run: yarn publish:master
-      - name: Create Github Release
         if: "!contains(steps.current_version.outputs.current-version, 'beta')"
+      - name: Create Github Release
         id: create_release
         uses: actions/create-release@v1
+        if: "!contains(steps.current_version.outputs.current-version, 'beta')"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -74,6 +74,7 @@ jobs:
           prerelease: false
       - name: Upload Assets to Release with a wildcard
         uses: csexton/release-asset-action@v2
+        if: "!contains(steps.current_version.outputs.current-version, 'beta')"
         with:
           pattern: 'bin/*'
           github-token: ${{ secrets.GITHUB_TOKEN }}
