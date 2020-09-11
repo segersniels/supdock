@@ -42,29 +42,8 @@ chmod +x /usr/local/bin/supdock
 
 ## Changelog
 
-### 2.4.6
-- A lot of internal code cleanup since last changelog
-- Minor bugfixes
-- Speed optimizations
-- Now has 0 external dependencies since everything is contained within supdock
-
-### 2.4.2
-
-- Speed improvements
-
-### 2.4.1
-
-- `port` and `top` commands
-- More commands now support fuzzy searching
-
-Since the internal code changed quite a bit some bugs might have snuck in.
-To report bugs run `supdock` with the `DEBUG=*` environment variable and create an issue with the output.
-
-### 2.3.0
-
-- Internal cleanup of code
-- Config reusability optimisations and backwards compatibility
-- New `short-logs` config option to set a default limit of 500 lines to the `logs` command
+For a basic changelog overview go [here](./CHANGELOG.md).
+I try to keep track of most general changes as best as I can.
 
 ## Usage
 
