@@ -29,13 +29,37 @@ jobs:
         run: |
           yarn build:ci
           ./bin/supdock-linux --help
+      - name: Configure registry
+        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
       - name: Persist artifact
         uses: actions/upload-artifact@v2
         with:
-          name: built_dirs
+          name: artifacts
           path: |
+            .npmrc
             bin
             dist
+
+  beta:
+    runs-on: ubuntu-latest
+    needs: build
+    if: startsWith(github.event.head_commit.message, ':bookmark:') || startsWith(github.event.head_commit.message, ':green_heart:')
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Get current package.json version
+        id: current_version
+        uses: martinbeentjes/npm-get-version-action@master
+      - name: Check if beta release
+        if: "!contains(steps.current_version.outputs.current-version, 'beta')"
+        run: failure()
+      - name: Grab persisted artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: artifacts
+      - run: yarn publish:beta
 
   release:
     runs-on: ubuntu-latest
@@ -46,25 +70,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      - name: Grab persisted artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: built_dirs
-      - name: Configure registry
-        run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
       - name: Get current package.json version
         id: current_version
         uses: martinbeentjes/npm-get-version-action@master
-      - name: Release beta
+      - name: Check if beta release
         if: contains(steps.current_version.outputs.current-version, 'beta')
-        run: yarn publish:beta
+        run: failure()
+      - name: Grab persisted artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: artifacts
       - name: Release NPM
         run: yarn publish:master
-        if: "!contains(steps.current_version.outputs.current-version, 'beta')"
       - name: Create Github Release
         id: create_release
         uses: actions/create-release@v1
-        if: "!contains(steps.current_version.outputs.current-version, 'beta')"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -74,7 +94,6 @@ jobs:
           prerelease: false
       - name: Upload Assets to Release with a wildcard
         uses: csexton/release-asset-action@v2
-        if: "!contains(steps.current_version.outputs.current-version, 'beta')"
         with:
           pattern: 'bin/*'
           github-token: ${{ secrets.GITHUB_TOKEN }}
