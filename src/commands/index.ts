@@ -78,6 +78,11 @@ export default class Command {
       choice.split('-')[0].trim(),
     );
 
+    // Don't execute during testing
+    if (process.env.NODE_ENV === 'test') {
+      return ids;
+    }
+
     ids.forEach(id => {
       const child = spawn(this.path, [this.command, id], {
         detached: true,
