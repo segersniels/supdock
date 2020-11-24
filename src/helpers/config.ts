@@ -4,8 +4,9 @@ import { homedir } from 'os';
 import Configstore from 'configstore';
 import ConfigOptions from 'enums/ConfigOptions';
 import fs from 'fs';
+import which from 'which';
 
-export type Configuration = Record<string, boolean>;
+export type Configuration = Record<string, boolean | string>;
 
 // When config is being adjusted make sure we keep track of the old values and names
 const migrations: Record<string, Record<string, string>> = {
@@ -20,6 +21,8 @@ const defaultConfig: Configuration = {
   [ConfigOptions.CAUTION_CHECK]: true,
   [ConfigOptions.FUZZY_SEARCH]: false,
   [ConfigOptions.SHORT_LOGS]: false,
+  [ConfigOptions.BINARY_PATH]:
+    which.sync('docker', { nothrow: true }) ?? 'docker',
 };
 
 const configPath =
@@ -77,7 +80,7 @@ export default class Config {
     return this.keys.filter(key => !this.config.get(key));
   }
 
-  public get = (key: string): boolean => {
+  public get = (key: string) => {
     // Get the value from the config
     const value = this.config.get(key);
 
@@ -88,7 +91,7 @@ export default class Config {
     return value;
   };
 
-  public set = (key: string, value: boolean) => {
+  public set = (key: string, value: any) => {
     if (typeof (defaultConfig as any)[key] === 'undefined') {
       error(`Invalid config '${key}' detected`);
     }

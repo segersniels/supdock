@@ -102,6 +102,16 @@ Options:
 
 The config file is created at `${HOME}/.supdock/config.json`.
 
+#### Docker binary path
+
+Supdock attempts to determine where the docker binary is located on your system. In some edge cases supdock fails to determine the path and falls back to just `docker` which should normally work in remaining cases. But if you have a special use case where you need to explicitly define the docker path you can do so by changing/adding the supdock config file. Add the `binary-path` config option like so:
+
+```json
+{
+  "binary-path": "/path/to/docker"
+}
+```
+
 ## Contributing
 
 If you would like to see something added or you want to add something yourself feel free to create an issue or a pull request.

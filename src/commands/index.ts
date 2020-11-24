@@ -12,7 +12,6 @@ import * as TestHelper from 'helpers/test';
 import prompts from 'prompts';
 import { ExecutionError } from 'helpers/errors';
 import CommandAlias from 'enums/CommandAlias';
-import which from 'which';
 
 @UtilHelper.traceFunction()
 export default class Command {
@@ -32,11 +31,10 @@ export default class Command {
   public shouldPrompt = true;
 
   constructor(command: string) {
-    this.path =
-      which.sync('docker', { nothrow: true }) ?? '/usr/local/bin/docker';
     this.command = command;
     this.metadata = metadata[command];
     this.config.migrate();
+    this.path = this.config.get(ConfigOptions.BINARY_PATH) ?? 'docker';
     this.mocking = process.env.NODE_ENV === 'test';
     this.allowedFlags = flatten(this.metadata?.flags) || [];
     this.flags = this.parseFlags(this.args.flags);
