@@ -12,11 +12,13 @@ import * as TestHelper from 'helpers/test';
 import prompts from 'prompts';
 import { ExecutionError } from 'helpers/errors';
 import CommandAlias from 'enums/CommandAlias';
+import which from 'which';
 
 @UtilHelper.traceFunction()
 export default class Command {
   private command: string;
   private mocking: boolean;
+  private path: string;
   public metadata: Metadata;
   public allowedFlags: string[];
   public config: Config = new Config();
@@ -30,17 +32,12 @@ export default class Command {
   public shouldPrompt = true;
 
   constructor(command: string) {
-    // Metadata
+    this.path =
+      which.sync('docker', { nothrow: true }) ?? '/usr/local/bin/docker';
     this.command = command;
     this.metadata = metadata[command];
-
-    // Config
     this.config.migrate();
-
-    // Mocking
     this.mocking = process.env.NODE_ENV === 'test';
-
-    // Flags
     this.allowedFlags = flatten(this.metadata?.flags) || [];
     this.flags = this.parseFlags(this.args.flags);
   }
@@ -82,7 +79,7 @@ export default class Command {
     );
 
     ids.forEach(id => {
-      const child = spawn('docker', [this.command, id], {
+      const child = spawn(this.path, [this.command, id], {
         detached: true,
         stdio: 'ignore',
       });
@@ -204,7 +201,7 @@ export default class Command {
 
     // When command has custom usage defined log that instead of throwing the unknown command to docker
     if (usage) {
-      return this.spawn('docker', usage.split(' '));
+      return this.spawn(this.path, usage.split(' '));
     }
 
     // Allow commands to have their own detailed usage information when a complete custom command
@@ -262,7 +259,7 @@ export default class Command {
 
   public default(options: string[] = process.argv.slice(2)) {
     return this.spawn(
-      'docker',
+      this.path,
       this.mocking
         ? [this.command, ...this.flags, ...this.args.nonFlags]
         : options,
@@ -270,7 +267,7 @@ export default class Command {
   }
 
   public execute(): any {
-    return this.spawn('docker', [this.command, ...this.flags, this.id]);
+    return this.spawn(this.path, [this.command, ...this.flags, this.id]);
   }
 
   public async run() {
