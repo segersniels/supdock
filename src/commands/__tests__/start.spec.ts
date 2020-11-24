@@ -1,5 +1,5 @@
 import 'mocha';
-import Start from 'commands/stop';
+import Start from 'commands/start';
 import { expect } from 'chai';
 import sinon from 'sinon';
 import { mock } from 'helpers/test';
