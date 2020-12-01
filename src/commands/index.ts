@@ -40,6 +40,14 @@ export default class Command {
     this.flags = this.parseFlags(this.args.flags);
   }
 
+  private ensureValidMetadata() {
+    // No metadata found for request command, pass to default docker exection
+    if (!this.metadata) {
+      this.default();
+      process.exit();
+    }
+  }
+
   private parseFlags(flags: any) {
     const parsed: string[] = [];
 
@@ -194,6 +202,8 @@ export default class Command {
   }
 
   public usage() {
+    this.ensureValidMetadata();
+
     const {
       custom,
       usage,
@@ -274,10 +284,7 @@ export default class Command {
   }
 
   public async run() {
-    // No metadata found for request command, pass to default docker exection
-    if (!this.metadata) {
-      return this.default();
-    }
+    this.ensureValidMetadata();
 
     if (this.shouldPrompt) {
       const choices = this.createChoices();
