@@ -115,3 +115,4 @@ Supdock attempts to determine where the docker binary is located on your system.
 ## Contributing
 
 If you would like to see something added or you want to add something yourself feel free to create an issue or a pull request.
+
