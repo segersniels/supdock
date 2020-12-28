@@ -41,11 +41,13 @@ export default class Command {
   }
 
   private ensureValidMetadata() {
-    // No metadata found for request command, pass to default docker exection
-    if (!this.metadata) {
-      this.default();
-      process.exit();
+    if (this.metadata) {
+      return;
     }
+
+    // No metadata found for request command, pass to default docker exection
+    this.default();
+    process.exit();
   }
 
   private parseFlags(flags: any) {
