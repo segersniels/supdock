@@ -71,7 +71,7 @@ interface SimplifiedExec {
   }
 
   try {
-    exec.run();
+    await exec.run();
   } catch (err) {
     errorHandler.catch(err);
   }
