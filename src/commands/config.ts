@@ -1,5 +1,6 @@
 import Command from '../command';
-import { traceFunction, error, info } from 'helpers/util';
+import { traceFunction, info } from 'helpers/util';
+import { ExecutionError } from 'helpers/errors';
 
 @traceFunction()
 export default class Config extends Command {
@@ -27,7 +28,7 @@ export default class Config extends Command {
         (this.type === 'enable' && !inactive.length) ||
         (this.type === 'disable' && !active.length)
       ) {
-        error(`No options found to ${this.type}`);
+        throw new ExecutionError(`No options found to ${this.type}`);
       }
       const { choice } = await this.prompt(
         `Which config value would you like to ${this.type}?`,
