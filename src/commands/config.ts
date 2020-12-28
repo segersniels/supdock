@@ -1,4 +1,4 @@
-import Command from 'commands';
+import Command from '../command';
 import { traceFunction, error, info } from 'helpers/util';
 
 @traceFunction()

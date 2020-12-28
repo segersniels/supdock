@@ -1,4 +1,4 @@
-import Command from 'commands';
+import Command from '../command';
 import { traceFunction, error } from 'helpers/util';
 import prompts from 'prompts';
 import CommandAlias from 'enums/CommandAlias';
