@@ -11,10 +11,6 @@ export class ExecutionError extends Error {
 }
 
 export default class ErrorHandler {
-  public throw(message: string) {
-    throw new ExecutionError(message);
-  }
-
   /**
    * Console.error in case of ExecutionError and throw in case of any other error
    * If optional `fn()` function parameter is passed it gets executed instead

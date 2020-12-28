@@ -48,7 +48,3 @@ export const traceFunction = () => {
     }
   };
 };
-
-export const exit = () => {
-  process.exit(0);
-};
