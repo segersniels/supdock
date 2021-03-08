@@ -34,6 +34,11 @@ export default class Config extends Command {
         `Which config value would you like to ${this.type}?`,
         this.type === 'enable' ? this.config.inactive : this.config.active,
       );
+
+      if (!choice) {
+        return;
+      }
+
       this.args.nonFlags = [choice];
     }
 
