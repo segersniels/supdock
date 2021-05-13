@@ -4,7 +4,7 @@ import flatten from 'lodash.flatten';
 import { default as metadata, Metadata } from 'metadata';
 import ConfigOptions from 'enums/ConfigOptions';
 import * as UtilHelper from 'helpers/util';
-import FuzzySearch from 'fuzzy-search';
+import FuzzyHelper from 'helpers/fuzzy';
 import Config from 'helpers/config';
 import * as DescriptionHelper from 'helpers/description';
 import { version } from 'package';
@@ -12,20 +12,22 @@ import * as TestHelper from 'helpers/test';
 import prompts from 'prompts';
 import { ExecutionError } from 'helpers/errors';
 import CommandAlias from 'enums/CommandAlias';
+import FlagHelper from 'helpers/flag';
 
 @UtilHelper.traceFunction()
 export default class Command {
-  private command: string;
-  private mocking: boolean;
+  private mocking = process.env.NODE_ENV === 'test';
   private path: string;
+
+  public command: string;
   public metadata: Metadata;
   public allowedFlags: string[];
-  public config: Config = new Config();
+  public config = new Config();
   public args: {
     command: any;
     flags: any;
     nonFlags: string[];
-  } = ArgsHelper.parseArguments();
+  };
   public id: string;
   public flags: string[];
   public shouldPrompt = true;
@@ -33,13 +35,22 @@ export default class Command {
   constructor(command: string) {
     this.command = command;
     this.metadata = metadata[command];
-    this.config.migrate();
+
+    // Dynamic determining of docker path
     this.path = this.config.get(ConfigOptions.BINARY_PATH) ?? 'docker';
-    this.mocking = process.env.NODE_ENV === 'test';
+
+    // Handle config migrations
+    this.config.migrate();
+
+    // Handle flags
+    this.args = ArgsHelper.parseArguments();
     this.allowedFlags = flatten(this.metadata?.flags) || [];
-    this.flags = this.parseFlags(this.args.flags);
+    this.flags = FlagHelper.parse(this.args.flags);
   }
 
+  /**
+   * Ensure we can match the passed command with metadata
+   */
   private ensureValidMetadata() {
     if (this.metadata) {
       return;
@@ -48,29 +59,6 @@ export default class Command {
     // No metadata found for request command, pass to default docker exection
     this.default();
     process.exit();
-  }
-
-  private parseFlags(flags: any) {
-    const parsed: string[] = [];
-
-    for (const flag of Object.keys(flags)) {
-      // Minimist parses --no-<flag> variables to a boolean flag with value false with the --no prefix stripped
-      // So we have to readd the prefix
-      if (!flags[flag]) {
-        parsed.push(`--no-${flag}`);
-        continue;
-      }
-
-      // Normal flag behaviour
-      parsed.push(flag.length > 1 ? `--${flag}` : `-${flag}`);
-
-      // If flag has a value that is not a boolean add it to the array
-      if (typeof flags[flag] !== 'boolean') {
-        parsed.push(flags[flag]);
-      }
-    }
-
-    return parsed;
   }
 
   public parallel() {
@@ -86,11 +74,6 @@ export default class Command {
       choice.split('-')[0].trim(),
     );
 
-    // Don't execute during testing
-    if (process.env.NODE_ENV === 'test') {
-      return ids;
-    }
-
     ids.forEach(id => {
       const child = spawn(this.path, [this.command, id], {
         detached: true,
@@ -102,93 +85,43 @@ export default class Command {
     return ids;
   }
 
-  public fuzzySearch = async (choices: string[]) => {
-    // When fuzzy searching is disabled make sure we passthrough back to docker so we don't hinder docker behaviour
-    if (!this.config.get(ConfigOptions.FUZZY_SEARCH)) {
-      return this.default();
-    }
-
-    let choice: string;
-    const term = this.args.nonFlags[0];
-    const choicesAfterFuzzySearching = new FuzzySearch(choices).search(term);
-
-    if (choicesAfterFuzzySearching.length === 0) {
-      throw new ExecutionError(
-        `Was not able to match with container or image for search: ${term}`,
-      );
-    }
-
-    switch (choicesAfterFuzzySearching.length) {
-      case 1:
-        // Check if the nonFlags passed completely match an id or name
-        // We don't want to ask for confirmation in this case
-        choice = choicesAfterFuzzySearching[0];
-
-        if (
-          (term === choice.split('-')[0].trim() ||
-            term === choice.split('-')[1].trim() ||
-            choice
-              .split('-')[0]
-              .trim()
-              .startsWith(term)) &&
-          !this.metadata.custom
-        ) {
-          return this.default();
-        }
-
-        // Ask the user for confirmation
-        if (this.config.get(ConfigOptions.CAUTION_CHECK)) {
-          const confirmation = await prompts({
-            type: 'confirm',
-            name: 'choice',
-            message: `Are you sure you want to execute '${this.command}' for container '${choice}'`,
-            initial: true,
-          });
-
-          if (!confirmation.choice) {
-            throw new ExecutionError('Exiting on request of user...');
-          }
-        }
-
-        break;
-      default:
-        // Check if one of the choices match the search term
-        if (
-          choicesAfterFuzzySearching.find(
-            choice =>
-              (term === choice.split('-')[0].trim() ||
-                term === choice.split('-')[1].trim() ||
-                choice
-                  .split('-')[0]
-                  .trim()
-                  .startsWith(term)) &&
-              !this.metadata.custom,
-          )
-        ) {
-          return this.default();
-        }
-
-        choice = (
-          await this.prompt(
-            `Search '${term}' returned more than one result, please make a choice from the list below.`,
-            choicesAfterFuzzySearching,
-          )
-        ).choice;
-    }
+  public async prompt(
+    question: string,
+    choices?: string[],
+    type = 'select',
+    initial?: any,
+  ) {
+    const { choice } = await prompts({
+      type: type as any,
+      name: 'choice',
+      message: question,
+      choices: choices ? choices.map(c => ({ title: c, value: c })) : undefined,
+      initial,
+    });
 
     return choice;
-  };
+  }
 
   public async determineChoice(choices: string[]) {
     const { question, allowFuzzySearching } = this.metadata;
 
     // Try to fuzzy match the given search term
     if (allowFuzzySearching && this.args.nonFlags.length >= 1) {
-      return await this.fuzzySearch(choices);
+      // When fuzzy searching is disabled make sure we passthrough back to docker so we don't hinder docker behaviour
+      if (!this.config.get(ConfigOptions.FUZZY_SEARCH)) {
+        return this.default();
+      }
+
+      return await FuzzyHelper.search(this, choices);
     }
 
-    // Default behaviour just ask question and prompt for choice
-    const { choice } = await this.prompt(question!, choices);
+    const { choice } = await prompts({
+      type: 'select',
+      name: 'choice',
+      message: question!,
+      choices: choices.map(c => ({ title: c, value: c })),
+    });
+
     return choice;
   }
 
@@ -254,31 +187,23 @@ export default class Command {
     return;
   }
 
-  public prompt(message: string, choices: string[]) {
-    return prompts({
-      type: 'select',
-      name: 'choice',
-      message,
-      choices: choices.map(c => ({ title: c, value: c })),
-    });
-  }
-
   public spawn(command: string, args: string[]) {
     // Filter out all falsy arguments
     args = args.filter(arg => arg);
 
-    return this.mocking
-      ? TestHelper.parseOutput(args)
-      : spawnSync(command, args, { stdio: 'inherit' });
+    if (this.mocking) {
+      return TestHelper.parseOutput(args);
+    }
+
+    return spawnSync(command, args, { stdio: 'inherit' });
   }
 
   public default(options: string[] = process.argv.slice(2)) {
-    return this.spawn(
-      this.path,
-      this.mocking
-        ? [this.command, ...this.flags, ...this.args.nonFlags]
-        : options,
-    );
+    const args = this.mocking
+      ? [this.command, ...this.flags, ...this.args.nonFlags]
+      : options;
+
+    return this.spawn(this.path, args);
   }
 
   public execute(): any {

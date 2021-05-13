@@ -4,6 +4,7 @@ import prompts from 'prompts';
 import CommandAlias from 'enums/CommandAlias';
 import { SpawnSyncReturns } from 'child_process';
 import ErrorHandler from 'helpers/errors';
+import FuzzyHelper from 'helpers/fuzzy';
 
 @traceFunction()
 export default class Restart extends Command {
@@ -33,7 +34,7 @@ export default class Restart extends Command {
 
           let found: string | SpawnSyncReturns<Buffer> | undefined = undefined;
           try {
-            found = await this.fuzzySearch(stoppedContainers);
+            found = await FuzzyHelper.search(this, stoppedContainers);
           } catch (err) {
             // Not found under stopped container (will throw the same error as the original one)
             return error(err.message);

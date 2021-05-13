@@ -57,9 +57,12 @@ interface SimplifiedExec {
   if (flags.help || flags.h) {
     if (!command) {
       const commands = Object.keys(metadata);
-      return UtilHelper.log(
-        DescriptionHelper.generateGeneralDescription(metadata, commands),
+      const description = DescriptionHelper.generateGeneralDescription(
+        metadata,
+        commands,
       );
+
+      return UtilHelper.log(description);
     }
 
     return exec.usage();
