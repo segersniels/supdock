@@ -10,7 +10,6 @@ import { Trace } from '@aiteq/trace';
 export default class Fuzzy {
   @Trace()
   public static async search(that: Partial<Command>, choices: string[]) {
-    let choice: string;
     const info = metadata[that.command!];
     const config = that.config ?? new Config();
     const term = that.args!.nonFlags[0];
@@ -22,65 +21,60 @@ export default class Fuzzy {
       );
     }
 
-    switch (choicesAfterFuzzySearching.length) {
-      case 1:
-        // Check if the nonFlags passed completely match an id or name
-        // We don't want to ask for confirmation in this case
-        choice = choicesAfterFuzzySearching[0];
+    // Identical match found based on id or name
+    if (choicesAfterFuzzySearching.length === 1) {
+      const choice = choicesAfterFuzzySearching[0];
 
-        if (
+      if (
+        (term === choice.split('-')[0].trim() ||
+          term === choice.split('-')[1].trim() ||
+          choice
+            .split('-')[0]
+            .trim()
+            .startsWith(term)) &&
+        !info.custom // Don't default custom commands
+      ) {
+        return that.default!();
+      }
+
+      // Ask the user for confirmation
+      if (config.get(ConfigOptions.CAUTION_CHECK)) {
+        const confirmation = await prompts({
+          type: 'confirm',
+          name: 'choice',
+          message: `Are you sure you want to execute '${that.command}' for container '${choice}'`,
+          initial: true,
+        });
+
+        if (!confirmation.choice) {
+          throw new ExecutionError('Exiting on request of user...');
+        }
+      }
+
+      return choice;
+    }
+
+    if (
+      choicesAfterFuzzySearching.find(
+        choice =>
           (term === choice.split('-')[0].trim() ||
             term === choice.split('-')[1].trim() ||
             choice
               .split('-')[0]
               .trim()
               .startsWith(term)) &&
-          !info.custom // Don't default custom commands
-        ) {
-          return that.default!();
-        }
-
-        // Ask the user for confirmation
-        if (config.get(ConfigOptions.CAUTION_CHECK)) {
-          const confirmation = await prompts({
-            type: 'confirm',
-            name: 'choice',
-            message: `Are you sure you want to execute '${that.command}' for container '${choice}'`,
-            initial: true,
-          });
-
-          if (!confirmation.choice) {
-            throw new ExecutionError('Exiting on request of user...');
-          }
-        }
-
-        break;
-      default:
-        // Check if one of the choices match the search term
-        if (
-          choicesAfterFuzzySearching.find(
-            choice =>
-              (term === choice.split('-')[0].trim() ||
-                term === choice.split('-')[1].trim() ||
-                choice
-                  .split('-')[0]
-                  .trim()
-                  .startsWith(term)) &&
-              !info.custom,
-          )
-        ) {
-          return that.default!();
-        }
-
-        choice = (
-          await prompts({
-            type: 'select',
-            name: 'choice',
-            message: `Search '${term}' returned more than one result, please make a choice from the list below.`,
-            choices: choices.map(c => ({ title: c, value: c })),
-          })
-        ).choice;
+          !info.custom,
+      )
+    ) {
+      return that.default!();
     }
+
+    const { choice } = await prompts({
+      type: 'select',
+      name: 'choice',
+      message: `Search '${term}' returned more than one result, please make a choice from the list below.`,
+      choices: choices.map(c => ({ title: c, value: c })),
+    });
 
     return choice;
   }
