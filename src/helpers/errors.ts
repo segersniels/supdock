@@ -1,12 +1,9 @@
 import { error } from './util';
+import { CustomError } from 'ts-custom-error';
 
-export class ExecutionError extends Error {
-  constructor(message: string) {
+export class ExecutionError extends CustomError {
+  constructor(message?: string) {
     super(message);
-    this.name = 'ExecutionError';
-
-    // restore prototype chain
-    Object.setPrototypeOf(this, new.target.prototype);
   }
 }
 
