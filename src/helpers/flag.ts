@@ -1,4 +1,7 @@
+import { Trace } from '@aiteq/trace';
+
 export default class Flag {
+  @Trace()
   public static parse(flags: any) {
     const parsed: string[] = [];
 

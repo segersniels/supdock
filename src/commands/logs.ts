@@ -1,8 +1,8 @@
 import Command from '../command';
-import { traceFunction } from 'helpers/util';
+import { Trace } from '@aiteq/trace';
 import ConfigOptions from 'enums/ConfigOptions';
 
-@traceFunction()
+@Trace()
 export default class Logs extends Command {
   constructor() {
     super('logs');

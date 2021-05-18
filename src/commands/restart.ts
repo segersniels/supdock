@@ -1,12 +1,13 @@
 import Command from '../command';
-import { traceFunction, error } from 'helpers/util';
+import { error } from 'helpers/util';
 import prompts from 'prompts';
 import CommandAlias from 'enums/CommandAlias';
 import { SpawnSyncReturns } from 'child_process';
 import ErrorHandler from 'helpers/errors';
 import FuzzyHelper from 'helpers/fuzzy';
+import { Trace } from '@aiteq/trace';
 
-@traceFunction()
+@Trace()
 export default class Restart extends Command {
   private errorHandler = new ErrorHandler();
 

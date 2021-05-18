@@ -1,7 +1,7 @@
 import Command from '../command';
-import { traceFunction } from 'helpers/util';
+import { Trace } from '@aiteq/trace';
 
-@traceFunction()
+@Trace()
 export default class Prune extends Command {
   constructor() {
     super('prune');

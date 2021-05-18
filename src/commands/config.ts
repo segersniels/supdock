@@ -1,8 +1,9 @@
 import Command from '../command';
-import { traceFunction, info } from 'helpers/util';
+import { info } from 'helpers/util';
 import { ExecutionError } from 'helpers/errors';
+import { Trace } from '@aiteq/trace';
 
-@traceFunction()
+@Trace()
 export default class Config extends Command {
   private type: string;
 

@@ -42,9 +42,9 @@
     "supdock": "dist/index.js"
   },
   "devDependencies": {
+    "@aiteq/trace": "^1.0.0",
     "@types/chai": "^4.2.9",
     "@types/configstore": "^4.0.0",
-    "@types/debug": "^4.1.5",
     "@types/fuzzy-search": "^2.1.0",
     "@types/lodash.flatten": "^4.4.6",
     "@types/mocha": "^7.0.1",
@@ -58,7 +58,6 @@
     "chai": "^4.2.0",
     "chalk": "^3.0.0",
     "configstore": "^5.0.1",
-    "debug": "^4.1.1",
     "eslint": "^6.7.2",
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-prettier": "^3.1.1",

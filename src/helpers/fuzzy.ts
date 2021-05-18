@@ -5,8 +5,10 @@ import { ExecutionError } from './errors';
 import prompts from 'prompts';
 import { default as metadata } from 'metadata';
 import Command from 'command';
+import { Trace } from '@aiteq/trace';
 
 export default class Fuzzy {
+  @Trace()
   public static async search(that: Partial<Command>, choices: string[]) {
     let choice: string;
     const info = metadata[that.command!];

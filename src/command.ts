@@ -13,8 +13,9 @@ import prompts from 'prompts';
 import { ExecutionError } from 'helpers/errors';
 import CommandAlias from 'enums/CommandAlias';
 import FlagHelper from 'helpers/flag';
+import { Trace } from '@aiteq/trace';
 
-@UtilHelper.traceFunction()
+@Trace()
 export default class Command {
   private mocking = process.env.NODE_ENV === 'test';
   private path: string;

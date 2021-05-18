@@ -1,8 +1,8 @@
 import Command from '../command';
-import { traceFunction } from 'helpers/util';
+import { Trace } from '@aiteq/trace';
 import prompts from 'prompts';
 
-@traceFunction()
+@Trace()
 export default class Cat extends Command {
   constructor() {
     super('cat');
