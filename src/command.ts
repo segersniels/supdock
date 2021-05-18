@@ -62,7 +62,7 @@ export default class Command {
     process.exit();
   }
 
-  public parallel() {
+  protected parallel() {
     UtilHelper.info(
       'Asynchronous execution of command is happening in the background',
     );
@@ -86,7 +86,7 @@ export default class Command {
     return ids;
   }
 
-  public async prompt(
+  protected async prompt(
     question: string,
     choices?: string[],
     type = 'select',
@@ -103,7 +103,7 @@ export default class Command {
     return choice;
   }
 
-  public async determineChoice(choices: string[]) {
+  protected async determineChoice(choices: string[]) {
     const { question, allowFuzzySearching } = this.metadata;
 
     // Try to fuzzy match the given search term
@@ -126,7 +126,7 @@ export default class Command {
     return choice;
   }
 
-  public createChoices(type?: CommandAlias) {
+  protected createChoices(type?: CommandAlias) {
     return execSync(type ?? this.metadata.type!, { maxBuffer: 1024 * 10000 })
       .toString()
       .split('\n')
@@ -188,7 +188,7 @@ export default class Command {
     return;
   }
 
-  public spawn(command: string, args: string[]) {
+  protected spawn(command: string, args: string[]) {
     // Filter out all falsy arguments
     args = args.filter(arg => arg);
 
@@ -207,7 +207,7 @@ export default class Command {
     return this.spawn(this.path, args);
   }
 
-  public execute(): any {
+  protected execute(): any {
     return this.spawn(this.path, [this.command, ...this.flags, this.id]);
   }
 
