@@ -29,10 +29,11 @@ jobs:
       - run: yarn lint
       - run: yarn test
       - run: yarn compile
-      - name: Build and see if executable works
-        run: |
-          yarn build:ci
-          ./bin/supdock-linux --help
+      - run: yarn build:ci
+      - name: Rename built binaries
+        run: ./scripts/rename.sh
+      - name: Check if executable works
+        run: ./bin/supdock-linux --help
       - name: Configure registry
         run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
       - name: Get current package.json version
