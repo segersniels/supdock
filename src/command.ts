@@ -116,14 +116,7 @@ export default class Command {
       return await FuzzyHelper.search(this, choices);
     }
 
-    const { choice } = await prompts({
-      type: 'select',
-      name: 'choice',
-      message: question!,
-      choices: choices.map(c => ({ title: c, value: c })),
-    });
-
-    return choice;
+    return await this.prompt(question!, choices);
   }
 
   protected createChoices(type?: CommandAlias) {

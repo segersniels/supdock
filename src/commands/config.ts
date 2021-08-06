@@ -33,7 +33,7 @@ export default class Config extends Command {
         throw new ExecutionError(`No options found to ${this.type}`);
       }
 
-      const { choice } = await this.prompt(
+      const choice = await this.prompt(
         `Which config value would you like to ${this.type}?`,
         this.type === 'enable' ? this.config.inactive : this.config.active,
       );

@@ -15,7 +15,7 @@ export default class Ssh extends Command {
   }
 
   public async execute() {
-    const { choice } = await this.determineShell();
+    const choice = await this.determineShell();
     const args = ['exec', '-ti', this.id.trim(), choice];
     return this.spawn('docker', args);
   }
