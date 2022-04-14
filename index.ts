@@ -3,7 +3,7 @@ import * as ArgsHelper from 'helpers/args';
 import * as UtilHelper from 'helpers/util';
 import * as DescriptionHelper from 'helpers/description';
 import metadata from 'metadata';
-import ErrorHandler from 'helpers/errors';
+import ErrorHandler, { ExecutionError } from 'helpers/errors';
 
 interface SimplifiedExec {
   run: () => Promise<any>;
@@ -76,6 +76,6 @@ interface SimplifiedExec {
   try {
     await exec.run();
   } catch (err) {
-    errorHandler.catch(err);
+    errorHandler.catch(err as ExecutionError);
   }
 })();

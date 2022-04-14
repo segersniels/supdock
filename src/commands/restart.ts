@@ -3,7 +3,7 @@ import { error } from 'helpers/util';
 import prompts from 'prompts';
 import CommandAlias from 'enums/CommandAlias';
 import { SpawnSyncReturns } from 'child_process';
-import ErrorHandler from 'helpers/errors';
+import ErrorHandler, { ExecutionError } from 'helpers/errors';
 import FuzzyHelper from 'helpers/fuzzy';
 import { Trace } from '@aiteq/trace';
 
@@ -26,7 +26,7 @@ export default class Restart extends Command {
 
       return await super.run();
     } catch (err) {
-      this.errorHandler.catch(err, async err => {
+      this.errorHandler.catch(err as ExecutionError, async err => {
         if (err.message.includes('Was not able to match with container')) {
           // Check if the container is stopped and not running
           const stoppedContainers = this.createChoices(
@@ -38,7 +38,7 @@ export default class Restart extends Command {
             found = await FuzzyHelper.search(this, stoppedContainers);
           } catch (err) {
             // Not found under stopped container (will throw the same error as the original one)
-            return error(err.message);
+            return error((err as ExecutionError).message);
           }
 
           // Found the desired container under the stopped containers
