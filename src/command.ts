@@ -8,7 +8,6 @@ import FuzzyHelper from 'helpers/fuzzy';
 import Config from 'helpers/config';
 import * as DescriptionHelper from 'helpers/description';
 import { version } from 'package';
-import * as TestHelper from 'helpers/test';
 import prompts from 'prompts';
 import { ExecutionError } from 'helpers/errors';
 import CommandAlias from 'enums/CommandAlias';
@@ -17,7 +16,6 @@ import { Trace } from '@aiteq/trace';
 
 @Trace()
 export default class Command {
-  private mocking = process.env.NODE_ENV === 'test';
   private path: string;
 
   public command: string;
@@ -185,19 +183,11 @@ export default class Command {
     // Filter out all falsy arguments
     args = args.filter(arg => arg);
 
-    if (this.mocking) {
-      return TestHelper.parseOutput(args);
-    }
-
     return spawnSync(command, args, { stdio: 'inherit' });
   }
 
   public default(options: string[] = process.argv.slice(2)) {
-    const args = this.mocking
-      ? [this.command, ...this.flags, ...this.args.nonFlags]
-      : options;
-
-    return this.spawn(this.path, args);
+    return this.spawn(this.path, options);
   }
 
   protected execute(): any {
@@ -223,12 +213,7 @@ export default class Command {
       // Unable to determine choice or when defaulted to docker
       // When testing we want to test if we defaulted correctly in some cases
       // So in this case just return the defaulted command when testing
-      if (
-        !choice ||
-        typeof choice !== 'string' ||
-        (process.env.NODE_ENV === 'test' &&
-          choice.startsWith(`docker ${this.command}`))
-      ) {
+      if (!choice || typeof choice !== 'string') {
         return choice;
       }
 

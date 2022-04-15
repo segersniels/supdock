@@ -19,10 +19,6 @@ export const info = (msg: string, highlighted: boolean | string[] = []) => {
       }
     }
   }
-
-  if (process.env.NODE_ENV !== 'test') {
-    log(message);
-  }
 };
 
 export const warn = (msg: string) => {
