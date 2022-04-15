@@ -19,6 +19,8 @@ export const info = (msg: string, highlighted: boolean | string[] = []) => {
       }
     }
   }
+
+  log(message);
 };
 
 export const warn = (msg: string) => {
