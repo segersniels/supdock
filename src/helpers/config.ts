@@ -19,7 +19,7 @@ const migrations: Record<string, Record<string, string>> = {
 
 const defaultConfig: Configuration = {
   [ConfigOptions.CAUTION_CHECK]: true,
-  [ConfigOptions.FUZZY_SEARCH]: false,
+  [ConfigOptions.FUZZY_SEARCH]: true,
   [ConfigOptions.SHORT_LOGS]: false,
   [ConfigOptions.BINARY_PATH]:
     which.sync('docker', { nothrow: true }) ?? 'docker',
