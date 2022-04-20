@@ -14,9 +14,7 @@
     "lint:fix": "eslint '**/*.{ts,tsx}' --fix",
     "check:typescript": "tsc --noEmit --skipLibCheck --project .",
     "nuke": "rm -rf node_modules ; yarn install",
-    "test": "NODE_ENV=test mocha -r ts-node/register -r tsconfig-paths/register --recursive --exclude './node_modules/**/*.spec.ts' './**/*.spec.ts' --exit",
-    "publish:master": "yarn publish",
-    "publish:beta": "yarn publish --tag beta"
+    "test": "NODE_ENV=test mocha -r ts-node/register -r tsconfig-paths/register --recursive --exclude './node_modules/**/*.spec.ts' './**/*.spec.ts' --exit"
   },
   "repository": {
     "type": "git",

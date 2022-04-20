@@ -60,7 +60,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: artifacts
-      - run: yarn publish:beta || true
+      - run: yarn publish --tag beta --new-version ${{ needs.build.outputs.version }}-beta
 
   release:
     runs-on: ubuntu-latest
@@ -74,7 +74,7 @@ jobs:
         with:
           name: artifacts
       - name: Release NPM
-        run: yarn publish:master
+        run: yarn publish
       - name: Create Github Release
         id: create_release
         uses: actions/create-release@v1
