@@ -6,6 +6,7 @@ import prompts from 'prompts';
 import { default as metadata } from 'metadata';
 import Command from 'command';
 import { Trace } from '@aiteq/trace';
+import * as UtilHelper from './util';
 
 export default class Fuzzy {
   @Trace()
@@ -39,6 +40,11 @@ export default class Fuzzy {
 
       // Ask the user for confirmation
       if (config.get(ConfigOptions.CAUTION_CHECK)) {
+        UtilHelper.info(
+          `You can disable this check by running 'supdock disable caution-check'`,
+          true,
+        );
+
         const confirmation = await prompts({
           type: 'confirm',
           name: 'choice',
