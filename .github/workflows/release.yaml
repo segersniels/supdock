@@ -60,7 +60,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: artifacts
-      - run: yarn publish:beta
+      - run: yarn publish:beta || true
 
   release:
     runs-on: ubuntu-latest
