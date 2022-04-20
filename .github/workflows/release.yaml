@@ -39,7 +39,7 @@ jobs:
         run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
       - name: Get current package.json version
         id: current_version
-        uses: martinbeentjes/npm-get-version-action@master
+        uses: martinbeentjes/npm-get-version-action@main
       - name: Persist artifact
         uses: actions/upload-artifact@v2
         with:
