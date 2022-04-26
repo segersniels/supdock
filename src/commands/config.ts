@@ -2,6 +2,7 @@ import Command from '../command';
 import { info } from 'helpers/util';
 import { ExecutionError } from 'helpers/errors';
 import { Trace } from '@aiteq/trace';
+import ConfigOptions from 'enums/ConfigOptions';
 
 @Trace()
 export default class Config extends Command {
@@ -45,7 +46,7 @@ export default class Config extends Command {
       this.args.nonFlags = [choice];
     }
 
-    for (const key of this.args.nonFlags) {
+    for (const key of this.args.nonFlags as ConfigOptions[]) {
       this.config.set(key, this.type === 'enable');
       info(
         `Config '${key}' ${this.type === 'enable' ? 'enabled' : 'disabled'}`,

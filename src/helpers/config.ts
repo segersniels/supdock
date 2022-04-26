@@ -6,7 +6,7 @@ import ConfigOptions from 'enums/ConfigOptions';
 import fs from 'fs';
 import which from 'which';
 
-export type Configuration = Record<string, boolean | string>;
+export type Configuration = Record<ConfigOptions, boolean | string>;
 
 // When config is being adjusted make sure we keep track of the old values and names
 const migrations: Record<string, Record<string, string>> = {
@@ -17,6 +17,7 @@ const migrations: Record<string, Record<string, string>> = {
   },
 };
 
+const excludedFromPrompt = [ConfigOptions.BINARY_PATH];
 const defaultConfig: Configuration = {
   [ConfigOptions.CAUTION_CHECK]: true,
   [ConfigOptions.FUZZY_SEARCH]: true,
@@ -44,7 +45,7 @@ export default class Config {
   }
 
   private get keys() {
-    return Object.keys(this.config.all);
+    return Object.keys(this.config.all) as ConfigOptions[];
   }
 
   public migrate() {
@@ -73,14 +74,18 @@ export default class Config {
   }
 
   public get active() {
-    return this.keys.filter(key => this.config.get(key));
+    return this.keys.filter(
+      key => this.config.get(key) && !excludedFromPrompt.includes(key),
+    );
   }
 
   public get inactive() {
-    return this.keys.filter(key => !this.config.get(key));
+    return this.keys.filter(
+      key => !this.config.get(key) && !excludedFromPrompt.includes(key),
+    );
   }
 
-  public get = (key: string) => {
+  public get = (key: ConfigOptions) => {
     // Get the value from the config
     const value = this.config.get(key);
 
@@ -91,7 +96,7 @@ export default class Config {
     return value;
   };
 
-  public set = (key: string, value: any) => {
+  public set = (key: ConfigOptions, value: any) => {
     if (typeof (defaultConfig as any)[key] === 'undefined') {
       error(`Invalid config '${key}' detected`);
     }
