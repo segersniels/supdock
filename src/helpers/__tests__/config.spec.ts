@@ -16,8 +16,8 @@ describe('config', () => {
     };
 
     // Create config with old settings
-    let config = new Config(configWithOldSettings);
-    expect(config.get('ask-for-confirmation')).to.eql(true);
+    let config = new Config(configWithOldSettings as any);
+    expect(config.get('ask-for-confirmation' as any)).to.eql(true);
 
     // Create a new config with new settings and migrate the old settings to the new ones
     config = new Config();
