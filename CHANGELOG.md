@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.7.0 - 2.7.5
+
+- General UX improvements
+- Minor bugfixes
+- [Now attempts to locate the actual docker binary instead of assuming a default path](./README.md#docker-binary-path)
+- Better debug tracing
+- Fuzzy search is now enabled by default since it's a core functionality of Supdock
+
 ## 2.6.0
 
 - Speed improvements
