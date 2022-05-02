@@ -2,7 +2,7 @@
 
 [![Actions](https://action-badges.now.sh/segersniels/supdock)](https://github.com/segersniels/supdock/actions)[![npm](https://img.shields.io/npm/dm/supdock.svg)](https://www.npmjs.com/package/supdock)
 
-What's Up, Dock(er)? A slightly more visual way to interact with the docker daemon. Supdock is a wrapper for the docker command meaning you can still use all of the other `docker` commands without issues.
+What's Up, Doc(ker)? A slightly more visual way to interact with the docker daemon. Supdock is a wrapper for the docker command meaning you can still use all of the other `docker` commands without issues.
 
 <p align="center">
 <img src="https://i.imgur.com/ATV0nP7.png" width="250">
