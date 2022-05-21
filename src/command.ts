@@ -47,19 +47,6 @@ export default class Command {
     this.flags = FlagHelper.parse(this.args.flags);
   }
 
-  /**
-   * Ensure we can match the passed command with metadata
-   */
-  private ensureValidMetadata() {
-    if (this.metadata) {
-      return;
-    }
-
-    // No metadata found for request command, pass to default docker execution
-    this.default();
-    process.exit();
-  }
-
   protected parallel() {
     UtilHelper.info(
       'Asynchronous execution of command is happening in the background',
@@ -129,7 +116,10 @@ export default class Command {
   }
 
   public usage() {
-    this.ensureValidMetadata();
+    // Handle as default docker command if no metadata is specified, don't bother doing anything
+    if (!this.metadata) {
+      return this.default();
+    }
 
     const {
       custom,
@@ -195,7 +185,10 @@ export default class Command {
   }
 
   public async run() {
-    this.ensureValidMetadata();
+    // Handle as default docker command if no metadata is specified, don't bother doing anything
+    if (!this.metadata) {
+      return this.default();
+    }
 
     if (this.shouldPrompt) {
       const choices = this.createChoices();
