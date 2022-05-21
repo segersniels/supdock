@@ -77,5 +77,8 @@ interface SimplifiedExec {
     await exec.run();
   } catch (err) {
     errorHandler.catch(err as ExecutionError);
+  } finally {
+    // Gracefully exit
+    process.exit();
   }
 })();
