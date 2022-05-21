@@ -170,11 +170,11 @@ export default class Command {
     // Filter out all falsy arguments
     args = args.filter(Boolean);
 
-    spawnSync(command, args, { stdio: 'inherit' });
+    return spawnSync(command, args, { stdio: 'inherit' });
   }
 
   public default(options: string[] = process.argv.slice(2)) {
-    this.spawn(this.path, options);
+    return this.spawn(this.path, options);
   }
 
   protected execute(): any {
@@ -207,6 +207,6 @@ export default class Command {
       this.id = choice.split('-')[0].trim();
     }
 
-    this.execute();
+    return this.execute();
   }
 }
