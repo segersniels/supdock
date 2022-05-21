@@ -55,7 +55,7 @@ export default class Command {
       return;
     }
 
-    // No metadata found for request command, pass to default docker exection
+    // No metadata found for request command, pass to default docker execution
     this.default();
     process.exit();
   }
