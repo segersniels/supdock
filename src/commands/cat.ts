@@ -18,8 +18,8 @@ export default class Cat extends Command {
 
   public async run() {
     let file;
-    const choices = this.createChoices();
-    const choice = await this.determineChoice(choices);
+    const choices = this.generateChoices();
+    const choice = await this.ask(choices);
     if (!choice) {
       return;
     }

@@ -56,7 +56,7 @@ export default class Command {
       true,
     );
 
-    const ids: string[] = this.createChoices().map((choice: string) =>
+    const ids: string[] = this.generateChoices().map((choice: string) =>
       choice.split('-')[0].trim(),
     );
 
@@ -88,7 +88,7 @@ export default class Command {
     return choice;
   }
 
-  protected async determineChoice(choices: string[]) {
+  protected async ask(choices: string[]) {
     const { question, allowFuzzySearching } = this.metadata;
 
     // Try to fuzzy match the given search term
@@ -104,11 +104,11 @@ export default class Command {
     return await this.prompt(question!, choices);
   }
 
-  protected createChoices(type?: CommandAlias) {
+  protected generateChoices(type?: CommandAlias) {
     return execSync(type ?? this.metadata.type!, { maxBuffer: 1024 * 10000 })
       .toString()
       .split('\n')
-      .filter(line => line);
+      .filter(Boolean);
   }
 
   public version() {
@@ -132,11 +132,8 @@ export default class Command {
     // When command has custom usage defined log that instead of throwing the unknown command to docker
     if (usage) {
       return this.spawn(this.path, usage.split(' '));
-    }
-
-    // Allow commands to have their own detailed usage information when a complete custom command
-    // Overwritten by usage alias above
-    if (custom && !usage) {
+    } else if (custom) {
+      // Allow commands to have their own detailed usage information when a complete custom command
       UtilHelper.info(
         DescriptionHelper.generateCustomCommandDescription(
           this.command,
@@ -146,24 +143,24 @@ export default class Command {
       );
     }
 
-    // When a standard docker command log the default docker usage info first
-    if (!usage && !custom) {
-      this.default();
-    }
-
-    // Only log extra stuff if there are actual custom flags for the command
+    // Fetch descriptions for potential specified flags
     const flagDescriptions = DescriptionHelper.generateFlagDescriptions(
       this.command,
     );
 
+    // Log the default docker usage info first
+    this.default();
+
+    // Log the extended flag descriptions
     if (flagDescriptions.length > 0) {
       UtilHelper.info(
         `\nOptions supported through prompt (supdock):\n${flagDescriptions}`,
       );
+    }
 
-      if (extraUsageInfo) {
-        UtilHelper.info(`\n${extraUsageInfo}`);
-      }
+    // Some commands will have extra information specified, log it
+    if (extraUsageInfo) {
+      UtilHelper.info(`\n${extraUsageInfo}`);
     }
 
     return;
@@ -171,13 +168,13 @@ export default class Command {
 
   protected spawn(command: string, args: string[]) {
     // Filter out all falsy arguments
-    args = args.filter(arg => arg);
+    args = args.filter(Boolean);
 
-    return spawnSync(command, args, { stdio: 'inherit' });
+    spawnSync(command, args, { stdio: 'inherit' });
   }
 
   public default(options: string[] = process.argv.slice(2)) {
-    return this.spawn(this.path, options);
+    this.spawn(this.path, options);
   }
 
   protected execute(): any {
@@ -191,7 +188,7 @@ export default class Command {
     }
 
     if (this.shouldPrompt) {
-      const choices = this.createChoices();
+      const choices = this.generateChoices();
 
       if (!choices.length) {
         throw new ExecutionError(
@@ -200,19 +197,16 @@ export default class Command {
         );
       }
 
-      // Extract the id from the choice that was made or given
-      const choice = await this.determineChoice(choices);
+      const choice = await this.ask(choices);
 
-      // Unable to determine choice or when defaulted to docker
-      // When testing we want to test if we defaulted correctly in some cases
-      // So in this case just return the defaulted command when testing
       if (!choice || typeof choice !== 'string') {
         return choice;
       }
 
+      // Extract the id from the choice that was made or given
       this.id = choice.split('-')[0].trim();
     }
 
-    return this.execute();
+    this.execute();
   }
 }

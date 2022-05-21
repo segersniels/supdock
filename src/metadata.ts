@@ -25,7 +25,7 @@ const configOptions = {
     'Enforce a more readable log by default limiting the length to 500 lines. Default: disabled',
 };
 
-const metadata: Commands = {
+export default {
   logs: {
     description: 'See the logs of a container',
     question: 'Which container would you like to see the logs of?',
@@ -170,6 +170,4 @@ const metadata: Commands = {
     type: CommandAlias.RUNNING_CONTAINERS,
     allowFuzzySearching: true,
   },
-};
-
-export default metadata;
+} as Commands;

@@ -29,7 +29,7 @@ export default class Restart extends Command {
       this.errorHandler.catch(err as ExecutionError, async err => {
         if (err.message.includes('Was not able to match with container')) {
           // Check if the container is stopped and not running
-          const stoppedContainers = this.createChoices(
+          const stoppedContainers = this.generateChoices(
             CommandAlias.STOPPED_CONTAINERS,
           );
 
