@@ -93,7 +93,7 @@ export default class Command {
 
     // Try to fuzzy match the given search term
     if (allowFuzzySearching && this.args.nonFlags.length >= 1) {
-      // When fuzzy searching is disabled make sure we passthrough back to docker so we don't hinder docker behaviour
+      // When fuzzy searching is disabled make sure we passthrough back to docker so we don't hinder docker behavior
       if (!this.config.get(ConfigOptions.FUZZY_SEARCH)) {
         return this.default();
       }
