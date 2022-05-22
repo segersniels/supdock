@@ -7,7 +7,7 @@
     "dist"
   ],
   "scripts": {
-    "compile": "tsup index.ts --clean --target node16 --minify --keep-names --out-dir dist",
+    "compile": "tsup index.ts --clean --target node12 --minify --keep-names --out-dir dist",
     "build": "pkg dist/index.js --target node16 -o ./bin/supdock",
     "build:ci": "pkg dist/index.js --targets node16-linux-x64,node16-macos-x64,node16-win-x64 --out-path ./bin",
     "lint": "eslint '**/*.{ts,tsx}'",
