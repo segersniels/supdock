@@ -4,6 +4,5 @@
 node_modules
 bin
 dist
-Makefile
 .config
 yarn-error.log
