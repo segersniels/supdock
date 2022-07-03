@@ -57,7 +57,6 @@
     "eslint": "^6.7.2",
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "fuzzy-search": "^3.0.2",
     "lodash.flatten": "^4.4.0",
     "minimist": "^1.2.6",
     "mocha": "^7.1.0",
