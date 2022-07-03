@@ -6,12 +6,15 @@
   "files": [
     "dist"
   ],
+  "pkg": {
+    "assets": "dist/*"
+  },
   "scripts": {
     "compile:tsup": "tsup index.ts --clean --target node12 --minify --keep-names --out-dir dist && make copy",
     "compile:wasm": "make build",
     "compile": "yarn compile:wasm && yarn compile:tsup",
-    "build": "pkg dist/index.js --target node16 -o ./bin/supdock",
-    "build:ci": "pkg dist/index.js --targets node16-linux-x64,node16-macos-x64,node16-win-x64 --out-path ./bin",
+    "build": "pkg . --target node16 -o ./bin/supdock",
+    "build:ci": "pkg . --targets node16-linux-x64,node16-macos-x64,node16-win-x64 --out-path ./bin --",
     "lint": "eslint '**/*.{ts,tsx}'",
     "lint:fix": "eslint '**/*.{ts,tsx}' --fix",
     "check:typescript": "tsc --noEmit --skipLibCheck --project .",
