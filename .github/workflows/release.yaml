@@ -26,10 +26,11 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
       - run: yarn install
+      - run: yarn compile:wasm
       - run: yarn check:typescript
       - run: yarn lint
       - run: yarn test
-      - run: yarn compile
+      - run: yarn compile:tsup
       - run: yarn build:ci
       - name: Rename built binaries
         run: ./scripts/rename.sh
