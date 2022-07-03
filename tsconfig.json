@@ -22,7 +22,8 @@
     "baseUrl": ".",
     "paths": {
       "*": ["src/*"],
-      "package": ["package.json"]
+      "package": ["package.json"],
+      "webassembly/*": ["webassembly/pkg/*"]
     }
   },
   "exclude": ["node_modules", "**/node_modules/*"]

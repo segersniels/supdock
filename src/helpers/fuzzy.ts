@@ -1,5 +1,5 @@
 import ConfigOptions from 'enums/ConfigOptions';
-import FuzzySearch from 'fuzzy-search';
+import { fuzzy } from 'webassembly/supdock';
 import Config from './config';
 import { ExecutionError } from './errors';
 import prompts from 'prompts';
@@ -14,7 +14,7 @@ export default class Fuzzy {
     const info = metadata[that.command!];
     const config = that.config ?? new Config();
     const term = that.args!.nonFlags[0];
-    const choicesAfterFuzzySearching = new FuzzySearch(choices).search(term);
+    const choicesAfterFuzzySearching = fuzzy(choices, term);
 
     if (choicesAfterFuzzySearching.length === 0) {
       throw new ExecutionError(
