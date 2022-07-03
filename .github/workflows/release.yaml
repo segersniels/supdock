@@ -25,6 +25,9 @@ jobs:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
+      - uses: jetli/wasm-pack-action@v0.3.0
+        with:
+          version: 'latest'
       - run: yarn install
       - run: yarn compile:wasm
       - run: yarn check:typescript
