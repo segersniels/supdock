@@ -61,7 +61,7 @@ jobs:
   beta:
     runs-on: ubuntu-latest
     needs: build
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/develop' && contains(needs.build.outputs.version, '-beta.')
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -74,7 +74,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     needs: build
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master' && !contains(needs.build.outputs.version, '-beta.')
     steps:
       - name: Checkout
         uses: actions/checkout@v1
