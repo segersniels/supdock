@@ -1,12 +1,5 @@
 use std::collections::HashSet;
 use strsim::jaro_winkler;
-use wasm_bindgen::prelude::*;
-
-#[wasm_bindgen]
-extern "C" {
-    #[wasm_bindgen(js_namespace = console)]
-    fn log(s: JsValue);
-}
 
 fn parse(needle: String) -> Vec<String> {
     let mut words: Vec<String> = needle
