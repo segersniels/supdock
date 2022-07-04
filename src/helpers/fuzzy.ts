@@ -9,12 +9,11 @@ import { Trace } from '@aiteq/trace';
 import * as UtilHelper from './util';
 
 function isExactMatch(choice: string, term: string, isCustom?: boolean) {
-  const [id, name] = choice.split('-', 2);
+  const [id, ...rest] = choice.split('-').map(value => value.trim());
+  const name = rest.join('-');
 
   if (
-    (term === id.trim() ||
-      term === name.trim() ||
-      id.trim().startsWith(term)) &&
+    (term === id || term === name || id.startsWith(term)) &&
     !isCustom // Don't default custom commands
   ) {
     return true;
