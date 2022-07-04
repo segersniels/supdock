@@ -24,7 +24,10 @@ function isExactMatch(choice: string, term: string, isCustom?: boolean) {
 
 export default class Fuzzy {
   @Trace()
-  public static async search(that: Partial<Command>, choices: string[]) {
+  public static async search(
+    that: Partial<Command>,
+    choices: string[],
+  ): Promise<string | undefined> {
     const info = metadata[that.command!];
     const config = that.config ?? new Config();
     const term = that.args!.nonFlags[0];
@@ -41,7 +44,8 @@ export default class Fuzzy {
         const choice = choicesAfterFuzzySearching[0];
 
         if (isExactMatch(choice, term, info.custom)) {
-          return that.default!();
+          that.default!();
+          return;
         }
 
         // Ask the user for confirmation
@@ -72,7 +76,8 @@ export default class Fuzzy {
         continue;
       }
 
-      return that.default!();
+      that.default!();
+      return;
     }
 
     const { choice } = await prompts({

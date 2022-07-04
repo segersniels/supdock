@@ -15,13 +15,13 @@ export default class ErrorHandler {
    * @param err
    * @param fn
    */
-  public catch(
+  public async catch(
     err: Error | ExecutionError,
     fn?: (err: ExecutionError) => void,
   ) {
     if (err instanceof ExecutionError) {
       if (fn) {
-        return fn(err);
+        return await fn(err);
       }
 
       error(err.message);
