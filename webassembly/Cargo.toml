@@ -17,5 +17,5 @@ opt-level = 3
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
 wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
-simsearch = "0.2"
 wee_alloc = "0.4.5"
+strsim = "0.10.0"
