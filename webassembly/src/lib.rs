@@ -1,5 +1,5 @@
-use simsearch::{SimSearch, SearchOptions};
 use wasm_bindgen::prelude::*;
+mod search;
 
 extern crate wee_alloc;
 
@@ -18,24 +18,9 @@ extern "C" {
 }
 
 #[wasm_bindgen]
-pub fn fuzzy(haystack: JsValue, needle: &str) -> Result<SearchResults, JsError> {
-    // Create search engine
-    let mut engine: SimSearch<u32> = SimSearch::new_with(SearchOptions::new().threshold(0.7));
-
-    // Prepare the haystack by converting to workable strings
+pub fn fuzzy(haystack: JsValue, needle: String) -> Result<SearchResults, JsError> {
     let haystack = haystack.into_serde::<Vec<String>>()?;
-
-    // Insert the potential "needles" into the engine
-    for (index, potential_needle) in haystack.iter().enumerate() {
-        engine.insert(index.try_into().unwrap(), potential_needle);
-    }
-
-    // Perform the search
-    let results: Vec<u32> = engine.search(needle);
-    let results = results
-        .iter()
-        .map(|index| haystack[index.to_owned() as usize].to_string())
-        .collect::<Vec<_>>();
+    let results = search::search(haystack, needle, 0.7);
 
     Ok(JsValue::from_serde(&results)?.into())
 }
