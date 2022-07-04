@@ -35,11 +35,11 @@ const getFlagArguments = () => {
 
 const getNonFlagArguments = () => {
   for (const key of argv._.slice(1, argv._.length)) {
-    if (nonFlags.includes(key)) {
+    if (nonFlags.includes(key.toString())) {
       continue;
     }
 
-    nonFlags.push(key);
+    nonFlags.push(key.toString());
   }
 
   return nonFlags;
