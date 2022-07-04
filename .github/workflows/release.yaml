@@ -38,6 +38,7 @@ jobs:
       - run: yarn lint
       - run: yarn test
       - run: yarn compile:tsup
+      - run: yarn compile:wasm:copy
       - run: yarn build:ci
       - name: Rename built binaries
         run: ./scripts/rename.sh
