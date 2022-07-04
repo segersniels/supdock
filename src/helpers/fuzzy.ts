@@ -8,6 +8,21 @@ import Command from 'command';
 import { Trace } from '@aiteq/trace';
 import * as UtilHelper from './util';
 
+function isExactMatch(choice: string, term: string, isCustom?: boolean) {
+  const [id, name] = choice.split('-', 2);
+
+  if (
+    (term === id.trim() ||
+      term === name.trim() ||
+      id.trim().startsWith(term)) &&
+    !isCustom // Don't default custom commands
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
 export default class Fuzzy {
   @Trace()
   public static async search(that: Partial<Command>, choices: string[]) {
@@ -26,15 +41,7 @@ export default class Fuzzy {
       case 1: {
         const choice = choicesAfterFuzzySearching[0];
 
-        if (
-          (term === choice.split('-')[0].trim() ||
-            term === choice.split('-')[1].trim() ||
-            choice
-              .split('-')[0]
-              .trim()
-              .startsWith(term)) &&
-          !info.custom // Don't default custom commands
-        ) {
+        if (isExactMatch(choice, term, info.custom)) {
           return that.default!();
         }
 
@@ -62,17 +69,11 @@ export default class Fuzzy {
     }
 
     for (const choice of choicesAfterFuzzySearching) {
-      const [id, name] = choice.split('-', 2);
-
-      // Check if remaining options have an identical match on container id
-      if ((term === id.trim() || id.trim().startsWith(term)) && !info.custom) {
-        return that.default!();
+      if (!isExactMatch(choice, term, info.custom)) {
+        continue;
       }
 
-      // Check for identical match on name
-      if (term === name.trim()) {
-        return that.default!();
-      }
+      return that.default!();
     }
 
     const { choice } = await prompts({
