@@ -11,6 +11,7 @@ fn parse(needle: String) -> Vec<String> {
     words.retain(|word| !word.is_empty());
 
     // Deduplicate words, we don't benefit from matching duplicates
+    words.sort();
     words.dedup();
 
     return words;
