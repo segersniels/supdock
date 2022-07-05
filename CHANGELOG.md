@@ -1,5 +1,25 @@
 # Changelog
 
+<a name="2.8.3"></a>
+## 2.8.3 (2022-07-05)
+
+### Added
+
+- ➕ Add gitmoji-changelog [[b08b632](https://github.com/segersniels/supdock/commit/b08b6328cf7cda24c62ebe72d8773e4de75dbb8f)]
+
+### Changed
+
+- ♻️ Centralise errors to prevent mismatches [[4b418dc](https://github.com/segersniels/supdock/commit/4b418dc8580a7586ebf6cbd46e58165ca22762da)]
+
+### Fixed
+
+- 🐛 Make sure to target correct error [[c975f45](https://github.com/segersniels/supdock/commit/c975f45df392d95b52f4d62357600532dea14ffb)]
+
+### Miscellaneous
+
+- 📝 Generate changelog from commits [[b6b5c51](https://github.com/segersniels/supdock/commit/b6b5c51a927c572460ff753bb59d399170b6ad1a)]
+
+
 <a name="2.8.2"></a>
 ## 2.8.2 (2022-07-04)
 
