@@ -4,6 +4,7 @@ import CommandAlias from 'enums/CommandAlias';
 import ErrorHandler, { ExecutionError } from 'helpers/errors';
 import FuzzyHelper from 'helpers/fuzzy';
 import { Trace } from '@aiteq/trace';
+import Error from 'enums/Error';
 
 @Trace()
 export default class Restart extends Command {
@@ -25,7 +26,8 @@ export default class Restart extends Command {
       return await super.run();
     } catch (err) {
       await this.errorHandler.catch(err as ExecutionError, async err => {
-        if (!err.message.includes('Was not able to match with container')) {
+        // Not interested in other errors, we're not handling these
+        if (err.message !== Error.NoRestartContainers) {
           throw err;
         }
 
