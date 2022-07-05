@@ -13,6 +13,7 @@ import { ExecutionError } from 'helpers/errors';
 import CommandAlias from 'enums/CommandAlias';
 import FlagHelper from 'helpers/flag';
 import { Trace } from '@aiteq/trace';
+import Error from 'enums/Error';
 
 @Trace()
 export default class Command {
@@ -191,10 +192,7 @@ export default class Command {
       const choices = this.generateChoices();
 
       if (!choices.length) {
-        throw new ExecutionError(
-          this.metadata.error ||
-            `Unable to generate choices to execute command '${this.command}'`,
-        );
+        throw new ExecutionError(this.metadata.error || Error.InvalidChoices);
       }
 
       const choice = await this.ask(choices);

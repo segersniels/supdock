@@ -7,6 +7,7 @@ import { default as metadata } from 'metadata';
 import Command from 'command';
 import { Trace } from '@aiteq/trace';
 import * as UtilHelper from './util';
+import Error from 'enums/Error';
 
 function isExactMatch(choice: string, term: string, isCustom?: boolean) {
   const [id, ...rest] = choice.split('-').map(value => value.trim());
@@ -35,9 +36,7 @@ export default class Fuzzy {
 
     switch (choicesAfterFuzzySearching.length) {
       case 0: {
-        throw new ExecutionError(
-          `Was not able to match with container or image for search: ${term}`,
-        );
+        throw new ExecutionError(Error.NoSearchMatch);
       }
       // Identical match found based on id or name
       case 1: {
@@ -63,7 +62,7 @@ export default class Fuzzy {
           });
 
           if (!confirmation.choice) {
-            throw new ExecutionError('Exiting on request of user...');
+            throw new ExecutionError(Error.ExitOnUserRequest);
           }
         }
 

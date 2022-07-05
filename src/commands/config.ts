@@ -3,6 +3,7 @@ import { info } from 'helpers/util';
 import { ExecutionError } from 'helpers/errors';
 import { Trace } from '@aiteq/trace';
 import ConfigOptions from 'enums/ConfigOptions';
+import Error from 'enums/Error';
 
 @Trace()
 export default class Config extends Command {
@@ -31,7 +32,7 @@ export default class Config extends Command {
         (this.type === 'enable' && !inactive.length) ||
         (this.type === 'disable' && !active.length)
       ) {
-        throw new ExecutionError(`No options found to ${this.type}`);
+        throw new ExecutionError(Error.NoConfigOptionsFound);
       }
 
       const choice = await this.prompt(

@@ -1,5 +1,6 @@
 import { error } from './util';
 import { CustomError } from 'ts-custom-error';
+import Error from 'enums/Error';
 
 export class ExecutionError extends CustomError {
   constructor(message?: string) {
