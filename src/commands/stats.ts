@@ -14,8 +14,9 @@ export default class Stats extends Command {
     }
 
     if (
-      this.allowedFlags.includes('prompt') &&
-      (this.flags.includes('-p') || this.flags.includes('--prompt'))
+      (this.allowedFlags.includes('prompt') &&
+        (this.flags.includes('-p') || this.flags.includes('--prompt'))) ||
+      !!this.args.nonFlags.length
     ) {
       this.shouldPrompt = true;
       // Filter out the prompt flag for further execution
