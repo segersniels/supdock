@@ -20,7 +20,8 @@
     "lint:fix": "eslint '**/*.{ts,tsx}' --fix",
     "check:typescript": "tsc --noEmit --skipLibCheck --project .",
     "nuke": "rm -rf node_modules ; yarn install",
-    "test": "NODE_ENV=test mocha -r ts-node/register -r tsconfig-paths/register --recursive --exclude './node_modules/**/*.spec.ts' './**/*.spec.ts' --exit"
+    "test": "NODE_ENV=test mocha -r ts-node/register -r tsconfig-paths/register --recursive --exclude './node_modules/**/*.spec.ts' './**/*.spec.ts' --exit",
+    "generate:changelog": "gitmoji-changelog"
   },
   "repository": {
     "type": "git",
