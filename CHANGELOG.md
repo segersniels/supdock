@@ -1,7 +1,7 @@
 # Changelog
 
-<a name="2.8.3"></a>
-## 2.8.3 (2022-07-05)
+<a name="2.8.4"></a>
+## 2.8.4 (2022-07-05)
 
 ### Added
 
@@ -13,6 +13,7 @@
 
 ### Fixed
 
+- 🐛 Allow fuzzy searching when name provided [[44240c2](https://github.com/segersniels/supdock/commit/44240c289b56b62024b80edbb19a889cfc15e2b0)]
 - 🐛 Make sure to target correct error [[c975f45](https://github.com/segersniels/supdock/commit/c975f45df392d95b52f4d62357600532dea14ffb)]
 
 ### Miscellaneous
