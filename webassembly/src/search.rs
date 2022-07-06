@@ -1,11 +1,11 @@
 use std::collections::HashSet;
 use strsim::jaro_winkler;
 
-fn parse(needle: String) -> Vec<String> {
-    let mut words: Vec<String> = needle
-        .split_whitespace()
-        .map(|token| token.to_string().to_lowercase())
-        .collect();
+fn parse(needle: &str, split_char: &str) -> Vec<String> {
+    let mut words = needle
+        .split(split_char)
+        .map(|token| token.to_lowercase())
+        .collect::<Vec<_>>();
 
     // Filter out empty
     words.retain(|word| !word.is_empty());
@@ -17,21 +17,41 @@ fn parse(needle: String) -> Vec<String> {
     return words;
 }
 
-pub fn search(haystack: Vec<String>, needle: String, threshold: f64) -> Vec<String> {
+fn is_similar(word: &str, needle: &str, threshold: f64) -> bool {
+    let distance = jaro_winkler(&word.to_lowercase(), &needle.to_lowercase());
+    return distance > threshold;
+}
+
+pub fn search(
+    haystack: Vec<String>,
+    needle: &str,
+    threshold: f64,
+    split_char: &str,
+) -> Vec<String> {
     let mut results = HashSet::new();
 
-    for potential_needle in haystack.iter() {
-        let words = parse(potential_needle.to_owned());
+    // Look for similarity in each of the options
+    for potential_needle in haystack.iter().map(|item| item.as_str()) {
+        let words = parse(potential_needle, split_char);
 
+        // Crawl word by word to see if we can find similarity
         for word in words {
-            let distance = jaro_winkler(&word.to_lowercase(), &needle.to_lowercase());
+            // Similarity already found, stop looking
+            if is_similar(word.as_str(), needle, threshold) {
+                results.insert(potential_needle.to_owned());
+                break;
+            }
 
-            // Not similar enough
-            if distance < threshold {
+            if !word.contains("-") {
                 continue;
             }
 
-            // Found similarity that exceeds our threshold, stop looking
+            // Check for similarity split by dashes in case of name (eg. this-is-my-container-name)
+            if search(vec![word], needle, threshold, "-").is_empty() {
+                continue;
+            }
+
+            // Found similarity after splitting by dashes, stop looking
             results.insert(potential_needle.to_owned());
             break;
         }

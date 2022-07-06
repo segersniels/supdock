@@ -18,9 +18,9 @@ extern "C" {
 }
 
 #[wasm_bindgen]
-pub fn fuzzy(haystack: JsValue, needle: String) -> Result<SearchResults, JsError> {
+pub fn fuzzy(haystack: JsValue, needle: &str) -> Result<SearchResults, JsError> {
     let haystack = haystack.into_serde::<Vec<String>>()?;
-    let results = search::search(haystack, needle, 0.7);
+    let results = search::search(haystack, needle, 0.7, " ");
 
     Ok(JsValue::from_serde(&results)?.into())
 }
