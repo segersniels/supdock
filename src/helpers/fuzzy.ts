@@ -83,7 +83,7 @@ export default class Fuzzy {
       type: 'select',
       name: 'choice',
       message: `Search '${term}' returned more than one result, please make a choice from the list below.`,
-      choices: choices.map(c => ({ title: c, value: c })),
+      choices: choicesAfterFuzzySearching.map(c => ({ title: c, value: c })),
     });
 
     return choice;
