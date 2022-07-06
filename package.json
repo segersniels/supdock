@@ -1,6 +1,6 @@
 {
   "name": "supdock",
-  "version": "2.8.4",
+  "version": "2.8.5",
   "description": "What's Up Doc(ker)?",
   "main": "dist/index.js",
   "files": [

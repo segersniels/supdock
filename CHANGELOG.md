@@ -1,5 +1,18 @@
 # Changelog
 
+<a name="2.8.5"></a>
+## 2.8.5 (2022-07-06)
+
+### Changed
+
+- 🔧 Add basic editorconfig to actually match the indentation for rust files [[cc95f01](https://github.com/segersniels/supdock/commit/cc95f01b3e505c8fe15bec908c22ce615421e793)]
+- 🚸 Make sure to do some more in depth searching based on character splits [[ad09e3b](https://github.com/segersniels/supdock/commit/ad09e3bfcdb5bb7b4e76f83dd179479954f1a159)]
+
+### Fixed
+
+- 🐛 Make sure we only provide the actual fuzzy search results to the user [[f173c4a](https://github.com/segersniels/supdock/commit/f173c4abbd88fd07d636deaab0aedfa7ef235ce3)]
+
+
 <a name="2.8.4"></a>
 ## 2.8.4 (2022-07-05)
 
