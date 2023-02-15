@@ -1,5 +1,14 @@
 # Changelog
 
+<a name="2.8.6"></a>
+## 2.8.6 (2023-02-15)
+
+### Changed
+
+- ♻️ Keep asking for file to cat [[94475f8](https://github.com/segersniels/supdock/commit/94475f851c9a92568446dac048867322d43e7407)]
+- 🚸 Make sure we exit when user cancels prompt [[58b7a8b](https://github.com/segersniels/supdock/commit/58b7a8b5b8e5a21d4de0f9fe600b442fd6a46a15)]
+
+
 <a name="2.8.5"></a>
 ## 2.8.5 (2022-07-06)
 
