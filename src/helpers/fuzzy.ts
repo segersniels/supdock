@@ -54,12 +54,17 @@ export default class Fuzzy {
             true,
           );
 
-          const confirmation = await prompts({
-            type: 'confirm',
-            name: 'choice',
-            message: `Are you sure you want to execute '${that.command}' for container '${choice}'`,
-            initial: true,
-          });
+          const confirmation = await prompts(
+            {
+              type: 'confirm',
+              name: 'choice',
+              message: `Are you sure you want to execute '${that.command}' for container '${choice}'`,
+              initial: true,
+            },
+            {
+              onCancel: () => process.exit(),
+            },
+          );
 
           if (!confirmation.choice) {
             throw new ExecutionError(Error.ExitOnUserRequest);
@@ -79,12 +84,17 @@ export default class Fuzzy {
       return;
     }
 
-    const { choice } = await prompts({
-      type: 'select',
-      name: 'choice',
-      message: `Search '${term}' returned more than one result, please make a choice from the list below.`,
-      choices: choicesAfterFuzzySearching.map(c => ({ title: c, value: c })),
-    });
+    const { choice } = await prompts(
+      {
+        type: 'select',
+        name: 'choice',
+        message: `Search '${term}' returned more than one result, please make a choice from the list below.`,
+        choices: choicesAfterFuzzySearching.map(c => ({ title: c, value: c })),
+      },
+      {
+        onCancel: () => process.exit(),
+      },
+    );
 
     return choice;
   }

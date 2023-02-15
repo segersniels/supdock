@@ -43,12 +43,17 @@ export default class Restart extends Command {
           throw err;
         }
 
-        const { start } = await prompts({
-          type: 'confirm',
-          name: 'start',
-          message: `The container (${found}) does not seem to be running. Do you want to start it instead?`,
-          initial: true,
-        });
+        const { start } = await prompts(
+          {
+            type: 'confirm',
+            name: 'start',
+            message: `The container (${found}) does not seem to be running. Do you want to start it instead?`,
+            initial: true,
+          },
+          {
+            onCancel: () => process.exit(),
+          },
+        );
 
         if (!start) {
           return;

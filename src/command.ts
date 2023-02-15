@@ -78,13 +78,20 @@ export default class Command {
     type = 'select',
     initial?: any,
   ) {
-    const { choice } = await prompts({
-      type: type as any,
-      name: 'choice',
-      message: question,
-      choices: choices ? choices.map(c => ({ title: c, value: c })) : undefined,
-      initial,
-    });
+    const { choice } = await prompts(
+      {
+        type: type as any,
+        name: 'choice',
+        message: question,
+        choices: choices
+          ? choices.map(c => ({ title: c, value: c }))
+          : undefined,
+        initial,
+      },
+      {
+        onCancel: () => process.exit(),
+      },
+    );
 
     return choice;
   }

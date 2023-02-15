@@ -9,11 +9,16 @@ export default class Cat extends Command {
   }
 
   private async determineFile() {
-    return await prompts({
-      type: 'text',
-      name: 'choice',
-      message: 'Which file would you like to cat?',
-    });
+    return await prompts(
+      {
+        type: 'text',
+        name: 'choice',
+        message: 'Which file would you like to cat?',
+      },
+      {
+        onCancel: () => process.exit(),
+      },
+    );
   }
 
   public async run() {
