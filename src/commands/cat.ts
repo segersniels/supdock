@@ -9,16 +9,24 @@ export default class Cat extends Command {
   }
 
   private async determineFile() {
-    return await prompts(
-      {
-        type: 'text',
-        name: 'choice',
-        message: 'Which file would you like to cat?',
-      },
-      {
-        onCancel: () => process.exit(),
-      },
-    );
+    let file: string;
+
+    do {
+      const response = await prompts(
+        {
+          type: 'text',
+          name: 'choice',
+          message: 'Which file would you like to cat?',
+        },
+        {
+          onCancel: () => process.exit(),
+        },
+      );
+
+      file = response.choice;
+    } while (!file);
+
+    return file;
   }
 
   public async run() {
@@ -36,8 +44,7 @@ export default class Cat extends Command {
       this.args.nonFlags.shift();
       file = this.args.nonFlags.join('');
     } else {
-      const { choice } = await this.determineFile();
-      file = choice;
+      file = await this.determineFile();
     }
 
     return this.spawn('docker', ['exec', '-ti', this.id.trim(), 'cat', file]);
