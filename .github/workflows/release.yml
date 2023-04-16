@@ -7,6 +7,7 @@ jobs:
     outputs:
       version: ${{ steps.current_version.outputs.version }}
     steps:
+      - uses: actions/checkout@v2
       - name: Get current package version
         id: current_version
         run: echo "::set-output name=version::$(make version)"
@@ -16,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
+      - uses: actions/checkout@v2
       - name: Download artifact
         uses: dawidd6/action-download-artifact@v2
       - uses: "marvinpinto/action-automatic-releases@latest"
