@@ -1,7 +1,7 @@
 {
   "name": "supdock",
   "version": "3.0.0",
-  "description": "What's Up Doc(ker)?",
+  "description": "What's Up, Doc(ker)? A slightly more visual way to interact with the docker daemon",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/segersniels/supdock.git"
