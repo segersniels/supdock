@@ -46,5 +46,5 @@ jobs:
           args: --dry-run
       - name: Publish to NPM
         run: |
-          npm version ${{ needs.prepare.outputs.version }}
+          npm version ${{ needs.prepare.outputs.version }} || true
           npm publish --dry-run
