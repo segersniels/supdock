@@ -74,12 +74,16 @@ jobs:
     if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/download-artifact@v2
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - uses: actions/create-release@v1
+        id: create_release
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ needs.build.outputs.version }}"
+          tag_name: ${{ needs.build.outputs.version }}
+          release_name: ${{ needs.build.outputs.version }}
+          draft: false
           prerelease: false
-          files: |
-            ./bin/supdock-macos
-            ./bin/supdock-aarch64-linux
-            ./bin/supdock-amd64-linux
+      - name: Upload Assets to Release with a wildcard
+        uses: csexton/release-asset-action@v2
+        with:
+          pattern: "bin/*"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          release-url: ${{ steps.create_release.outputs.upload_url }}

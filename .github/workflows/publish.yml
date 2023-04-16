@@ -6,6 +6,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Publish to Cargo
+        uses: actions-rs/cargo@v1
+        with:
+          command: publish
       - name: Get current package version
         id: current_version
         run: echo "::set-output name=version::$(make version)"
