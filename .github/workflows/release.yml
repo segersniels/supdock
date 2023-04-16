@@ -13,7 +13,7 @@ jobs:
           command: generate-lockfile
       - name: Get current package version
         id: current_version
-        run: echo "::set-output name=version::$(make version)"
+        run: echo "version=$(make version)" >> $GITHUB_OUTPUT
 
   release:
     needs: prepare
