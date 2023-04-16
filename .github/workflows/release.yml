@@ -33,7 +33,7 @@ jobs:
             ./bin/supdock-amd64-linux
 
   publish:
-    needs: prepare
+    needs: release
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
