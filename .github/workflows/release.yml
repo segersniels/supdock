@@ -43,8 +43,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: publish
-          args: --dry-run
       - name: Publish to NPM
         run: |
           npm version ${{ needs.prepare.outputs.version }} || true
-          npm publish --dry-run
+          npm publish
