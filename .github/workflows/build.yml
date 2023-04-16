@@ -20,8 +20,28 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --all-features
 
-  build:
+  build-develop:
     needs: lint
+    runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: 1.64.0
+          override: true
+          target: ${{ matrix.job.target }}
+          components: rust-src
+      - uses: actions-rs/cargo@v1
+        with:
+          use-cross: true
+          args: --release --locked
+          command: build
+
+  build-master:
+    needs: lint
+    if: github.ref == 'refs/heads/master'
     strategy:
       fail-fast: false
       matrix:
