@@ -8,8 +8,9 @@ mod search;
 mod util;
 
 fn cli() -> Command {
-    Command::new("supdock")
+    Command::new(env!("CARGO_PKG_NAME"))
         .about("What's Up Doc(ker)?")
+        .version(env!("CARGO_PKG_VERSION"))
         .subcommand_required(false)
         .arg_required_else_help(true)
         .allow_external_subcommands(true)
