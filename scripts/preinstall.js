@@ -22,7 +22,7 @@ switch (os.platform()) {
 
 (async () => {
   const response = await fetch(
-    `https://github.com/segersniels/supdock/releases/download/latest/${binaryName}`,
+    `https://github.com/segersniels/supdock/releases/latest/download/${binaryName}`,
     {
       redirect: "follow",
     }
