@@ -5,6 +5,8 @@
 
 ### Added
 
+- 👷‍♂️ Adjust deploy flow and artifact sharing [[f3a1cb1](https://github.com/segersniels/supdock/commit/f3a1cb167888072f76f2832697bb1a70a2fa2fa8)]
+- 👷‍♂️ Should publish cargo as well [[0d5432d](https://github.com/segersniels/supdock/commit/0d5432dfaa895206cb481ce562d71d0d5f9d5f26)]
 - 👷‍♂️ Only build on master or develop [[fb18149](https://github.com/segersniels/supdock/commit/fb181496a5640a8fc79008b4e89c29095f48b851)]
 - 👷‍♂️ Provide way to publish npm through dispatch [[0891e59](https://github.com/segersniels/supdock/commit/0891e593ecb06da5b98959e07fe9b7e708c79fcf)]
 - ✨ Initial rewrite in rust [[612be85](https://github.com/segersniels/supdock/commit/612be8567059690fdcc65814c90ad6e2f9b939c7)]
@@ -12,14 +14,24 @@
 
 ### Changed
 
+- 🔧 Mention authors in manifest [[45a48db](https://github.com/segersniels/supdock/commit/45a48dbd7ca07b5507d94c9b8dccf0abeefeef90)]
+- 🚨 Fix linting [[7e83610](https://github.com/segersniels/supdock/commit/7e836101f554b0e8460e61bf217636ae48c1c4cf)]
+- 🔧 Bring manifest in line [[9d66b2b](https://github.com/segersniels/supdock/commit/9d66b2bc0657724f31a55e595faedb4682a4f865)]
 - 🔧 Properly handle yaml files [[05829f6](https://github.com/segersniels/supdock/commit/05829f62dd62b70f75dd0fb4b13d47bb90e30e95)]
 - ♻️ Use CARGO exported env vars [[b848264](https://github.com/segersniels/supdock/commit/b8482641c952bfe14395ebc90f82d9878b4833af)]
 - 🔧 Bring configs in sync with live version [[6447a3f](https://github.com/segersniels/supdock/commit/6447a3fe90e7de8045ef0c01b8c84c869ce342d8)]
 - ♻️ Keep asking for file to cat [[94475f8](https://github.com/segersniels/supdock/commit/94475f851c9a92568446dac048867322d43e7407)]
 - 🚸 Make sure we exit when user cancels prompt [[58b7a8b](https://github.com/segersniels/supdock/commit/58b7a8b5b8e5a21d4de0f9fe600b442fd6a46a15)]
 
+### Fixed
+
+- 🐛 Display the version [[723ae63](https://github.com/segersniels/supdock/commit/723ae635ffccd2efd33c2c68e4288847b094e61e)]
+
 ### Miscellaneous
 
+-  Merge pull request [#17](https://github.com/segersniels/supdock/issues/17) from segersniels/feature/rust [[1a95e0e](https://github.com/segersniels/supdock/commit/1a95e0e9b24b3029f88e4a9f3e634122f109e25b)]
+- 📝 Remove documentation that is no longer applicable [[a6a33ca](https://github.com/segersniels/supdock/commit/a6a33ca7d53f047bdf5d18ba235bb254996c946f)]
+- 📝 Update changelog [[fbb47f9](https://github.com/segersniels/supdock/commit/fbb47f9cfa14e4487ae1a20fb161cb500bd065fa)]
 - 📝 Update changelog [[b2d6462](https://github.com/segersniels/supdock/commit/b2d6462676ab2abaeb7a6644c1595ed5fc8d4c87)]
 - 🔨 Make sure we generate missing tags if they don&#x27;t exist yet [[2a3ac31](https://github.com/segersniels/supdock/commit/2a3ac31c938f454f1e297679ef52b646bafca768)]
 
