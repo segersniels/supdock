@@ -1,6 +1,6 @@
 {
   "name": "supdock",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "What's Up, Doc(ker)? A slightly more visual way to interact with the docker daemon",
   "repository": {
     "type": "git",
