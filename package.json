@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/segersniels/supdock#readme",
   "bin": {
-    "supdock-rust": "./bin/supdock"
+    "supdock": "./bin/supdock"
   },
   "scripts": {
     "preinstall": "node ./scripts/preinstall.js",
