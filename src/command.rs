@@ -160,8 +160,6 @@ pub fn handle_subcommand(command: Option<&str>) {
             Additionally we allow the user to pass in `all` as a query to perform a parallel execution.
              */
             if error_msg.contains("No such container") || error_msg.contains("No such image") {
-                let choice;
-
                 // Extract the query from the error message and trim it to remove any whitespace.
                 let query =
                     util::extract_container_name_from_error(error_msg.as_ref()).unwrap_or("");
@@ -176,31 +174,31 @@ pub fn handle_subcommand(command: Option<&str>) {
 
                 // Search within the haystack for the requested query by fuzzy searching
                 let results = search::search(choices, query, 0.7, " ");
-                match results.len() {
+                let choice = match results.len() {
                     0 => {
                         // No results found, prompt the user to select a container
                         let prompt_command = SupportedPromptCommand::from_str(command).unwrap();
-                        choice = prompt::prompt(
+                        prompt::prompt(
                             format!(
                                 "Select the desired {} from the list",
                                 prompt_command.get_prompt_type()
                             )
                             .as_str(),
                             command,
-                        );
+                        )
                     }
                     1 => {
                         // Single result returned so assume it's the correct container
-                        choice = util::extract_id_from_result(results[0].clone())
+                        util::extract_id_from_result(results[0].clone())
                     }
                     _ => {
                         // Multiple results returned, prompt user to select a container from the results
-                        choice = util::extract_id_from_result(prompt::ask(
+                        util::extract_id_from_result(prompt::ask(
                             "Search returned more than one result, please make a choice from the list.",
                             results,
-                        ));
+                        ))
                     }
-                }
+                };
 
                 return util::default_with_replace(query, choice.as_str());
             }

@@ -46,7 +46,7 @@ fn request(path: &str) -> Result<Value, Box<dyn Error>> {
             }
         }
         Err(_) => Err(Box::new(
-            DockerError { message: String::from(format!("Cannot connect to the Docker daemon at {socket_path:?}. Is the docker daemon running?")) }
+            DockerError { message: format!("Cannot connect to the Docker daemon at {socket_path:?}. Is the docker daemon running?") }
         )
     ),
     }
@@ -108,7 +108,7 @@ pub fn get_images() -> Result<Vec<String>, String> {
     match result {
         Ok(response) => {
             for image in response.as_array().unwrap() {
-                let name =  &image["RepoTags"][0].as_str().unwrap();
+                let name = &image["RepoTags"][0].as_str().unwrap();
                 let id = &image["Id"].as_str().unwrap().replace("sha256:", "")[..12];
 
                 images.push(format!("{} - {}", id, name));
