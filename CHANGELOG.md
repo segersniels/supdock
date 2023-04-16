@@ -5,6 +5,16 @@
 
 ### Added
 
+- 🔊 Debugging wise check where it extracts the artifact [[edf4ea9](https://github.com/segersniels/supdock/commit/edf4ea965d15f66170c187acb74bd6ccd2c17cb9)]
+- 👷‍♂️ Adjust so we wait for release to succeeed [[1b36752](https://github.com/segersniels/supdock/commit/1b367525c26b96e1577cb2017f8c1be8998ffc32)]
+- 👷‍♂️ We no longer need to generate since we include it now [[75ec647](https://github.com/segersniels/supdock/commit/75ec6474015fe5ef7230cdbf599c0d15542af158)]
+- 👷‍♂️ Let&#x27;s try this for real this time [[40a3d49](https://github.com/segersniels/supdock/commit/40a3d49a5ceb79252c15de7bc538a1d8a848fa13)]
+- 👷‍♂️ Drop the copy pasta name [[40d871a](https://github.com/segersniels/supdock/commit/40d871acd04c5f1b3ac741f6050111a01020a898)]
+- 👷‍♂️ Force cargo install so the lockfile gets created [[fd3cae1](https://github.com/segersniels/supdock/commit/fd3cae1b49b649342377dcbae30ea7c5fdfb0368)]
+- 👷‍♂️ Forgot the github release action is unmaintained [[86309c2](https://github.com/segersniels/supdock/commit/86309c25f1db0c8684c92802a030ab5c48ad75b4)]
+- 👷‍♂️ Only build linux on develop [[4e5f145](https://github.com/segersniels/supdock/commit/4e5f145d4e79c9aa56a7fac53a14e9a2201cab0f)]
+- 👷‍♂️ For now see if a dry run works as intended [[c646a6e](https://github.com/segersniels/supdock/commit/c646a6e9f376abb51e4d591363bd09c9b4c511f3)]
+- 👷‍♂️ Always build, even on PRs to ensure everything keeps working [[ce54849](https://github.com/segersniels/supdock/commit/ce5484972c772a7401b62c3b5e98d4d1346e0e95)]
 - 👷‍♂️ Adjust deploy flow and artifact sharing [[f3a1cb1](https://github.com/segersniels/supdock/commit/f3a1cb167888072f76f2832697bb1a70a2fa2fa8)]
 - 👷‍♂️ Should publish cargo as well [[0d5432d](https://github.com/segersniels/supdock/commit/0d5432dfaa895206cb481ce562d71d0d5f9d5f26)]
 - 👷‍♂️ Only build on master or develop [[fb18149](https://github.com/segersniels/supdock/commit/fb181496a5640a8fc79008b4e89c29095f48b851)]
@@ -14,6 +24,7 @@
 
 ### Changed
 
+- ⬆️ Bump deps [[9b3518a](https://github.com/segersniels/supdock/commit/9b3518a1b7711adb5a7bdf72f4a986c44d16ca75)]
 - 🔧 Mention authors in manifest [[45a48db](https://github.com/segersniels/supdock/commit/45a48dbd7ca07b5507d94c9b8dccf0abeefeef90)]
 - 🚨 Fix linting [[7e83610](https://github.com/segersniels/supdock/commit/7e836101f554b0e8460e61bf217636ae48c1c4cf)]
 - 🔧 Bring manifest in line [[9d66b2b](https://github.com/segersniels/supdock/commit/9d66b2bc0657724f31a55e595faedb4682a4f865)]
@@ -25,10 +36,26 @@
 
 ### Fixed
 
+- 🚑 Fix download url [[2596838](https://github.com/segersniels/supdock/commit/259683897b878d0367090fa40da2f2834a036aec)]
+- 💚 Provide NPM_TOKEN [[cad6b3e](https://github.com/segersniels/supdock/commit/cad6b3e740d6c049cadd95abfb7a6f6c05a73570)]
+- 💚 Ok it extracts it entirely to the current directory so just specify the bin directory [[10a5877](https://github.com/segersniels/supdock/commit/10a5877b33b2ece93eb77e806754c4b5c556074c)]
+- 💚 Specify which branch and the name of the artifact [[298adfd](https://github.com/segersniels/supdock/commit/298adfd8ba3269b900d758e28342728bcc687bb5)]
+- 💚 Fetch the secret and store in env [[c5ae941](https://github.com/segersniels/supdock/commit/c5ae9413f2e3fe0fdf8bd296fc4e5ba777c20451)]
+- 💚 Specify which workflow to pull from [[e410a5f](https://github.com/segersniels/supdock/commit/e410a5f02f6eef005cc00cee71cb1d79effb1655)]
+- 🚑 Remove any lingering references to temp rewrite bin [[23353d3](https://github.com/segersniels/supdock/commit/23353d3b260cda3298f24d4fb5f9d594ac9bb593)]
+- 💚 Ignore the fact that we already have set the packge.json version [[3eba41d](https://github.com/segersniels/supdock/commit/3eba41dbbb540c75a46512c64f72c1141d7cdc05)]
+- 💚 Drop deprecated way of setting output [[1680d71](https://github.com/segersniels/supdock/commit/1680d711df8c2702d4ab95515638da69a01d0b73)]
+- 💚 Use generate-lockfile instead to generate the lockfile duh [[157f4cc](https://github.com/segersniels/supdock/commit/157f4cc165602e80c945e8fc7294b61a1a46b31e)]
+- 💚 Be sure to checkout repo before doing anything [[481388b](https://github.com/segersniels/supdock/commit/481388b75b887c4f56b966632a5d101e619f23d8)]
+- 💚 Move version output to prepare step [[3989d42](https://github.com/segersniels/supdock/commit/3989d427e7cc48ccc9d4a68e832e00ca67962e22)]
+- 💚 Remove unused needs [[0d5b86c](https://github.com/segersniels/supdock/commit/0d5b86ca970421dec46fad829048a12b32815854)]
 - 🐛 Display the version [[723ae63](https://github.com/segersniels/supdock/commit/723ae635ffccd2efd33c2c68e4288847b094e61e)]
 
 ### Miscellaneous
 
+- 🙈 Include Cargo.lock [[9007e6a](https://github.com/segersniels/supdock/commit/9007e6a0e32c2462cffedb3dba9dc1860e556a40)]
+- 📝 Remove lingering in progress rewrite usage [[fc4c90a](https://github.com/segersniels/supdock/commit/fc4c90ac8b50615a6c9e901ec624e5ccbac2c7cd)]
+- 📝 Update CHANGELOG [[dd4b5e4](https://github.com/segersniels/supdock/commit/dd4b5e41d5e0db233b5887d0b58c6158e0dc6a61)]
 -  Merge pull request [#17](https://github.com/segersniels/supdock/issues/17) from segersniels/feature/rust [[1a95e0e](https://github.com/segersniels/supdock/commit/1a95e0e9b24b3029f88e4a9f3e634122f109e25b)]
 - 📝 Remove documentation that is no longer applicable [[a6a33ca](https://github.com/segersniels/supdock/commit/a6a33ca7d53f047bdf5d18ba235bb254996c946f)]
 - 📝 Update changelog [[fbb47f9](https://github.com/segersniels/supdock/commit/fbb47f9cfa14e4487ae1a20fb161cb500bd065fa)]
