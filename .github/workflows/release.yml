@@ -24,8 +24,7 @@ jobs:
           workflow: build.yml
           branch: master
           name: bin
-      - run: ls -la
-      - run: exit 1
+          path: bin
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
