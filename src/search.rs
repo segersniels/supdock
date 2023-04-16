@@ -14,14 +14,15 @@ fn parse(needle: &str, split_char: &str) -> Vec<String> {
     words.sort();
     words.dedup();
 
-    return words;
+    words
 }
 
 fn is_similar(word: &str, needle: &str, threshold: f64) -> bool {
     let distance = jaro_winkler(&word.to_lowercase(), &needle.to_lowercase());
-    return distance > threshold;
+    distance > threshold
 }
 
+/// Search for a needle in a haystack
 pub fn search(
     haystack: Vec<String>,
     needle: &str,
@@ -42,7 +43,7 @@ pub fn search(
                 break;
             }
 
-            if !word.contains("-") {
+            if !word.contains('-') {
                 continue;
             }
 
@@ -57,5 +58,5 @@ pub fn search(
         }
     }
 
-    return Vec::from_iter(results);
+    Vec::from_iter(results)
 }

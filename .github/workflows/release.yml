@@ -1,0 +1,78 @@
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: rustup component add clippy
+      - uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --all-features
+
+  build:
+    needs: lint
+    strategy:
+      fail-fast: false
+      matrix:
+        job:
+          - {
+              target: x86_64-unknown-linux-musl,
+              exe: amd64-linux,
+              os: ubuntu-latest,
+            }
+          - {
+              target: aarch64-unknown-linux-musl,
+              exe: aarch64-linux,
+              os: ubuntu-latest,
+            }
+          - { target: x86_64-apple-darwin, exe: macos, os: macos-latest }
+    runs-on: ${{ matrix.job.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: 1.64.0
+          override: true
+          target: ${{ matrix.job.target }}
+          components: rust-src
+      - uses: actions-rs/cargo@v1
+        with:
+          use-cross: true
+          args: --release --target=${{ matrix.job.target }} --locked
+          command: build
+      - name: Rename result
+        run: |
+          rm target/${{ matrix.job.target }}/release/supdock.d
+          cp target/${{ matrix.job.target }}/release/supdock* supdock-${{ matrix.job.exe }}
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: bin
+          path: supdock-${{ matrix.job.exe }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v2
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "latest"
+          prerelease: false
+          files: |
+            ./bin/supdock-macos
+            ./bin/supdock-aarch64-linux
+            ./bin/supdock-amd64-linux

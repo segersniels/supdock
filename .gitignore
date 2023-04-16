@@ -1,8 +1,4 @@
-.DS_Store
-.vscode
-*.swp
-node_modules
+target
+Cargo.lock
 bin
-dist
-.config
-yarn-error.log
+node_modules
