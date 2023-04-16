@@ -10,7 +10,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions-rs/cargo@v1
         with:
-          command: install
+          command: generate-lockfile
       - name: Get current package version
         id: current_version
         run: echo "::set-output name=version::$(make version)"
