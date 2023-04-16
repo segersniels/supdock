@@ -2,7 +2,17 @@ on:
   workflow_dispatch:
 
 jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.current_version.outputs.version }}
+    steps:
+      - name: Get current package version
+        id: current_version
+        run: echo "::set-output name=version::$(make version)"
+
   release:
+    needs: prepare
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
@@ -11,7 +21,7 @@ jobs:
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ needs.build.outputs.version }}"
+          automatic_release_tag: "${{ needs.prepare.outputs.version }}"
           prerelease: false
           files: |
             ./bin/supdock-macos
@@ -19,6 +29,7 @@ jobs:
             ./bin/supdock-amd64-linux
 
   publish:
+    needs: prepare
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
@@ -28,10 +39,7 @@ jobs:
         with:
           command: publish
           args: --dry-run
-      - name: Get current package version
-        id: current_version
-        run: echo "::set-output name=version::$(make version)"
       - name: Publish to NPM
         run: |
-          npm version ${{ steps.current_version.outputs.version }}
+          npm version ${{ needs.prepare.outputs.version }}
           npm publish --dry-run

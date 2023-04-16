@@ -58,8 +58,6 @@ jobs:
             }
           - { target: x86_64-apple-darwin, exe: macos, os: macos-latest }
     runs-on: ${{ matrix.job.os }}
-    outputs:
-      version: ${{ steps.current_version.outputs.version }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
@@ -69,9 +67,6 @@ jobs:
           override: true
           target: ${{ matrix.job.target }}
           components: rust-src
-      - name: Get current package version
-        id: current_version
-        run: echo "::set-output name=version::$(make version)"
       - uses: actions-rs/cargo@v1
         with:
           use-cross: true
