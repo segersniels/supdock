@@ -59,6 +59,7 @@ fn main() {
             if [
                 ErrorKind::DisplayHelp,
                 ErrorKind::DisplayHelpOnMissingArgumentOrSubcommand,
+                ErrorKind::DisplayVersion,
             ]
             .contains(&error.kind())
             {
