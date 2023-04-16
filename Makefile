@@ -23,3 +23,6 @@ publish-beta:
 
 publish:
 	npm publish
+
+version:
+	@cargo pkgid | cut -d# -f2 | cut -d: -f2
