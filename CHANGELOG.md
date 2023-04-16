@@ -1,12 +1,27 @@
 # Changelog
 
-<a name="2.8.6"></a>
-## 2.8.6 (2023-02-15)
+<a name="3.0.0"></a>
+## 3.0.0 (2023-04-16)
+
+### Added
+
+- 👷‍♂️ Only build on master or develop [[fb18149](https://github.com/segersniels/supdock/commit/fb181496a5640a8fc79008b4e89c29095f48b851)]
+- 👷‍♂️ Provide way to publish npm through dispatch [[0891e59](https://github.com/segersniels/supdock/commit/0891e593ecb06da5b98959e07fe9b7e708c79fcf)]
+- ✨ Initial rewrite in rust [[612be85](https://github.com/segersniels/supdock/commit/612be8567059690fdcc65814c90ad6e2f9b939c7)]
+- 👷‍♂️ For now just remove the concurrency cancel [[cbdce08](https://github.com/segersniels/supdock/commit/cbdce08cdd8e110aeadff1f96fba91b5b6ae6952)]
 
 ### Changed
 
+- 🔧 Properly handle yaml files [[05829f6](https://github.com/segersniels/supdock/commit/05829f62dd62b70f75dd0fb4b13d47bb90e30e95)]
+- ♻️ Use CARGO exported env vars [[b848264](https://github.com/segersniels/supdock/commit/b8482641c952bfe14395ebc90f82d9878b4833af)]
+- 🔧 Bring configs in sync with live version [[6447a3f](https://github.com/segersniels/supdock/commit/6447a3fe90e7de8045ef0c01b8c84c869ce342d8)]
 - ♻️ Keep asking for file to cat [[94475f8](https://github.com/segersniels/supdock/commit/94475f851c9a92568446dac048867322d43e7407)]
 - 🚸 Make sure we exit when user cancels prompt [[58b7a8b](https://github.com/segersniels/supdock/commit/58b7a8b5b8e5a21d4de0f9fe600b442fd6a46a15)]
+
+### Miscellaneous
+
+- 📝 Update changelog [[b2d6462](https://github.com/segersniels/supdock/commit/b2d6462676ab2abaeb7a6644c1595ed5fc8d4c87)]
+- 🔨 Make sure we generate missing tags if they don&#x27;t exist yet [[2a3ac31](https://github.com/segersniels/supdock/commit/2a3ac31c938f454f1e297679ef52b646bafca768)]
 
 
 <a name="2.8.5"></a>
