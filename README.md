@@ -57,7 +57,7 @@ I try to keep track of most general changes as best as I can.
 ```
 What's Up Doc(ker)?
 
-Usage: supdock-rust [COMMAND]
+Usage: supdock [COMMAND]
 
 Commands:
   prune  Remove stopped containers and dangling images. For more detailed usage refer to "docker system prune -h"
