@@ -1,5 +1,17 @@
 # Changelog
 
+<a name="3.0.3"></a>
+## 3.0.3 (2023-04-16)
+
+### Fixed
+
+- 💚 Prepare the .npmrc file beforehand [[31c6a6d](https://github.com/segersniels/supdock/commit/31c6a6db459fbad6051ed5ec2cf42920340e0c32)]
+
+### Miscellaneous
+
+- 🔨 Force tag generation [[59984a7](https://github.com/segersniels/supdock/commit/59984a748e98438972aeec4c5905462e8b2a3456)]
+
+
 <a name="3.0.2"></a>
 ## 3.0.2 (2023-04-16)
 
