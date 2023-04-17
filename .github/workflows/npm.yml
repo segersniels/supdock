@@ -21,6 +21,7 @@ jobs:
         run: echo "version=$(make version)" >> $GITHUB_OUTPUT
       - name: Publish to NPM
         run: |
-          npm version ${{ steps.current_version.outputs.version }} && npm publish
+          npm version ${{ steps.current_version.outputs.version }} --no-git-tag-version --no-commit-hooks --allow-same-version
+          npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
