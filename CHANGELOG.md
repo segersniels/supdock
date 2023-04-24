@@ -1,5 +1,23 @@
 # Changelog
 
+<a name="3.0.4"></a>
+## 3.0.4 (2023-04-24)
+
+### Added
+
+- 👷‍♂️ Run as node 18 [[1d2f378](https://github.com/segersniels/supdock/commit/1d2f3780d8576ac128b01688b5c48ffc7d56cc71)]
+- 👷‍♂️ See if we can trigger npm publish separately [[6355e15](https://github.com/segersniels/supdock/commit/6355e15430a7d2b6f602b511855eea923c5d65d0)]
+
+### Changed
+
+- ♻️ Properly use the lifetime and borrow system [[c2f8de8](https://github.com/segersniels/supdock/commit/c2f8de8654b66843fb21f6d1fdd42aaf5513b7d7)]
+
+### Fixed
+
+- 💚 Prevent creating git commits when changing version [[2fbbc5f](https://github.com/segersniels/supdock/commit/2fbbc5f551f49957efb207e8ff997af4f25ad6e7)]
+- 💚 Remove obsolete need [[f2dbebc](https://github.com/segersniels/supdock/commit/f2dbebc3d6823ba618270c5832433fadb4db601f)]
+
+
 <a name="3.0.3"></a>
 ## 3.0.3 (2023-04-16)
 
