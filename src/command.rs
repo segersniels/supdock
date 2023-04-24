@@ -110,7 +110,7 @@ pub fn parallel_execution(command: &str) {
                 .map(|s| s.replace("all", &id))
                 .collect::<Vec<_>>();
 
-            exec::run_in_background(args);
+            exec::run_in_background(&args);
         });
 
         handles.push(handle);
@@ -136,11 +136,11 @@ pub fn handle_subcommand(command: Option<&str>) {
     // Only handle commands that need actual prompting, else just passthrough to docker itself
     let command = command.unwrap_or("");
     if command.is_empty() || !SupportedPromptCommand::VARIANTS.contains(&command) {
-        return exec::run_and_exit(args);
+        return exec::run_and_exit(&args);
     }
 
     // Forward the command to docker and see what we need to do with it
-    let result = exec::run_with_stderr_capture(args);
+    let result = exec::run_with_stderr_capture(&args);
 
     match result {
         Ok(output) => {
@@ -173,7 +173,7 @@ pub fn handle_subcommand(command: Option<&str>) {
                 let choices = prompt::determine_choices(command).unwrap_or(Vec::new());
 
                 // Search within the haystack for the requested query by fuzzy searching
-                let results = search::search(choices, query, 0.7, " ");
+                let results = search::search(&choices, query, 0.7, " ");
                 let choice = match results.len() {
                     0 => {
                         // No results found, prompt the user to select a container
@@ -195,7 +195,7 @@ pub fn handle_subcommand(command: Option<&str>) {
                         // Multiple results returned, prompt user to select a container from the results
                         util::extract_id_from_result(prompt::ask(
                             "Search returned more than one result, please make a choice from the list.",
-                            results,
+                            &results,
                         ))
                     }
                 };
@@ -236,19 +236,14 @@ pub fn handle_subcommand(command: Option<&str>) {
 pub fn prune(sub_matches: &clap::ArgMatches) {
     // Log data that can be pruned
     if sub_matches.get_flag("info") {
-        exec::run_and_exit(
-            vec!["system", "df"]
-                .iter()
-                .map(|s| s.to_owned().to_owned())
-                .collect::<Vec<_>>(),
-        );
+        exec::run_and_exit(&["system".to_string(), "df".to_string()]);
     }
 
-    let mut args = vec!["system", "prune", "-f"];
+    let mut args = vec!["system".to_string(), "prune".to_string(), "-f".to_string()];
     let passthrough_args: Vec<_> = env::args().skip(2).collect();
-    args.extend(passthrough_args.iter().map(|s| s.as_str()));
+    args.extend(passthrough_args);
 
-    exec::run_and_exit(args.iter().map(|&s| s.to_owned()).collect::<Vec<_>>());
+    exec::run_and_exit(&args);
 }
 
 /// Ease of use shortcut to _SSH_ into a running container
@@ -258,32 +253,21 @@ pub fn ssh() {
     let choice = prompt::prompt("Select a container from the list", "ssh");
     let shell = prompt::ask(
         "Which shell is the container using?",
-        vec!["bash".to_string(), "ash".to_string()],
+        &["bash".to_string(), "ash".to_string()],
     );
+    args.extend(vec![choice, shell]);
 
-    args.extend(
-        [choice, shell]
-            .iter()
-            .map(|s| s.to_owned())
-            .collect::<Vec<_>>(),
-    );
-
-    exec::run_and_exit(args);
+    exec::run_and_exit(&args);
 }
 
 /// Ease of use shortcut to log the environment variables of a running container
 pub fn env() {
     let mut args = vec!["exec".to_string(), "-ti".to_string()];
+
     let choice = prompt::prompt("Select a container from the list", "env");
+    args.extend(vec![choice, "env".to_string()]);
 
-    args.extend(
-        [choice, "env".to_string()]
-            .iter()
-            .map(|s| s.to_owned())
-            .collect::<Vec<_>>(),
-    );
-
-    exec::run_and_exit(args);
+    exec::run_and_exit(&args);
 }
 
 /// Ease of use shortcut to view the contents of a file within a running container
@@ -292,13 +276,7 @@ pub fn cat() {
 
     let choice = prompt::prompt("Select a container from the list", "cat");
     let file = prompt::text("Which file would you like to cat?");
+    args.extend(vec![choice, "cat".to_string(), file]);
 
-    args.extend(
-        [choice, "cat".to_string(), file]
-            .iter()
-            .map(|s| s.to_owned())
-            .collect::<Vec<_>>(),
-    );
-
-    exec::run_and_exit(args);
+    exec::run_and_exit(&args);
 }

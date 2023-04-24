@@ -21,7 +21,7 @@ pub fn default_with_replace(target: &str, value: &str) {
         .map(|s| s.replace(target, value))
         .collect::<Vec<_>>();
 
-    exec::run_and_exit(args);
+    exec::run_and_exit(&args);
 }
 
 /// Passthrough to `docker` but append the requested argument
@@ -29,7 +29,7 @@ pub fn default_with_choice(choice: String) {
     let mut args = get_args_from_env();
     args.push(choice);
 
-    exec::run_and_exit(args);
+    exec::run_and_exit(&args);
 }
 
 pub fn get_docker_binary_path() -> String {

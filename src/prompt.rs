@@ -20,7 +20,7 @@ pub fn prompt(message: &str, command: &str) -> String {
 
     match options {
         Ok(options) => {
-            let selection = ask(message, options);
+            let selection = ask(message, &options);
 
             util::extract_id_from_result(selection)
         }
@@ -31,8 +31,8 @@ pub fn prompt(message: &str, command: &str) -> String {
     }
 }
 
-pub fn ask(message: &str, options: Vec<String>) -> String {
-    let selection = inquire::Select::new(message, options).prompt();
+pub fn ask(message: &str, options: &[String]) -> String {
+    let selection = inquire::Select::new(message, options.to_owned()).prompt();
 
     if selection.is_err() {
         process::exit(0)
