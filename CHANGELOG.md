@@ -1,5 +1,17 @@
 # Changelog
 
+<a name="3.0.5"></a>
+## 3.0.5 (2023-04-25)
+
+### Fixed
+
+- 🐛 Make sure we fallback to an empty list [[7baef9e](https://github.com/segersniels/supdock/commit/7baef9e273e0d03f2410f48116b12442712c0205)]
+
+### Miscellaneous
+
+- 📝 Update changelog [[8a08715](https://github.com/segersniels/supdock/commit/8a08715b382ba4437c7e7104d12c9fa873d1ea12)]
+
+
 <a name="3.0.4"></a>
 ## 3.0.4 (2023-04-24)
 
