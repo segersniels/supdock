@@ -98,7 +98,7 @@ pub fn parallel_execution(command: &str) {
     }
 
     let mut handles = Vec::new();
-    let choices = prompt::determine_choices(command).unwrap();
+    let choices = prompt::determine_choices(command).unwrap_or(Vec::new());
 
     println!("Asynchronous execution of command is happening in the background");
 
