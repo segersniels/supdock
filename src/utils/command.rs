@@ -1,9 +1,9 @@
 use clap::{Arg as ClapArg, Command as ClapCommand};
-use std::{env, process, str::FromStr, thread};
+use std::{process, str::FromStr, thread};
 use strum::VariantNames;
 use strum_macros::{Display, EnumString, EnumVariantNames};
 
-use crate::{docker, exec, prompt, search, util};
+use crate::utils::{docker, exec, prompt, search};
 
 #[derive(Debug, EnumString, Display, EnumVariantNames)]
 pub enum SupportedPromptCommand {
@@ -104,8 +104,8 @@ pub fn parallel_execution(command: &str) {
 
     for choice in choices {
         let handle = thread::spawn(move || {
-            let id = util::extract_id_from_result(choice);
-            let args = util::get_args_from_env()
+            let id = prompt::extract_id_from_result(choice);
+            let args = exec::get_args_from_env()
                 .iter()
                 .map(|s| s.replace("all", &id))
                 .collect::<Vec<_>>();
@@ -129,9 +129,19 @@ pub fn parallel_execution(command: &str) {
     process::exit(0);
 }
 
+fn extract_container_name_from_error(error: &str) -> Option<&str> {
+    if let Some(index) = error.rfind(':') {
+        let container_name = &error[index + 1..].trim();
+        if !container_name.is_empty() {
+            return Some(container_name);
+        }
+    }
+    None
+}
+
 /// Handle the subcommand and run the desired `docker` command with the user's choice of container
 pub fn handle_subcommand(command: Option<&str>) {
-    let args = util::get_args_from_env();
+    let args = exec::get_args_from_env();
 
     // Only handle commands that need actual prompting, else just passthrough to docker itself
     let command = command.unwrap_or("");
@@ -161,8 +171,7 @@ pub fn handle_subcommand(command: Option<&str>) {
              */
             if error_msg.contains("No such container") || error_msg.contains("No such image") {
                 // Extract the query from the error message and trim it to remove any whitespace.
-                let query =
-                    util::extract_container_name_from_error(error_msg.as_ref()).unwrap_or("");
+                let query = extract_container_name_from_error(error_msg.as_ref()).unwrap_or("");
 
                 // Parallel execution requested
                 if query == "all" {
@@ -189,18 +198,18 @@ pub fn handle_subcommand(command: Option<&str>) {
                     }
                     1 => {
                         // Single result returned so assume it's the correct container
-                        util::extract_id_from_result(results[0].clone())
+                        prompt::extract_id_from_result(results[0].clone())
                     }
                     _ => {
                         // Multiple results returned, prompt user to select a container from the results
-                        util::extract_id_from_result(prompt::ask(
+                        prompt::extract_id_from_result(prompt::ask(
                             "Search returned more than one result, please make a choice from the list.",
                             &results,
                         ))
                     }
                 };
 
-                return util::default_with_replace(query, choice.as_str());
+                return exec::default_with_replace(query, choice.as_str());
             }
 
             // If the user didn't provide a query or id so we prompt them to select a container
@@ -217,7 +226,7 @@ pub fn handle_subcommand(command: Option<&str>) {
                     command,
                 );
 
-                return util::default_with_choice(choice);
+                return exec::default_with_choice(choice);
             }
 
             // We don't handle this error in supdock, pass it to the user and let them deal with it
@@ -230,53 +239,4 @@ pub fn handle_subcommand(command: Option<&str>) {
             process::exit(1);
         }
     }
-}
-
-/// Ease of use shortcut for `docker system prune`
-pub fn prune(sub_matches: &clap::ArgMatches) {
-    // Log data that can be pruned
-    if sub_matches.get_flag("info") {
-        exec::run_and_exit(&["system".to_string(), "df".to_string()]);
-    }
-
-    let mut args = vec!["system".to_string(), "prune".to_string(), "-f".to_string()];
-    let passthrough_args: Vec<_> = env::args().skip(2).collect();
-    args.extend(passthrough_args);
-
-    exec::run_and_exit(&args);
-}
-
-/// Ease of use shortcut to _SSH_ into a running container
-pub fn ssh() {
-    let mut args = vec!["exec".to_string(), "-ti".to_string()];
-
-    let choice = prompt::prompt("Select a container from the list", "ssh");
-    let shell = prompt::ask(
-        "Which shell is the container using?",
-        &["bash".to_string(), "ash".to_string()],
-    );
-    args.extend(vec![choice, shell]);
-
-    exec::run_and_exit(&args);
-}
-
-/// Ease of use shortcut to log the environment variables of a running container
-pub fn env() {
-    let mut args = vec!["exec".to_string(), "-ti".to_string()];
-
-    let choice = prompt::prompt("Select a container from the list", "env");
-    args.extend(vec![choice, "env".to_string()]);
-
-    exec::run_and_exit(&args);
-}
-
-/// Ease of use shortcut to view the contents of a file within a running container
-pub fn cat() {
-    let mut args = vec!["exec".to_string(), "-ti".to_string()];
-
-    let choice = prompt::prompt("Select a container from the list", "cat");
-    let file = prompt::text("Which file would you like to cat?");
-    args.extend(vec![choice, "cat".to_string(), file]);
-
-    exec::run_and_exit(&args);
 }

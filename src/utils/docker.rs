@@ -3,6 +3,7 @@ use std::error::Error;
 use std::fmt;
 use std::io::{Read, Write};
 use std::os::unix::net::UnixStream;
+use which::which;
 
 #[derive(Debug)]
 struct DockerError {
@@ -121,5 +122,12 @@ pub fn get_images() -> Result<Vec<String>, String> {
             Ok(images)
         }
         Err(err) => Err(err.to_string()),
+    }
+}
+
+pub fn get_docker_binary_path() -> String {
+    match which("docker") {
+        Ok(path) => path.to_str().unwrap().to_string(),
+        Err(_) => panic!("Could not find docker binary"),
     }
 }

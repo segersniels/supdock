@@ -1,11 +1,7 @@
 use clap::{error::ErrorKind, ArgAction, Command};
 
-mod command;
-mod docker;
-mod exec;
-mod prompt;
-mod search;
-mod util;
+mod commands;
+mod utils;
 
 fn cli() -> Command {
     Command::new(env!("CARGO_PKG_NAME"))
@@ -16,10 +12,10 @@ fn cli() -> Command {
         .allow_external_subcommands(true)
         .disable_help_subcommand(true)
         .after_help(r#"For more detailed usage on docker refer to "docker help""#)
-        .subcommand(command::create_subcommand(
+        .subcommand(utils::command::create_subcommand(
             "prune",
             r#"Remove stopped containers and dangling images. For more detailed usage refer to "docker system prune -h""#,
-            Some(vec![command::Arg {
+            Some(vec![utils::command::Arg {
                 id: "info",
                 short: 'i',
                 long: "info",
@@ -27,17 +23,17 @@ fn cli() -> Command {
                 action: ArgAction::SetTrue,
             }]),
         ))
-        .subcommand(command::create_subcommand(
+        .subcommand(utils::command::create_subcommand(
             "ssh",
             "SSH into a container",
             None,
         ))
-        .subcommand(command::create_subcommand(
+        .subcommand(utils::command::create_subcommand(
             "env",
             "See the environment variables of a running container",
             None,
         ))
-        .subcommand(command::create_subcommand(
+        .subcommand(utils::command::create_subcommand(
             "cat",
             "Echo the contents of a file using cat on a container",
             None,
@@ -49,11 +45,11 @@ fn main() {
 
     match result {
         Ok(matches) => match matches.subcommand() {
-            Some(("prune", sub_matches)) => command::prune(sub_matches),
-            Some(("ssh", _sub_matches)) => command::ssh(),
-            Some(("env", _sub_matches)) => command::env(),
-            Some(("cat", _sub_matches)) => command::cat(),
-            _ => command::handle_subcommand(Some(matches.subcommand().unwrap().0)),
+            Some(("prune", sub_matches)) => commands::prune::run(sub_matches),
+            Some(("ssh", _sub_matches)) => commands::ssh::run(),
+            Some(("env", _sub_matches)) => commands::env::run(),
+            Some(("cat", _sub_matches)) => commands::cat::run(),
+            _ => utils::command::handle_subcommand(Some(matches.subcommand().unwrap().0)),
         },
         Err(error) => {
             if [
@@ -66,7 +62,7 @@ fn main() {
                 error.exit();
             }
 
-            command::handle_subcommand(None);
+            utils::command::handle_subcommand(None);
         }
     }
 }
