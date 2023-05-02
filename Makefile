@@ -25,4 +25,4 @@ publish:
 	npm publish
 
 version:
-	@cargo pkgid | awk -F '[@#]' '{print $NF}'
+	@cargo pkgid | sed 's/.*[@#]\(.*\)/\1/'
