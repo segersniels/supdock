@@ -1,5 +1,24 @@
 # Changelog
 
+<a name="3.1.0"></a>
+## 3.1.0 (2023-06-26)
+
+### Added
+
+- ✨ Add extra support for --all and --volumes flags when pruning [[e6a0cca](https://github.com/segersniels/supdock/commit/e6a0ccade97057ce00fceee9cf1c38637a31954a)]
+
+### Changed
+
+- ♻️ Refactor so directory structure makes more sense [[6386bf8](https://github.com/segersniels/supdock/commit/6386bf8ec69926b5ed72fedb16f2862230d0eae2)]
+- ⬆️ Bump deps [[8172f0c](https://github.com/segersniels/supdock/commit/8172f0ca6eb9e85994c498efca7c456386af3b98)]
+
+### Miscellaneous
+
+- 🔨 Apparantly awk doesn&#x27;t work as expected in make [[6d6ca49](https://github.com/segersniels/supdock/commit/6d6ca49125f47fbf052789e00eddaa81e87963a8)]
+- 🔨 Match both # and @ [[3a99d90](https://github.com/segersniels/supdock/commit/3a99d905a55183a8e4685c98025288e87c135637)]
+- 📝 Update changelog [[a710a9b](https://github.com/segersniels/supdock/commit/a710a9b6767eabc84b30b3b0de287458bfbd2b96)]
+
+
 <a name="3.0.5"></a>
 ## 3.0.5 (2023-04-25)
 
