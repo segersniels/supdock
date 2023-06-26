@@ -1,13 +1,21 @@
 on:
   workflow_dispatch:
-  workflow_run:
-    workflows: ["release"]
-    types: [completed]
-    branches:
-      - master
 
 jobs:
-  publish:
+  cargo:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Publish to Cargo
+        uses: actions-rs/cargo@v1
+        with:
+          command: publish
+          args: --allow-dirty
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+
+  npm:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
