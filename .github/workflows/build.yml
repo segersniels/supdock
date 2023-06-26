@@ -64,6 +64,7 @@ jobs:
           path: supdock-${{ matrix.job.exe }}
 
   release:
+    needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
     steps:
