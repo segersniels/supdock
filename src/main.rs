@@ -17,9 +17,21 @@ fn cli() -> Command {
             r#"Remove stopped containers and dangling images. For more detailed usage refer to "docker system prune -h""#,
             Some(vec![utils::command::Arg {
                 id: "info",
-                short: 'i',
+                short: Some('i'),
                 long: "info",
                 help: "Log additional information",
+                action: ArgAction::SetTrue,
+            }, utils::command::Arg {
+                id: "all",
+                short: Some('a'),
+                long: "all",
+                help: "Remove all unused images not just dangling ones",
+                action: ArgAction::SetTrue,
+            }, utils::command::Arg {
+                id: "volumes",
+                short: None,
+                long: "volumes",
+                help: "Prune volumes",
                 action: ArgAction::SetTrue,
             }]),
         ))

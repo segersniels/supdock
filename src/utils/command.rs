@@ -60,7 +60,7 @@ impl GetType for SupportedPromptCommand {
 
 pub struct Arg {
     pub id: &'static str,
-    pub short: char,
+    pub short: Option<char>,
     pub long: &'static str,
     pub help: &'static str,
     pub action: clap::ArgAction,
