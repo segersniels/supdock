@@ -69,11 +69,8 @@ jobs:
     if: github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v2
-      - name: Download artifact
-        uses: dawidd6/action-download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
-          workflow: build.yml
-          branch: master
           name: bin
           path: bin
       - name: Get current package version
