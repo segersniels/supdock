@@ -2,6 +2,25 @@
   "name": "supdock",
   "version": "3.0.0",
   "description": "What's Up, Doc(ker)? A slightly more visual way to interact with the docker daemon",
+  "files": [
+    "bin"
+  ],
+  "bin": {
+    "supdock": "./bin/supdock"
+  },
+  "scripts": {
+    "postinstall": "./scripts/postinstall.sh",
+    "generate:changelog": "./scripts/generate-tags.sh && gitmoji-changelog"
+  },
+  "devDependencies": {
+    "gitmoji-changelog": "^2.3.0"
+  },
+  "author": "Niels Segers",
+  "license": "ISC",
+  "homepage": "https://github.com/segersniels/supdock#readme",
+  "bugs": {
+    "url": "https://github.com/segersniels/supdock/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/segersniels/supdock.git"
@@ -15,25 +34,5 @@
     "cli",
     "compose",
     "docker-compose"
-  ],
-  "author": "Niels Segers",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/segersniels/supdock/issues"
-  },
-  "homepage": "https://github.com/segersniels/supdock#readme",
-  "bin": {
-    "supdock": "./bin/supdock"
-  },
-  "scripts": {
-    "preinstall": "node ./scripts/preinstall.js",
-    "preuninstall": "node ./scripts/preuninstall.js",
-    "generate:changelog": "./scripts/generate-tags.sh && gitmoji-changelog"
-  },
-  "dependencies": {
-    "undici": "^5.21.2"
-  },
-  "devDependencies": {
-    "gitmoji-changelog": "^2.3.0"
-  }
+  ]
 }
