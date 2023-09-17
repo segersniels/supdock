@@ -4,7 +4,7 @@ use std::{
     process::{self, Command, Output, Stdio},
 };
 
-use crate::utils::{exec, docker};
+use crate::utils::{docker, exec};
 
 /// Run a Docker command and only capture its error output
 pub fn run_with_stderr_capture(args: &[String]) -> Result<Output, Error> {

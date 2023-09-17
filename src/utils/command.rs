@@ -92,7 +92,7 @@ pub fn create_subcommand(
 
 /// Perform parallel execution of requested command on all containers
 pub fn parallel_execution(command: &str) {
-    if !vec!["stop", "start", "restart"].contains(&command) {
+    if !["stop", "start", "restart"].contains(&command) {
         println!("Parallel execution is not supported for this command");
         process::exit(0);
     }
@@ -182,7 +182,7 @@ pub fn handle_subcommand(command: Option<&str>) {
                 let choices = prompt::determine_choices(command).unwrap_or(Vec::new());
 
                 // Search within the haystack for the requested query by fuzzy searching
-                let results = search::search(&choices, query, 0.7, " ");
+                let results = search::search(choices, query, 0.7, " ");
                 let choice = match results.len() {
                     0 => {
                         // No results found, prompt the user to select a container
