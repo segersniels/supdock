@@ -18,11 +18,5 @@ lint-fix:
 	cargo clippy --fix --allow-dirty
 	cargo fmt
 
-publish-beta:
-	npm publish --tag beta
-
-publish:
-	npm publish
-
 version:
 	@cargo pkgid | sed 's/.*[@#]\(.*\)/\1/'
