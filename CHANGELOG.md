@@ -1,5 +1,33 @@
 # Changelog
 
+<a name="3.1.1"></a>
+## 3.1.1 (2023-09-17)
+
+### Added
+
+- 👷‍♂️ Move into one workflow and simplify postinstall flow [[edebb95](https://github.com/segersniels/supdock/commit/edebb953d21d0d627245e50d358c4673bb8db298)]
+- 👷‍♂️ Simplify CI deploy flow [[d58c2e1](https://github.com/segersniels/supdock/commit/d58c2e12b4875ca6505456cbfaa004c40d0e731b)]
+
+### Changed
+
+- 🚨 Fix linting [[122f4ee](https://github.com/segersniels/supdock/commit/122f4ee870842ca06faf39c496665aff045d6d33)]
+- ⚡ Focus on compile speed over size [[2e5bb7f](https://github.com/segersniels/supdock/commit/2e5bb7ff8c71640439df4cce0f16223d804a3518)]
+
+### Removed
+
+- 🔥 Remove unused targets [[fc391f1](https://github.com/segersniels/supdock/commit/fc391f1e61903d847a7102e9bc6210850ee0a20f)]
+
+### Fixed
+
+- 💚 We no longer download from other workflow [[8c9329f](https://github.com/segersniels/supdock/commit/8c9329faa8a27e08ba7e0b3ded78746562e0f491)]
+- 💚 Specify required job [[50ae878](https://github.com/segersniels/supdock/commit/50ae878b2bd439e483ae7ad8d8c9468b72f11bbb)]
+- 💚 Specify conditions when to run [[37a0556](https://github.com/segersniels/supdock/commit/37a0556ccc17119fb858bc96cca6e99dbf7d12b7)]
+
+### Miscellaneous
+
+- 📝 Update CHANGELOG [[ebc174e](https://github.com/segersniels/supdock/commit/ebc174e1bb700489f3acdc3d92ded04d0cc742a1)]
+
+
 <a name="3.1.0"></a>
 ## 3.1.0 (2023-06-26)
 
