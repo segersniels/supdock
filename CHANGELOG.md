@@ -1,5 +1,21 @@
 # Changelog
 
+<a name="3.1.3"></a>
+## 3.1.3 (2023-09-17)
+
+### Changed
+
+- ♻️ Don&#x27;t bother with returning variables and just use globals [[04525de](https://github.com/segersniels/supdock/commit/04525de8c83a7fb9b668e8257f7b2df9b197aa9c)]
+
+
+<a name="3.1.2"></a>
+## 3.1.2 (2023-09-17)
+
+### Fixed
+
+- 🚑 Include postinstall script... [[994bdca](https://github.com/segersniels/supdock/commit/994bdca50dfc35a1e43e320dc2b82bdd18b7459c)]
+
+
 <a name="3.1.1"></a>
 ## 3.1.1 (2023-09-17)
 
