@@ -5,10 +5,10 @@ BINARY="supdock"
 PLATFORM=$(uname)
 
 function check_if_binary_exists() {
-    binary_path="$BIN_DIR/$1"
+    BINARY_PATH="$BIN_DIR/$PLATFORM_BINARY"
 
-    if [ ! -f "$binary_path" ]; then
-        echo "File ${binary_path} not found, skipping..."
+    if [ ! -f "$BINARY_PATH" ]; then
+        echo "File ${BINARY_PATH} not found, skipping..."
         exit 0
     fi
 }
@@ -17,13 +17,13 @@ function determine_platform() {
     case $PLATFORM in
     Linux)
         if [[ $(uname -m) == "aarch64" ]]; then
-        platform_binary="supdock-aarch64-linux"
+        PLATFORM_BINARY="supdock-aarch64-linux"
         else
-        platform_binary="supdock-amd64-linux"
+        PLATFORM_BINARY="supdock-amd64-linux"
         fi
         ;;
     Darwin)
-        platform_binary="supdock-macos"
+        PLATFORM_BINARY="supdock-macos"
         ;;
     *)
         echo "Unsupported platform: $PLATFORM"
@@ -31,9 +31,7 @@ function determine_platform() {
         ;;
     esac
 
-    check_if_binary_exists $platform_binary
-
-    return $platform_binary
+    check_if_binary_exists
 }
 
 function remove_other_binaries() {
@@ -44,7 +42,7 @@ function remove_other_binaries() {
 
         filename=$(basename "$file")
 
-        if [[ ! "$filename" =~ ^$1 ]]; then
+        if [[ ! "$filename" =~ ^$PLATFORM_BINARY ]]; then
             echo "Removing file: $file"
             rm "$file"
         fi
@@ -52,17 +50,13 @@ function remove_other_binaries() {
 }
 
 function rename_binary() {
-    binary_path="$BIN_DIR/$1"
-
-    mv $binary_path $BIN_DIR/$BINARY
+    mv $BINARY_PATH $BIN_DIR/$BINARY
 }
 
 function main() {
     determine_platform
-    platform_binary=$?
-
-    remove_other_binaries $platform_binary
-    rename_binary $platform_binary
+    remove_other_binaries
+    rename_binary
 }
 
 main
