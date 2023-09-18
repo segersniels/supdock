@@ -1,5 +1,25 @@
 # Changelog
 
+<a name="3.1.5"></a>
+## 3.1.5 (2023-09-18)
+
+### Fixed
+
+- 🚑 Accidentally forgot to change this... [[5d29552](https://github.com/segersniels/supdock/commit/5d29552aaa6ce4827d8452054dbe35468f53d487)]
+
+
+<a name="3.1.4"></a>
+## 3.1.4 (2023-09-18)
+
+### Fixed
+
+- 🚑 Needs to happen in preinstall for symlinking [[bcd2672](https://github.com/segersniels/supdock/commit/bcd26722d6475db0133581849fee41e10e21145e)]
+
+### Miscellaneous
+
+- 📝 Update CHANGELOG [[b2fad3f](https://github.com/segersniels/supdock/commit/b2fad3fd392183fc7f38ddadd8815faa94a6956e)]
+
+
 <a name="3.1.3"></a>
 ## 3.1.3 (2023-09-17)
 
