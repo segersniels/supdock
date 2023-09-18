@@ -4,7 +4,7 @@
   "description": "What's Up, Doc(ker)? A slightly more visual way to interact with the docker daemon",
   "files": [
     "bin",
-    "scripts/postinstall.sh"
+    "scripts/preinstall.sh"
   ],
   "bin": {
     "supdock": "./bin/supdock"
