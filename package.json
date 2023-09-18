@@ -10,7 +10,7 @@
     "supdock": "./bin/supdock"
   },
   "scripts": {
-    "postinstall": "./scripts/postinstall.sh",
+    "preinstall": "./scripts/preinstall.sh",
     "generate:changelog": "./scripts/generate-tags.sh && gitmoji-changelog"
   },
   "devDependencies": {
