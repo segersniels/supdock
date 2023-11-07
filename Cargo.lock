@@ -1061,6 +1061,7 @@ dependencies = [
  "clap",
  "inquire",
  "reqwest",
+ "serde",
  "serde_json",
  "shell-words",
  "strsim",
