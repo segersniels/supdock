@@ -1,9 +1,9 @@
 use clap::{Arg as ClapArg, Command as ClapCommand};
-use std::{process, str::FromStr, thread};
+use std::{process, thread};
 use strum::VariantNames;
 use strum_macros::{Display, EnumString, EnumVariantNames};
 
-use crate::utils::{docker, exec, prompt, search};
+use crate::utils::{docker, exec, prompt};
 
 #[derive(Debug, EnumString, Display, EnumVariantNames)]
 pub enum SupportedPromptCommand {
@@ -25,6 +25,8 @@ pub enum SupportedPromptCommand {
     Ssh,
     #[strum(serialize = "logs")]
     Logs,
+    #[strum(serialize = "ai_investigate")]
+    AiInvestigate,
 }
 
 pub trait GetType {
@@ -45,6 +47,7 @@ impl GetType for SupportedPromptCommand {
             SupportedPromptCommand::Env => docker::Type::RunningContainers,
             SupportedPromptCommand::Ssh => docker::Type::RunningContainers,
             SupportedPromptCommand::Logs => docker::Type::AllContainers,
+            SupportedPromptCommand::AiInvestigate => docker::Type::AllContainers,
         }
     }
 
@@ -98,7 +101,7 @@ pub fn parallel_execution(command: &str) {
     }
 
     let mut handles = Vec::new();
-    let choices = prompt::determine_choices(command).unwrap_or(Vec::new());
+    let choices = prompt::determine_choices(command).unwrap_or_default();
 
     println!("Asynchronous execution of command is happening in the background");
 
@@ -178,53 +181,16 @@ pub fn handle_subcommand(command: Option<&str>) {
                     return parallel_execution(command);
                 }
 
-                // Construct haystack to prepare for fuzzy search
-                let choices = prompt::determine_choices(command).unwrap_or(Vec::new());
+                let choice = prompt::determine_choice_from_query(command, query);
 
-                // Search within the haystack for the requested query by fuzzy searching
-                let results = search::search(choices, query, 0.7, " ");
-                let choice = match results.len() {
-                    0 => {
-                        // No results found, prompt the user to select a container
-                        let prompt_command = SupportedPromptCommand::from_str(command).unwrap();
-                        prompt::prompt(
-                            format!(
-                                "Select the desired {} from the list",
-                                prompt_command.get_prompt_type()
-                            )
-                            .as_str(),
-                            command,
-                        )
-                    }
-                    1 => {
-                        // Single result returned so assume it's the correct container
-                        prompt::extract_id_from_result(results[0].clone())
-                    }
-                    _ => {
-                        // Multiple results returned, prompt user to select a container from the results
-                        prompt::extract_id_from_result(prompt::ask(
-                            "Search returned more than one result, please make a choice from the list.",
-                            &results,
-                        ))
-                    }
-                };
-
-                return exec::default_with_replace(query, choice.as_str());
+                return exec::default_with_replace(query, &choice);
             }
 
             // If the user didn't provide a query or id so we prompt them to select a container
             if error_msg.contains("requires exactly 1 argument")
                 || error_msg.contains("requires at least 1 argument")
             {
-                let prompt_command = SupportedPromptCommand::from_str(command).unwrap();
-                let choice = prompt::prompt(
-                    format!(
-                        "Select the desired {} from the list",
-                        prompt_command.get_prompt_type()
-                    )
-                    .as_str(),
-                    command,
-                );
+                let choice = prompt::determine_choice(command);
 
                 return exec::default_with_choice(choice);
             }

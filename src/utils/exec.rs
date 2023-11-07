@@ -16,6 +16,13 @@ pub fn run_with_stderr_capture(args: &[String]) -> Result<Output, Error> {
         .output();
 }
 
+/// Run a Docker command and only capture its regular output
+pub fn run_with_stdout_capture(args: &[String]) -> Result<Output, Error> {
+    return Command::new(docker::get_docker_binary_path())
+        .args(args)
+        .output();
+}
+
 /// Run the command with inheritance and exit the process immediately after it completes
 pub fn run_and_exit(args: &[String]) {
     let mut command = Command::new(docker::get_docker_binary_path())

@@ -4,6 +4,23 @@ mod commands;
 mod utils;
 
 fn cli() -> Command {
+    let ai = utils::command::create_subcommand("ai", "Run AI powered commands", None)
+        .arg_required_else_help(true)
+        .subcommand(
+            utils::command::create_subcommand(
+                "investigate",
+                "Investigate a container for suspicious activity",
+                Some(vec![utils::command::Arg {
+                    id: "lines",
+                    short: Some('l'),
+                    long: "lines",
+                    help: "Number of lines to include from the end of the logs",
+                    action: ArgAction::Set,
+                }]),
+            )
+            .allow_external_subcommands(true),
+        );
+
     Command::new(env!("CARGO_PKG_NAME"))
         .about("What's Up Doc(ker)?")
         .version(env!("CARGO_PKG_VERSION"))
@@ -50,9 +67,11 @@ fn cli() -> Command {
             "Echo the contents of a file using cat on a container",
             None,
         ))
+        .subcommand(ai)
 }
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let result = cli().try_get_matches();
 
     match result {
@@ -61,6 +80,7 @@ fn main() {
             Some(("ssh", _sub_matches)) => commands::ssh::run(),
             Some(("env", _sub_matches)) => commands::env::run(),
             Some(("cat", _sub_matches)) => commands::cat::run(),
+            Some(("ai", sub_matches)) => commands::ai::run(sub_matches).await,
             _ => utils::command::handle_subcommand(Some(matches.subcommand().unwrap().0)),
         },
         Err(error) => {
