@@ -10,6 +10,7 @@ fn cli() -> Command {
         .arg_required_else_help(true)
         .subcommand(
             Command::new("investigate")
+                .about("Investigate a container for suspicious activity")
                 .allow_external_subcommands(true)
                 .arg(
                     Arg::new("lines")
