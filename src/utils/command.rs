@@ -1,4 +1,3 @@
-use clap::{Arg as ClapArg, Command as ClapCommand};
 use std::{process, thread};
 use strum::VariantNames;
 use strum_macros::{Display, EnumString, EnumVariantNames};
@@ -59,38 +58,6 @@ impl GetType for SupportedPromptCommand {
         }
         .to_string()
     }
-}
-
-pub struct Arg {
-    pub id: &'static str,
-    pub short: Option<char>,
-    pub long: &'static str,
-    pub help: &'static str,
-    pub action: clap::ArgAction,
-}
-
-pub fn create_subcommand(
-    name: &'static str,
-    about: &'static str,
-    args: Option<Vec<Arg>>,
-) -> clap::Command {
-    let mut command = ClapCommand::new(name)
-        .about(about)
-        .arg_required_else_help(false);
-
-    if let Some(args) = args {
-        for arg in args {
-            command = command.clone().arg(
-                ClapArg::new(arg.id)
-                    .action(arg.action)
-                    .short(arg.short)
-                    .long(arg.long)
-                    .help(arg.help),
-            );
-        }
-    }
-
-    command
 }
 
 /// Perform parallel execution of requested command on all containers

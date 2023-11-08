@@ -12,18 +12,20 @@ async fn investigate(sub_matches: &clap::ArgMatches) {
     };
 
     let mut args = vec!["logs".to_string(), choice];
-    match sub_matches.get_one::<String>("lines") {
-        Some(lines) => {
-            args.push("--tail".to_string());
-            args.push(lines.to_string());
-        }
-        _ => {}
+    if let Some(lines) = sub_matches.get_one::<String>("lines") {
+        args.push("--tail".to_string());
+        args.push(lines.to_string());
     }
 
     let output = exec::run_with_stdout_capture(&args).unwrap();
     let logs = String::from_utf8_lossy(&output.stdout);
 
-    match openai::analyze_logs(&logs).await {
+    let default_model = openai::DEFAULT_MODEL.to_string();
+    let model = sub_matches
+        .get_one::<String>("model")
+        .unwrap_or(&default_model);
+
+    match openai::analyze_logs(&logs, model).await {
         Ok(analysis) => {
             loader.stop_with_message("✅ Done\n".into());
             println!("{}", analysis);

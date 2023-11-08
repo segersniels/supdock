@@ -1,24 +1,31 @@
-use clap::{error::ErrorKind, ArgAction, Command};
+use clap::{error::ErrorKind, Arg, ArgAction, Command};
+use utils::openai::ALLOWED_MODELS;
 
 mod commands;
 mod utils;
 
 fn cli() -> Command {
-    let ai = utils::command::create_subcommand("ai", "Run AI powered commands", None)
+    let ai = Command::new("ai")
+        .about("Run AI powered commands")
         .arg_required_else_help(true)
         .subcommand(
-            utils::command::create_subcommand(
-                "investigate",
-                "Investigate a container for suspicious activity",
-                Some(vec![utils::command::Arg {
-                    id: "lines",
-                    short: Some('l'),
-                    long: "lines",
-                    help: "Number of lines to include from the end of the logs",
-                    action: ArgAction::Set,
-                }]),
-            )
-            .allow_external_subcommands(true),
+            Command::new("investigate")
+                .allow_external_subcommands(true)
+                .arg(
+                    Arg::new("lines")
+                        .short('l')
+                        .long("lines")
+                        .help("Number of lines to include from the end of the logs")
+                        .action(ArgAction::Set),
+                )
+                .arg(
+                    clap::Arg::new("model")
+                        .short('m')
+                        .long("model")
+                        .help("Instructs supdock to use a specific model")
+                        .value_parser(ALLOWED_MODELS)
+                        .action(ArgAction::Set),
+                ),
         );
 
     Command::new(env!("CARGO_PKG_NAME"))
@@ -29,44 +36,21 @@ fn cli() -> Command {
         .allow_external_subcommands(true)
         .disable_help_subcommand(true)
         .after_help(r#"For more detailed usage on docker refer to "docker help""#)
-        .subcommand(utils::command::create_subcommand(
-            "prune",
-            r#"Remove stopped containers and dangling images. For more detailed usage refer to "docker system prune -h""#,
-            Some(vec![utils::command::Arg {
-                id: "info",
-                short: Some('i'),
-                long: "info",
-                help: "Log additional information",
-                action: ArgAction::SetTrue,
-            }, utils::command::Arg {
-                id: "all",
-                short: Some('a'),
-                long: "all",
-                help: "Remove all unused images not just dangling ones",
-                action: ArgAction::SetTrue,
-            }, utils::command::Arg {
-                id: "volumes",
-                short: None,
-                long: "volumes",
-                help: "Prune volumes",
-                action: ArgAction::SetTrue,
-            }]),
-        ))
-        .subcommand(utils::command::create_subcommand(
-            "ssh",
-            "SSH into a container",
-            None,
-        ))
-        .subcommand(utils::command::create_subcommand(
-            "env",
-            "See the environment variables of a running container",
-            None,
-        ))
-        .subcommand(utils::command::create_subcommand(
-            "cat",
-            "Echo the contents of a file using cat on a container",
-            None,
-        ))
+        .subcommand(Command::new("prune")
+            .about(r#"Remove stopped containers and dangling images. For more detailed usage refer to "docker system prune -h""#)
+            .arg(Arg::new("info").short('i').long("info").help("Log additional information").action(ArgAction::SetTrue))
+            .arg(Arg::new("all").short('a').long("all").help("Remove all unused images not just dangling ones").action(ArgAction::SetTrue))
+            .arg(Arg::new("volumes").long("volumes").help("Prune volumes").action(ArgAction::SetTrue))
+        )
+        .subcommand(Command::new(
+            "ssh").about("SSH into a container")
+        )
+        .subcommand(Command::new(
+            "env").about("See the environment variables of a running container")
+        )
+        .subcommand(Command::new(
+            "cat").about("Echo the contents of a file using cat on a container")
+        )
         .subcommand(ai)
 }
 

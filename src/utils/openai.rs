@@ -2,7 +2,14 @@ use reqwest::Error;
 use serde::Deserialize;
 use std::process;
 
-const MODEL_TO_USE: &str = "gpt-3.5-turbo";
+pub const DEFAULT_MODEL: &str = "gpt-3.5-turbo";
+pub const ALLOWED_MODELS: [&str; 5] = [
+    "gpt-3.5-turbo",
+    "gpt-3.5-turbo-16k",
+    "gpt-4",
+    "gpt-4-32k",
+    "gpt-4-1106-preview",
+];
 
 fn generate_system_message() -> String {
     r#"You will be asked to analyze logs of a docker container.
@@ -42,9 +49,9 @@ struct Response {
     error: Option<ResponseError>,
 }
 
-fn create_payload(system_message: &str, content: &str) -> serde_json::Value {
+fn create_payload(system_message: &str, content: &str, model: &str) -> serde_json::Value {
     serde_json::json!({
-        "model": MODEL_TO_USE,
+        "model": model,
         "messages": [
             { "role": "system", "content": system_message },
             { "role": "user", "content": content }
@@ -107,9 +114,9 @@ async fn get_chat_completion(body: &serde_json::Value) -> Result<String, Error> 
     }
 }
 
-pub async fn analyze_logs(logs: &str) -> Result<String, Error> {
+pub async fn analyze_logs(logs: &str, model: &str) -> Result<String, Error> {
     let system_message = generate_system_message();
-    let body = create_payload(&system_message, logs);
+    let body = create_payload(&system_message, logs, model);
 
     get_chat_completion(&body).await
 }
