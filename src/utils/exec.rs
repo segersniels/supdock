@@ -17,10 +17,11 @@ pub fn run_with_stderr_capture(args: &[String]) -> Result<Output, Error> {
 }
 
 /// Run a Docker command and only capture its regular output
-pub fn run_with_stdout_capture(args: &[String]) -> Result<Output, Error> {
+pub fn run_with_stdout_capture(args: &[String]) -> Output {
     return Command::new(docker::get_docker_binary_path())
         .args(args)
-        .output();
+        .output()
+        .expect("failed to execute command");
 }
 
 /// Run the command with inheritance and exit the process immediately after it completes
