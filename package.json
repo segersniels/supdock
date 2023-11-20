@@ -4,13 +4,13 @@
   "description": "What's Up, Doc(ker)? A slightly more visual way to interact with the docker daemon",
   "files": [
     "bin",
-    "scripts/preinstall.sh"
+    "scripts/preinstall.js"
   ],
   "bin": {
     "supdock": "./bin/supdock"
   },
   "scripts": {
-    "preinstall": "./scripts/preinstall.sh",
+    "preinstall": "node ./scripts/preinstall.js",
     "generate:changelog": "./scripts/generate-tags.sh && gitmoji-changelog"
   },
   "devDependencies": {
