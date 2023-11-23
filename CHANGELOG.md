@@ -1,5 +1,37 @@
 # Changelog
 
+<a name="3.2.0"></a>
+## 3.2.0 (2023-11-23)
+
+### Added
+
+- ✨ Add support for history prompt [[977f0d0](https://github.com/segersniels/supdock/commit/977f0d05048a056aab45215d291c6a17028ab057)]
+
+### Changed
+
+- 🚨 Fix linting [[e2f4218](https://github.com/segersniels/supdock/commit/e2f4218c62cc558a7b846bd84b6afbb7a5838027)]
+
+
+<a name="3.1.6"></a>
+## 3.1.6 (2023-11-20)
+
+### Added
+
+- 👷‍♂️ Restrict running publish jobs to new releases [[57ed48e](https://github.com/segersniels/supdock/commit/57ed48e0ef7c04f1ee9e06a2350b49a71bf07b76)]
+- 👷‍♂️ Prevent releasing over existing release [[089f0e0](https://github.com/segersniels/supdock/commit/089f0e09767c47317e5f3e382a7db04d561429f2)]
+- 👷‍♂️ Succeeed when already published [[b95d123](https://github.com/segersniels/supdock/commit/b95d1239ff123a6983b96e7d0a28468c491a664f)]
+
+### Changed
+
+- ⬆️ Bump rustix from 0.37.14 to 0.37.25 [[ede0063](https://github.com/segersniels/supdock/commit/ede00637519bc467acc178d85df951ebf113ff22)]
+
+### Miscellaneous
+
+- 🧱 Ensure preinstall runs on distros without bash [[9819a5c](https://github.com/segersniels/supdock/commit/9819a5c4b39abd2dd7ec4687fa4f325223638361)]
+-  Merge pull request [#18](https://github.com/segersniels/supdock/issues/18) from segersniels/dependabot/cargo/rustix-0.37.25 [[2764755](https://github.com/segersniels/supdock/commit/276475554a5a2ed8c6d210899afc084e37a25542)]
+- 📝 Update CHANGELOG [[635c013](https://github.com/segersniels/supdock/commit/635c013a88c4d135054a2d77bab12296cf56ce37)]
+
+
 <a name="3.1.5"></a>
 ## 3.1.5 (2023-09-18)
 
