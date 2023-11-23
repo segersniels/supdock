@@ -109,7 +109,7 @@ pub fn parallel_execution(command: &str) {
     }
 
     let mut handles = Vec::new();
-    let choices = prompt::determine_choices(command).unwrap_or(Vec::new());
+    let choices = prompt::determine_choices(command).unwrap_or_default();
 
     println!("Asynchronous execution of command is happening in the background");
 
@@ -190,7 +190,7 @@ pub fn handle_subcommand(command: Option<&str>) {
                 }
 
                 // Construct haystack to prepare for fuzzy search
-                let choices = prompt::determine_choices(command).unwrap_or(Vec::new());
+                let choices = prompt::determine_choices(command).unwrap_or_default();
 
                 // Search within the haystack for the requested query by fuzzy searching
                 let results = search::search(choices, query, 0.7, " ");
