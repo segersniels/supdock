@@ -1,7 +1,7 @@
 [package]
 name = "supdock"
 description = "What's Up, Doc(ker)? A slightly more visual way to interact with the docker daemon"
-version = "3.1.6"
+version = "3.2.0"
 authors = ["Niels Segers <segers.n@hotmail.com>"]
 edition = "2021"
 license = "MIT"
