@@ -12,10 +12,11 @@ pub fn extract_id_from_result(result: String) -> String {
 /// Determine the choices for the prompt based on the requested alias
 pub fn determine_choices(command: &str) -> Result<Vec<String>, String> {
     let prompt_command = SupportedPromptCommand::from_str(command).unwrap();
+    let docker_type = prompt_command.get_docker_type();
 
-    match prompt_command {
-        SupportedPromptCommand::RemoveImage => docker::get_images(),
-        _ => docker::get_containers(prompt_command.get_docker_type()),
+    match docker_type {
+        docker::Type::AllImages => docker::get_images(),
+        _ => docker::get_containers(docker_type),
     }
 }
 

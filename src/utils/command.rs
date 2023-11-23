@@ -6,6 +6,14 @@ use strum_macros::{Display, EnumString, EnumVariantNames};
 use crate::utils::{docker, exec, prompt, search};
 
 #[derive(Debug, EnumString, Display, EnumVariantNames)]
+pub enum ResourceType {
+    #[strum(serialize = "container")]
+    Container,
+    #[strum(serialize = "image")]
+    Image,
+}
+
+#[derive(Debug, EnumString, Display, EnumVariantNames)]
 pub enum SupportedPromptCommand {
     #[strum(serialize = "start")]
     Start,
@@ -25,6 +33,8 @@ pub enum SupportedPromptCommand {
     Ssh,
     #[strum(serialize = "logs")]
     Logs,
+    #[strum(serialize = "history")]
+    History,
 }
 
 pub trait GetType {
@@ -45,14 +55,15 @@ impl GetType for SupportedPromptCommand {
             SupportedPromptCommand::Env => docker::Type::RunningContainers,
             SupportedPromptCommand::Ssh => docker::Type::RunningContainers,
             SupportedPromptCommand::Logs => docker::Type::AllContainers,
+            SupportedPromptCommand::History => docker::Type::AllImages,
         }
     }
 
     /// Get string representation to mention in the prompt questions
     fn get_prompt_type(&self) -> String {
-        match self {
-            SupportedPromptCommand::RemoveImage => "image",
-            _ => "container",
+        match self.get_docker_type() {
+            docker::Type::AllImages => ResourceType::Image,
+            _ => ResourceType::Container,
         }
         .to_string()
     }
