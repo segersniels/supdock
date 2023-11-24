@@ -109,7 +109,12 @@ pub fn get_images() -> Result<Vec<String>, String> {
     match result {
         Ok(response) => {
             for image in response.as_array().unwrap() {
-                let name = &image["RepoTags"][0].as_str().unwrap();
+                if image["RepoTags"].is_array() && image["RepoTags"].as_array().unwrap().is_empty()
+                {
+                    continue;
+                }
+
+                let name = image["RepoTags"][0].as_str().unwrap();
                 let id = &image["Id"].as_str().unwrap().replace("sha256:", "")[..12];
 
                 images.push(format!("{} - {}", id, name));
