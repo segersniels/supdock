@@ -1,8 +1,8 @@
 use serde_json::Value;
 use std::error::Error;
-use std::fmt;
 use std::io::{Read, Write};
 use std::os::unix::net::UnixStream;
+use std::{fmt, process};
 use which::which;
 
 #[derive(Debug)]
@@ -126,8 +126,12 @@ pub fn get_images() -> Result<Vec<String>, String> {
 }
 
 pub fn get_docker_binary_path() -> String {
-    match which("docker") {
-        Ok(path) => path.to_str().unwrap().to_string(),
-        Err(_) => panic!("Could not find docker binary"),
+    let result = which("docker");
+
+    if let Err(_) = result {
+        eprintln!("Could not find docker binary");
+        process::exit(1);
+    } else {
+        result.unwrap().to_str().unwrap().to_string()
     }
 }
