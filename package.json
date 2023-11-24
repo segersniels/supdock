@@ -13,9 +13,6 @@
     "preinstall": "node ./scripts/preinstall.js",
     "generate:changelog": "./scripts/generate-tags.sh && gitmoji-changelog"
   },
-  "devDependencies": {
-    "gitmoji-changelog": "^2.3.0"
-  },
   "author": "Niels Segers",
   "license": "ISC",
   "homepage": "https://github.com/segersniels/supdock#readme",
