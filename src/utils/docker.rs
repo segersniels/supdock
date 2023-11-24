@@ -82,6 +82,12 @@ pub fn get_containers(container_type: Type) -> Result<Vec<String>, String> {
     match result {
         Ok(response) => {
             for container in response.as_array().unwrap() {
+                if container["Names"].is_array()
+                    && container["Names"].as_array().unwrap().is_empty()
+                {
+                    continue;
+                }
+
                 let id = &container["Id"].as_str().unwrap()[..12];
                 let name = &container["Names"][0]
                     .as_str()
