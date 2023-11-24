@@ -139,7 +139,7 @@ pub fn get_images() -> Result<Vec<String>, String> {
 pub fn get_docker_binary_path() -> String {
     let result = which("docker");
 
-    if let Err(_) = result {
+    if result.is_err() {
         eprintln!("Could not find docker binary");
         process::exit(1);
     } else {
