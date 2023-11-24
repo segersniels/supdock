@@ -11,7 +11,7 @@ fn cli() -> Command {
         .arg_required_else_help(true)
         .allow_external_subcommands(true)
         .disable_help_subcommand(true)
-        .after_help(r#"For more detailed usage on docker refer to "docker help""#)
+        .after_help(r#"This only displays "supdock" specific commands. For more detailed usage on docker refer to "docker help""#)
         .subcommand(Command::new("prune")
             .about(r#"Remove stopped containers and dangling images. For more detailed usage refer to "docker system prune -h""#)
             .arg(
