@@ -189,6 +189,9 @@ pub fn handle_subcommand(command: Option<&str>) {
                     }
                 };
 
+                debug!("Query: {}", query);
+                debug!("Choice: {}", choice);
+
                 return exec::default_with_replace(query, choice.as_str());
             }
 
@@ -207,6 +210,8 @@ pub fn handle_subcommand(command: Option<&str>) {
                     .as_str(),
                     command,
                 );
+
+                debug!("Choice: {}", choice);
 
                 return exec::default_with_choice(choice);
             }
