@@ -1,4 +1,4 @@
-use clap::{error::ErrorKind, ArgAction, Command};
+use clap::{error::ErrorKind, Arg, ArgAction, Command};
 
 mod commands;
 mod utils;
@@ -12,44 +12,39 @@ fn cli() -> Command {
         .allow_external_subcommands(true)
         .disable_help_subcommand(true)
         .after_help(r#"For more detailed usage on docker refer to "docker help""#)
-        .subcommand(utils::command::create_subcommand(
-            "prune",
-            r#"Remove stopped containers and dangling images. For more detailed usage refer to "docker system prune -h""#,
-            Some(vec![utils::command::Arg {
-                id: "info",
-                short: Some('i'),
-                long: "info",
-                help: "Log additional information",
-                action: ArgAction::SetTrue,
-            }, utils::command::Arg {
-                id: "all",
-                short: Some('a'),
-                long: "all",
-                help: "Remove all unused images not just dangling ones",
-                action: ArgAction::SetTrue,
-            }, utils::command::Arg {
-                id: "volumes",
-                short: None,
-                long: "volumes",
-                help: "Prune volumes",
-                action: ArgAction::SetTrue,
-            }]),
-        ))
-        .subcommand(utils::command::create_subcommand(
-            "ssh",
-            "SSH into a container",
-            None,
-        ))
-        .subcommand(utils::command::create_subcommand(
-            "env",
-            "See the environment variables of a running container",
-            None,
-        ))
-        .subcommand(utils::command::create_subcommand(
-            "cat",
-            "Echo the contents of a file using cat on a container",
-            None,
-        ))
+        .subcommand(Command::new("prune")
+            .about(r#"Remove stopped containers and dangling images. For more detailed usage refer to "docker system prune -h""#)
+            .arg(
+                Arg::new("info")
+                    .short('i')
+                    .long("info")
+                    .help("Log additional information")
+                    .action(ArgAction::SetTrue),
+            ).arg(
+                Arg::new("all")
+                    .short('a')
+                    .long("all")
+                    .help("Remove all unused images not just dangling ones")
+                    .action(ArgAction::SetTrue),
+            ).arg(
+                Arg::new("volumes")
+                    .long("volumes")
+                    .help("Prune volumes")
+                    .action(ArgAction::SetTrue),
+            ).arg_required_else_help(false),
+        )
+        .subcommand(Command::new("ssh")
+            .about("SSH into a container")
+            .arg_required_else_help(false),
+        )
+        .subcommand(Command::new("env")
+            .about("See the environment variables of a running container")
+            .arg_required_else_help(false),
+        )
+        .subcommand(Command::new("cat")
+            .about("Echo the contents of a file using cat on a container")
+            .arg_required_else_help(false),
+        )
 }
 
 fn main() {
