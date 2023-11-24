@@ -1,13 +1,15 @@
+use crate::utils::{docker, exec};
+use log::debug;
 use std::{
     env,
     io::Error,
     process::{self, Command, Output, Stdio},
 };
 
-use crate::utils::{docker, exec};
-
 /// Run a Docker command and only capture its error output
 pub fn run_with_stderr_capture(args: &[String]) -> Result<Output, Error> {
+    debug!("Executing: docker {}", args.join(" "));
+
     return Command::new(docker::get_docker_binary_path())
         .args(args)
         .stdin(Stdio::inherit())
@@ -18,6 +20,8 @@ pub fn run_with_stderr_capture(args: &[String]) -> Result<Output, Error> {
 
 /// Run the command with inheritance and exit the process immediately after it completes
 pub fn run_and_exit(args: &[String]) {
+    debug!("Executing: docker {}", args.join(" "));
+
     let mut command = Command::new(docker::get_docker_binary_path())
         .args(args)
         .spawn()
@@ -28,6 +32,8 @@ pub fn run_and_exit(args: &[String]) {
 
 /// Execute a command in background disregarding any output
 pub fn run_in_background(args: &[String]) {
+    debug!("Executing: docker {}", args.join(" "));
+
     Command::new(docker::get_docker_binary_path())
         .args(args)
         .stdin(Stdio::null())
@@ -44,6 +50,8 @@ pub fn get_args_from_env() -> Vec<String> {
 
 /// Passthrough to `docker` but replace a passed argument
 pub fn default_with_replace(target: &str, value: &str) {
+    debug!("Replacing {} with {}", target, value);
+
     let args = get_args_from_env()
         .iter()
         .map(|s| s.replace(target, value))

@@ -53,6 +53,7 @@ fn cli() -> Command {
 }
 
 fn main() {
+    env_logger::init();
     let result = cli().try_get_matches();
 
     match result {

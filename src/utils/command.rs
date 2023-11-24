@@ -1,4 +1,5 @@
 use clap::{Arg as ClapArg, Command as ClapCommand};
+use log::debug;
 use std::{process, str::FromStr, thread};
 use strum::VariantNames;
 use strum_macros::{Display, EnumString, EnumVariantNames};
@@ -179,6 +180,8 @@ pub fn handle_subcommand(command: Option<&str>) {
             // with the default behavior of `docker`, then they probably meant to fuzzy match it.
             // Additionally we allow the user to pass in `all` as a query to perform a parallel execution.
             if error_msg.contains("No such container") || error_msg.contains("No such image") {
+                debug!("Prompting reason: {}", error_msg);
+
                 // Extract the query from the error message and trim it to remove any whitespace.
                 let query =
                     extract_container_name_from_error(error_msg.as_ref()).unwrap_or_default();
@@ -226,6 +229,8 @@ pub fn handle_subcommand(command: Option<&str>) {
             if error_msg.contains("requires exactly 1 argument")
                 || error_msg.contains("requires at least 1 argument")
             {
+                debug!("Prompting reason: {}", error_msg);
+
                 let prompt_command = SupportedPromptCommand::from_str(command).unwrap();
                 let choice = prompt::prompt(
                     format!(
