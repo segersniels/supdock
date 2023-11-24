@@ -37,7 +37,7 @@ pub fn prompt(message: &str, command: &str) -> String {
             extract_id_from_result(selection)
         }
         Err(error) => {
-            println!("{}", error);
+            eprintln!("{}", error);
             process::exit(0);
         }
     }

@@ -222,7 +222,7 @@ pub fn handle_subcommand(command: Option<&str>) {
         }
         Err(error) => {
             // Something went wrong trying the passthrough docker command
-            println!("{}", error);
+            eprintln!("{}", error);
             process::exit(1);
         }
     }
