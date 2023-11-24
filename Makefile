@@ -20,3 +20,6 @@ lint-fix:
 
 version:
 	@cargo pkgid | sed 's/.*[@#]\(.*\)/\1/'
+
+changelog:
+	npx gitmoji-changelog --preset cargo

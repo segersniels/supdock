@@ -1,5 +1,49 @@
 # Changelog
 
+<a name="next"></a>
+## next
+
+### Changed
+
+- ♻️ Change how we generate CHANGELOG [[d6ada76](https://github.com/segersniels/supdock/commit/d6ada76c24037a2cce777358c2a11db7c9e649e3)]
+- 🚸 Notify user that only supdock specific commands are displayed there [[74d49b8](https://github.com/segersniels/supdock/commit/74d49b8d555e27550808fd6cc82db6f7f733cf3d)]
+
+### Removed
+
+- ➖ Remove gitmoji-changelog dev dependency [[612d9c3](https://github.com/segersniels/supdock/commit/612d9c37c42dcd9983fd410a5a9398a966782667)]
+
+### Miscellaneous
+
+- 📝 Mention debugging output [[e2f590d](https://github.com/segersniels/supdock/commit/e2f590d9b9e67f811b2d62a7d9ae2eeae1ad6057)]
+
+
+<a name="3.2.1"></a>
+## 3.2.1 (2023-11-24)
+
+### Added
+
+- 🔊 Add more debug logging [[17fd1a7](https://github.com/segersniels/supdock/commit/17fd1a75768ea4c65b2adbc0bda7a25a38042e0a)]
+- ✨ Add basic debug logging [[b8dfe40](https://github.com/segersniels/supdock/commit/b8dfe4004581eaf45813e2be0661e682e83f98c2)]
+
+### Changed
+
+- ♻️ Write to stderr when exit code is 1 [[72a718f](https://github.com/segersniels/supdock/commit/72a718fc2397c0b3f8f409e18dc507640cadaeb7)]
+- ⚡ No use to fetch the choices a second time [[2cfeb35](https://github.com/segersniels/supdock/commit/2cfeb358c15c4906c325deed3568de8aa614ee23)]
+- 🚨 Fix linting [[f4e0332](https://github.com/segersniels/supdock/commit/f4e03329a1cc51fdd2d12556cd6ab96168d25fe3)]
+- 🎨 Drop the helper and just use clap directly for easier maintainability [[b90febb](https://github.com/segersniels/supdock/commit/b90febbf3fb5f25fed7edca7706d2fc199695738)]
+- ♻️ Don&#x27;t panic but just print to stderr and exit [[d98743d](https://github.com/segersniels/supdock/commit/d98743d33b5128cc09112507022e3185ef047f8f)]
+- 🎨 Improve readability [[14bb2e1](https://github.com/segersniels/supdock/commit/14bb2e1354754998c197024f546865b1e6af5d8d)]
+
+### Fixed
+
+- 🐛 Also respect names actually be a valid array [[b294686](https://github.com/segersniels/supdock/commit/b29468600d4450fcc51866d4b0d4fec50a5edd64)]
+- 🐛 Make sure we check if there are repo tags [[cd5ec3d](https://github.com/segersniels/supdock/commit/cd5ec3d3eef0a62b9c0a324e510f27ef9ce19682)]
+
+### Miscellaneous
+
+- 📝 Update CHANGELOG [[c392393](https://github.com/segersniels/supdock/commit/c392393eae8acebf39cf3323e90f55c7e46ef294)]
+
+
 <a name="3.2.0"></a>
 ## 3.2.0 (2023-11-23)
 
@@ -93,6 +137,7 @@
 
 ### Miscellaneous
 
+- 📝 Update CHANGELOG [[8ccdf6c](https://github.com/segersniels/supdock/commit/8ccdf6cae08379159dc76703bb09661fff8edf08)]
 - 📝 Update CHANGELOG [[ebc174e](https://github.com/segersniels/supdock/commit/ebc174e1bb700489f3acdc3d92ded04d0cc742a1)]
 
 
@@ -215,6 +260,18 @@
 - 📝 Update changelog [[fbb47f9](https://github.com/segersniels/supdock/commit/fbb47f9cfa14e4487ae1a20fb161cb500bd065fa)]
 
 
+<a name="3.0.0"></a>
+## 3.0.0 (2023-11-24)
+
+### Changed
+
+- 🚸 Notify user that only supdock specific commands are displayed there [[74d49b8](https://github.com/segersniels/supdock/commit/74d49b8d555e27550808fd6cc82db6f7f733cf3d)]
+
+### Miscellaneous
+
+- 📝 Mention debugging output [[e2f590d](https://github.com/segersniels/supdock/commit/e2f590d9b9e67f811b2d62a7d9ae2eeae1ad6057)]
+
+
 <a name="2.8.6"></a>
 ## 2.8.6 (2023-02-15)
 
@@ -249,6 +306,14 @@
 <a name="2.8.4"></a>
 ## 2.8.4 (2022-07-05)
 
+### Fixed
+
+- 🐛 Allow fuzzy searching when name provided [[44240c2](https://github.com/segersniels/supdock/commit/44240c289b56b62024b80edbb19a889cfc15e2b0)]
+
+
+<a name="2.8.3"></a>
+## 2.8.3 (2022-07-05)
+
 ### Added
 
 - ➕ Add gitmoji-changelog [[b08b632](https://github.com/segersniels/supdock/commit/b08b6328cf7cda24c62ebe72d8773e4de75dbb8f)]
@@ -259,7 +324,6 @@
 
 ### Fixed
 
-- 🐛 Allow fuzzy searching when name provided [[44240c2](https://github.com/segersniels/supdock/commit/44240c289b56b62024b80edbb19a889cfc15e2b0)]
 - 🐛 Make sure to target correct error [[c975f45](https://github.com/segersniels/supdock/commit/c975f45df392d95b52f4d62357600532dea14ffb)]
 
 ### Miscellaneous
@@ -316,60 +380,31 @@
 - 🧑‍💻 Drop the root Makefile and make the package.json scripts more readable and usable [[4687cdd](https://github.com/segersniels/supdock/commit/4687cdd164d1bf6f09809244d0ddaf9bcceafa32)]
 
 
-<a name="2.7.6"></a>
-## 2.7.6 (2022-07-04)
-
-### Added
-
-- 👷‍♂️ Cancel in progress [[d8d5039](https://github.com/segersniels/supdock/commit/d8d5039a1e0c3f8b81459a0e94373b8b1270665c)]
-- 👷‍♂️ Don&#x27;t error when already published this specific beta version [[6b63002](https://github.com/segersniels/supdock/commit/6b630024f5302f07a7c65f4f3f2ebf0e5c362fc5)]
-- ➕ Add tsup [[716b0d5](https://github.com/segersniels/supdock/commit/716b0d5ca1345a256d136176d3b2d62932584c58)]
-
-### Changed
-
-- 🎨 Remove duplicate code [[4cee007](https://github.com/segersniels/supdock/commit/4cee0071b992859f96c215dc917dccb520f2f4c1)]
-- ♻️ Check for identical matches and not on partial split() matches [[ddc5450](https://github.com/segersniels/supdock/commit/ddc545062dc50092347cb867aae9692f5121dc82)]
-- 🔧 Target node12 instead to support default node installs on most linux systems [[12d4d97](https://github.com/segersniels/supdock/commit/12d4d9745e07284f636056b15971bf308c5bb54d)]
-- ♻️ Return to ensure we see debugging values of the child_process commands [[5a0f80c](https://github.com/segersniels/supdock/commit/5a0f80cdf9fd5341c7e7b729477e449920c40023)]
-- 🎨 Clean up [[c0014a7](https://github.com/segersniels/supdock/commit/c0014a749d0a3fc9274bcc1b094bf67287752b37)]
-- ♻️ Don&#x27;t process.exit() manually but just exit code flow early [[2319b90](https://github.com/segersniels/supdock/commit/2319b90455c93556dd41a633dbc74c70d6a527f2)]
-- ♻️ Graceful exit [[b24d86d](https://github.com/segersniels/supdock/commit/b24d86d638e9081c266513840d5ef570cce5b4e8)]
-- ⬆️ Bump deps [[d5de4a4](https://github.com/segersniels/supdock/commit/d5de4a4de2c5fdc7f82b243dbabd580df99c7d47)]
-- 🔧 Switch from ncc to tsup to compile [[884bbf8](https://github.com/segersniels/supdock/commit/884bbf82bab5ae58b31a42e69f219a9291501653)]
-
-### Removed
-
-- ➖ Remove fuzzy-search [[fa0a647](https://github.com/segersniels/supdock/commit/fa0a647079bd58eeaf1f67b6bd53db59f1ce6f45)]
-- ➖ Remove sinon [[dbaacd9](https://github.com/segersniels/supdock/commit/dbaacd9be48893705119c0fd8bda5c24515ec3d6)]
-- ➖ Remove @vercel/ncc [[9ef29e3](https://github.com/segersniels/supdock/commit/9ef29e327f791ade2972d588828fd8bd43f4ead2)]
-
-### Fixed
-
-- 🐛 Treat nonFlags as strings at all times [[29a48d5](https://github.com/segersniels/supdock/commit/29a48d5cb12ec2a34a4f661c093ee80977e70f58)]
-- 🚑 Don&#x27;t limit to two results, returm them all and join them back together [[792d98e](https://github.com/segersniels/supdock/commit/792d98ebf9c96e1a0146e72d9d2a48b4690b44f6)]
-- 💚 Target package.json so pkg config gets read [[b13f2cf](https://github.com/segersniels/supdock/commit/b13f2cfe81f82dbdfa08f9e81f78385cfb407133)]
-- 💚 Install wasm-pack [[13da961](https://github.com/segersniels/supdock/commit/13da9615593f9f1e8d79b474b45b1decba4908a4)]
-- 🚑 Seems like Makefiles were ignored... [[1c3f602](https://github.com/segersniels/supdock/commit/1c3f6025c252a44abbc039701bb10b94ef16381b)]
-- 💚 Make sure to compile wasm before trying to run typescript checks [[3225832](https://github.com/segersniels/supdock/commit/322583279c80709942cc77e9adf0789454edc6a1)]
-- ✏️ Fix typo [[1f416b0](https://github.com/segersniels/supdock/commit/1f416b02b2d70314ad7a4761acd99977c633de9c)]
-- ✏️ Typo in comment [[5472c4d](https://github.com/segersniels/supdock/commit/5472c4d9064b70c98d3732495620bf1a0d998cb9)]
-
-### Miscellaneous
-
-- ⚗️ Move fuzzy searching entirely to rust, needs optimisation [[d724963](https://github.com/segersniels/supdock/commit/d7249637db0b205c1685eab1b920f80c6a61d314)]
-- 📝 Match description [[4e849ed](https://github.com/segersniels/supdock/commit/4e849edbae830b3563759302e61985d70b0f0947)]
-- 📝 Update changelog [[75211da](https://github.com/segersniels/supdock/commit/75211dafc40f9ec3ee020f140e13b852242e5208)]
-- 📝 Match quote [[da61c32](https://github.com/segersniels/supdock/commit/da61c32a66820bbde7d9e70919e4a77c2b7f0ead)]
-
-
 <a name="2.7.5"></a>
 ## 2.7.5 (2022-04-26)
 
 ### Added
 
 - ✅ Bypass invalid typing because of migration [[7f696de](https://github.com/segersniels/supdock/commit/7f696de5c7d471e35fa57b959816d1a3aa4507f6)]
-- ✨ Enable fuzzy search by default for new users [[a95c741](https://github.com/segersniels/supdock/commit/a95c741b85f7c1f867baf65dd9e804aa5fcf660a)]
-- 🔊 Log that the user can disable the caution check since enabled by default [[df4ae2b](https://github.com/segersniels/supdock/commit/df4ae2bbd9e2b48b2773568cf607694253ab1782)]
+
+### Fixed
+
+- 💚 Remove manual version bump [[20bac20](https://github.com/segersniels/supdock/commit/20bac20c85aeb8d945fc85bbad82aae77748a888)]
+
+
+<a name="2.7.4"></a>
+## 2.7.4 (2022-04-15)
+
+### Fixed
+
+- 🐛 Add missing log statement during verbose info [[74836e9](https://github.com/segersniels/supdock/commit/74836e9a3f51952a7f4af3ca9ba097302141e128)]
+
+
+<a name="2.7.3"></a>
+## 2.7.3 (2022-04-15)
+
+### Added
+
 - 👷‍♂️ Build dependent on branches [[5a5ef66](https://github.com/segersniels/supdock/commit/5a5ef66fa49ecb63012c0b85b2fd9b31e9461503)]
 
 ### Changed
@@ -382,16 +417,6 @@
 
 - 🔥 Remove lingering test code [[e77b702](https://github.com/segersniels/supdock/commit/e77b7026b4962a6704aaff93c1faddadbf580f2f)]
 
-### Fixed
-
-- 💚 Remove manual version bump [[20bac20](https://github.com/segersniels/supdock/commit/20bac20c85aeb8d945fc85bbad82aae77748a888)]
-- 🐛 Exclude binary path from config prompt [[cedbab0](https://github.com/segersniels/supdock/commit/cedbab07de8e3aa96ed9a243b25fbf8ef12f2153)]
-- 💚 Add beta suffix so versions don&#x27;t interfere [[b80421e](https://github.com/segersniels/supdock/commit/b80421ef011aa334f0a2782455e38249c5184c5a)]
-- 💚 Just build on corresponding branch and attempt to publish independent if commit message reflects it [[a3a3db6](https://github.com/segersniels/supdock/commit/a3a3db6912a2b9c567acad44f9a9e4df205f674d)]
-- 💚 Don&#x27;t fail the build if already published [[4beab4a](https://github.com/segersniels/supdock/commit/4beab4a4a6a932779c6ad53e933cd42106e0b29d)]
-- 💚 Changed master to main branch apparently [[0de9544](https://github.com/segersniels/supdock/commit/0de954401ff2cae5d272d15a98a5fc9a9a5d8bbf)]
-- 🐛 Add missing log statement during verbose info [[74836e9](https://github.com/segersniels/supdock/commit/74836e9a3f51952a7f4af3ca9ba097302141e128)]
-
 ### Miscellaneous
 
 - 🏷️ Mark errors as correct execution errors [[04dbb43](https://github.com/segersniels/supdock/commit/04dbb438a3b1048da02e39e277a445166d0d5536)]
@@ -403,21 +428,6 @@
 ### Added
 
 - 👷‍♂️ Extract renaming of binaries to separate job [[cdab06b](https://github.com/segersniels/supdock/commit/cdab06bcd5e7ba43dde24ef8b1d175ce88b06fdd)]
-- ➕ Utilise ts-custom-error to prevent breaking custom errors when compiling [[ddf79ce](https://github.com/segersniels/supdock/commit/ddf79ce5a489351a0032a6b901a03c68de047784)]
-- ➕ Replace debug tracing with @aiteq/trace [[2548290](https://github.com/segersniels/supdock/commit/25482908ba7b1eaf3a439479e4157e0dca38c990)]
-
-### Changed
-
-- 🔧 Bump node version to 14 [[399c4c9](https://github.com/segersniels/supdock/commit/399c4c920655c8a8359095b572c72ab4a01666cd)]
-- 🎨 Improve readability of fuzzy helper [[fe48734](https://github.com/segersniels/supdock/commit/fe4873437cbe0b741d7ac593d0e43a3a93082731)]
-- ♻️ Make certain methods protected instead of public [[d61d6c9](https://github.com/segersniels/supdock/commit/d61d6c990930a0065e01be35b832a43a3752ae62)]
-- ♻️ Move functionality to helpers to improve readability and clean up [[d7a1fa5](https://github.com/segersniels/supdock/commit/d7a1fa50b5e05ebcaf97e301d9ab7ea5d26c763e)]
-- ⬆️ Bump deps [[15da073](https://github.com/segersniels/supdock/commit/15da07390e454d276de19690c2157571a4e29082)]
-- ⬆️ Bump y18n from 4.0.0 to 4.0.1 [[a0394da](https://github.com/segersniels/supdock/commit/a0394da556017c4f14b15ca50c662693d5f08879)]
-
-### Removed
-
-- 🔥 Remove tests since they are not sustainable the way they are implemented now [[d903cbe](https://github.com/segersniels/supdock/commit/d903cbea1a8984a8fc582362f733ca99e2e46ee6)]
 
 ### Fixed
 
@@ -427,6 +437,181 @@
 
 <a name="2.7.1"></a>
 ## 2.7.1 (2021-03-08)
+
+### Fixed
+
+- 🐛 Dont continue when user aborted choice [[bb8826c](https://github.com/segersniels/supdock/commit/bb8826c4bdd40fd30a3b94856fb567a192271da0)]
+
+
+<a name="2.7.6-beta.7"></a>
+## 2.7.6-beta.7 (2022-07-04)
+
+### Fixed
+
+- 🐛 Treat nonFlags as strings at all times [[29a48d5](https://github.com/segersniels/supdock/commit/29a48d5cb12ec2a34a4f661c093ee80977e70f58)]
+
+
+<a name="2.7.6-beta.6"></a>
+## 2.7.6-beta.6 (2022-07-04)
+
+### Fixed
+
+- 🚑 Don&#x27;t limit to two results, returm them all and join them back together [[792d98e](https://github.com/segersniels/supdock/commit/792d98ebf9c96e1a0146e72d9d2a48b4690b44f6)]
+
+
+<a name="2.7.6-beta.5"></a>
+## 2.7.6-beta.5 (2022-07-04)
+
+### Added
+
+- 👷‍♂️ Cancel in progress [[d8d5039](https://github.com/segersniels/supdock/commit/d8d5039a1e0c3f8b81459a0e94373b8b1270665c)]
+
+### Changed
+
+- 🎨 Remove duplicate code [[4cee007](https://github.com/segersniels/supdock/commit/4cee0071b992859f96c215dc917dccb520f2f4c1)]
+
+
+<a name="2.7.6-beta.4"></a>
+## 2.7.6-beta.4 (2022-07-03)
+
+### Changed
+
+- ♻️ Check for identical matches and not on partial split() matches [[ddc5450](https://github.com/segersniels/supdock/commit/ddc545062dc50092347cb867aae9692f5121dc82)]
+
+### Fixed
+
+- 💚 Target package.json so pkg config gets read [[b13f2cf](https://github.com/segersniels/supdock/commit/b13f2cfe81f82dbdfa08f9e81f78385cfb407133)]
+- 💚 Install wasm-pack [[13da961](https://github.com/segersniels/supdock/commit/13da9615593f9f1e8d79b474b45b1decba4908a4)]
+- 🚑 Seems like Makefiles were ignored... [[1c3f602](https://github.com/segersniels/supdock/commit/1c3f6025c252a44abbc039701bb10b94ef16381b)]
+- 💚 Make sure to compile wasm before trying to run typescript checks [[3225832](https://github.com/segersniels/supdock/commit/322583279c80709942cc77e9adf0789454edc6a1)]
+
+
+<a name="2.7.6-beta.3"></a>
+## 2.7.6-beta.3 (2022-07-03)
+
+### Removed
+
+- ➖ Remove fuzzy-search [[fa0a647](https://github.com/segersniels/supdock/commit/fa0a647079bd58eeaf1f67b6bd53db59f1ce6f45)]
+
+### Miscellaneous
+
+- ⚗️ Move fuzzy searching entirely to rust, needs optimisation [[d724963](https://github.com/segersniels/supdock/commit/d7249637db0b205c1685eab1b920f80c6a61d314)]
+
+
+<a name="2.7.6-beta.2"></a>
+## 2.7.6-beta.2 (2022-05-22)
+
+### Changed
+
+- 🔧 Target node12 instead to support default node installs on most linux systems [[12d4d97](https://github.com/segersniels/supdock/commit/12d4d9745e07284f636056b15971bf308c5bb54d)]
+
+
+<a name="2.7.6-beta.1"></a>
+## 2.7.6-beta.1 (2022-05-21)
+
+### Changed
+
+- ♻️ Return to ensure we see debugging values of the child_process commands [[5a0f80c](https://github.com/segersniels/supdock/commit/5a0f80cdf9fd5341c7e7b729477e449920c40023)]
+
+
+<a name="2.7.6-beta.0"></a>
+## 2.7.6-beta.0 (2022-05-21)
+
+### Added
+
+- 👷‍♂️ Don&#x27;t error when already published this specific beta version [[6b63002](https://github.com/segersniels/supdock/commit/6b630024f5302f07a7c65f4f3f2ebf0e5c362fc5)]
+- ➕ Add tsup [[716b0d5](https://github.com/segersniels/supdock/commit/716b0d5ca1345a256d136176d3b2d62932584c58)]
+
+### Changed
+
+- 🎨 Clean up [[c0014a7](https://github.com/segersniels/supdock/commit/c0014a749d0a3fc9274bcc1b094bf67287752b37)]
+- ♻️ Don&#x27;t process.exit() manually but just exit code flow early [[2319b90](https://github.com/segersniels/supdock/commit/2319b90455c93556dd41a633dbc74c70d6a527f2)]
+- ♻️ Graceful exit [[b24d86d](https://github.com/segersniels/supdock/commit/b24d86d638e9081c266513840d5ef570cce5b4e8)]
+- ⬆️ Bump deps [[d5de4a4](https://github.com/segersniels/supdock/commit/d5de4a4de2c5fdc7f82b243dbabd580df99c7d47)]
+- 🔧 Switch from ncc to tsup to compile [[884bbf8](https://github.com/segersniels/supdock/commit/884bbf82bab5ae58b31a42e69f219a9291501653)]
+
+### Removed
+
+- ➖ Remove sinon [[dbaacd9](https://github.com/segersniels/supdock/commit/dbaacd9be48893705119c0fd8bda5c24515ec3d6)]
+- ➖ Remove @vercel/ncc [[9ef29e3](https://github.com/segersniels/supdock/commit/9ef29e327f791ade2972d588828fd8bd43f4ead2)]
+
+### Fixed
+
+- ✏️ Fix typo [[1f416b0](https://github.com/segersniels/supdock/commit/1f416b02b2d70314ad7a4761acd99977c633de9c)]
+- ✏️ Typo in comment [[5472c4d](https://github.com/segersniels/supdock/commit/5472c4d9064b70c98d3732495620bf1a0d998cb9)]
+
+### Miscellaneous
+
+- 📝 Match description [[4e849ed](https://github.com/segersniels/supdock/commit/4e849edbae830b3563759302e61985d70b0f0947)]
+- 📝 Update changelog [[75211da](https://github.com/segersniels/supdock/commit/75211dafc40f9ec3ee020f140e13b852242e5208)]
+- 📝 Match quote [[da61c32](https://github.com/segersniels/supdock/commit/da61c32a66820bbde7d9e70919e4a77c2b7f0ead)]
+
+
+<a name="2.7.5-beta.0"></a>
+## 2.7.5-beta.0 (2022-04-26)
+
+### Added
+
+- ✨ Enable fuzzy search by default for new users [[a95c741](https://github.com/segersniels/supdock/commit/a95c741b85f7c1f867baf65dd9e804aa5fcf660a)]
+- 🔊 Log that the user can disable the caution check since enabled by default [[df4ae2b](https://github.com/segersniels/supdock/commit/df4ae2bbd9e2b48b2773568cf607694253ab1782)]
+
+### Fixed
+
+- 🐛 Exclude binary path from config prompt [[cedbab0](https://github.com/segersniels/supdock/commit/cedbab07de8e3aa96ed9a243b25fbf8ef12f2153)]
+- 💚 Add beta suffix so versions don&#x27;t interfere [[b80421e](https://github.com/segersniels/supdock/commit/b80421ef011aa334f0a2782455e38249c5184c5a)]
+- 💚 Just build on corresponding branch and attempt to publish independent if commit message reflects it [[a3a3db6](https://github.com/segersniels/supdock/commit/a3a3db6912a2b9c567acad44f9a9e4df205f674d)]
+- 💚 Don&#x27;t fail the build if already published [[4beab4a](https://github.com/segersniels/supdock/commit/4beab4a4a6a932779c6ad53e933cd42106e0b29d)]
+- 💚 Changed master to main branch apparently [[0de9544](https://github.com/segersniels/supdock/commit/0de954401ff2cae5d272d15a98a5fc9a9a5d8bbf)]
+
+
+<a name="2.7.2-beta.4"></a>
+## 2.7.2-beta.4 (2021-05-18)
+
+### Changed
+
+- 🔧 Bump node version to 14 [[399c4c9](https://github.com/segersniels/supdock/commit/399c4c920655c8a8359095b572c72ab4a01666cd)]
+
+
+<a name="2.7.2-beta.3"></a>
+## 2.7.2-beta.3 (2021-05-18)
+
+### Added
+
+- ➕ Utilise ts-custom-error to prevent breaking custom errors when compiling [[ddf79ce](https://github.com/segersniels/supdock/commit/ddf79ce5a489351a0032a6b901a03c68de047784)]
+
+### Changed
+
+- 🎨 Improve readability of fuzzy helper [[fe48734](https://github.com/segersniels/supdock/commit/fe4873437cbe0b741d7ac593d0e43a3a93082731)]
+
+
+<a name="2.7.2-beta.2"></a>
+## 2.7.2-beta.2 (2021-05-18)
+
+### Added
+
+- ➕ Replace debug tracing with @aiteq/trace [[2548290](https://github.com/segersniels/supdock/commit/25482908ba7b1eaf3a439479e4157e0dca38c990)]
+
+### Changed
+
+- ♻️ Make certain methods protected instead of public [[d61d6c9](https://github.com/segersniels/supdock/commit/d61d6c990930a0065e01be35b832a43a3752ae62)]
+
+### Removed
+
+- 🔥 Remove tests since they are not sustainable the way they are implemented now [[d903cbe](https://github.com/segersniels/supdock/commit/d903cbea1a8984a8fc582362f733ca99e2e46ee6)]
+
+
+<a name="2.7.2-beta.1"></a>
+## 2.7.2-beta.1 (2021-05-13)
+
+### Changed
+
+- ♻️ Move functionality to helpers to improve readability and clean up [[d7a1fa5](https://github.com/segersniels/supdock/commit/d7a1fa50b5e05ebcaf97e301d9ab7ea5d26c763e)]
+- ⬆️ Bump deps [[15da073](https://github.com/segersniels/supdock/commit/15da07390e454d276de19690c2157571a4e29082)]
+- ⬆️ Bump y18n from 4.0.0 to 4.0.1 [[a0394da](https://github.com/segersniels/supdock/commit/a0394da556017c4f14b15ca50c662693d5f08879)]
+
+
+<a name="2.7.1-beta.0"></a>
+## 2.7.1-beta.0 (2020-12-28)
 
 ### Changed
 
@@ -440,13 +625,21 @@
 
 - 🔥 Remove unused code [[0cb2a17](https://github.com/segersniels/supdock/commit/0cb2a17addaa6894c047d1a2913039f6ae56516d)]
 
+
+<a name="2.7.0-beta.1"></a>
+## 2.7.0-beta.1 (2020-12-01)
+
+### Changed
+
+- ♻️ Don&#x27;t fallback to a predefined path but let user configure if needed [[872e943](https://github.com/segersniels/supdock/commit/872e9437ed7c19d1656b109c90d9ef0df6882548)]
+
 ### Fixed
 
-- 🐛 Dont continue when user aborted choice [[bb8826c](https://github.com/segersniels/supdock/commit/bb8826c4bdd40fd30a3b94856fb567a192271da0)]
+- 🐛 Ensure metadata is valid before destructuring [[2210e64](https://github.com/segersniels/supdock/commit/2210e64c733601366825b4c7b892b3d2abb87717)]
 
 
-<a name="2.7.0"></a>
-## 2.7.0 (2020-12-01)
+<a name="2.7.0-beta.0"></a>
+## 2.7.0-beta.0 (2020-11-24)
 
 ### Added
 
@@ -456,7 +649,6 @@
 
 ### Changed
 
-- ♻️ Don&#x27;t fallback to a predefined path but let user configure if needed [[872e943](https://github.com/segersniels/supdock/commit/872e9437ed7c19d1656b109c90d9ef0df6882548)]
 - ⬆️ Bump deps [[cbfa1ad](https://github.com/segersniels/supdock/commit/cbfa1adee80554523ac623f0fc63ea946110fb4f)]
 
 ### Removed
@@ -465,42 +657,8 @@
 
 ### Fixed
 
-- 🐛 Ensure metadata is valid before destructuring [[2210e64](https://github.com/segersniels/supdock/commit/2210e64c733601366825b4c7b892b3d2abb87717)]
 - 🐛 Import from correct command [[5960b6d](https://github.com/segersniels/supdock/commit/5960b6d31763779b87210b868154eab841be3aa1)]
 - 💚 Temporarily always succeed yarn publishing so we can test github releasing&quot; [[ec94e97](https://github.com/segersniels/supdock/commit/ec94e9773fb625c661af8d96d1e6bbba1ff18586)]
-
-
-<a name="2.6.0"></a>
-## 2.6.0 (2020-09-11)
-
-### Added
-
-- ✅ Correctly describe test [[0a52d09](https://github.com/segersniels/supdock/commit/0a52d09591893be67bc3d5ce35f505318aaeb710)]
-- ✅ Prevent logging while running tests [[89d5663](https://github.com/segersniels/supdock/commit/89d56638168ea0ea2c8e1bded6d09b64285416f8)]
-- ✅ Move test to correct command execution [[059e166](https://github.com/segersniels/supdock/commit/059e1663ebc57aa30c778454a1b3fcb810e811f6)]
-- ✨ Allow restart to prompt user for start [[a42ce7b](https://github.com/segersniels/supdock/commit/a42ce7b0d63712688f3a25e770903b11470fd339)]
-- ✅ Fix test now that usage is moved to entrypoint instead of run() [[03b0abf](https://github.com/segersniels/supdock/commit/03b0abf0d923f5cb5a8bbc4bb833843741645a4f)]
-
-### Changed
-
-- ⬆️ Bump packaging dependencies [[e56d17b](https://github.com/segersniels/supdock/commit/e56d17bddde62ed0d3228a77d5112cd7dc199141)]
-- 🎨 Improve readability [[312e14d](https://github.com/segersniels/supdock/commit/312e14dd0c905785cfb0374e61d2335615900f89)]
-- 🎨 Move parallel execution check outside of default run and move to commands where needed [[24e3e83](https://github.com/segersniels/supdock/commit/24e3e835c0877333373f7e9994032721d0fbd4f7)]
-- ♻️ Move general try catch to top level and improve readability [[7f698bf](https://github.com/segersniels/supdock/commit/7f698bfaed36f18deec85a028d41f3885081446d)]
-- ♻️ Convert yes no choice to default confirm [[f2bce23](https://github.com/segersniels/supdock/commit/f2bce232c0cc601b0753c352e04b5405bf9a6052)]
-- ♻️ Execute async block directly instead of calling run() [[ed6b7e5](https://github.com/segersniels/supdock/commit/ed6b7e5618abcc60b8f399df5ff576cb08f00d23)]
-- ♻️ Instead of injecting run custom logic first and then super.run() [[d0583d7](https://github.com/segersniels/supdock/commit/d0583d798603ed7167fad5a6e4242a0256419bef)]
-- ♻️ Extract version and usage to entrypoint [[adf3426](https://github.com/segersniels/supdock/commit/adf34266710b448f46a2d7f7fbc52af5f8c097bc)]
-
-### Removed
-
-- 🔥 Unused optional config [[0051d26](https://github.com/segersniels/supdock/commit/0051d26da6143306824b0b2f6e642173fa4e390e)]
-- 🔥 Remove circle build [[3fa88a1](https://github.com/segersniels/supdock/commit/3fa88a1ecdaf0591b8d98b4d6b4abab582e50332)]
-- 🔥 No need to initialize as null [[288be70](https://github.com/segersniels/supdock/commit/288be70e5f1d890cc5e0f31a095085810e674669)]
-- 🔥 Remove inject [[fe138c2](https://github.com/segersniels/supdock/commit/fe138c2334e25e52dbffb32227e5d6955d54d081)]
-
-### Fixed
-
 - 💚 Doesnt seem to like multiline [[1847b11](https://github.com/segersniels/supdock/commit/1847b1158f6eb93f28e5e8388f7dbf03c41bbcfb)]
 - 💚 Make sure quotation marks are wrapped around entire conditional statement [[dc1fb64](https://github.com/segersniels/supdock/commit/dc1fb646da991d45c3aaa8686013ef03460019d2)]
 - 💚 Fix release tag name [[4aed8e6](https://github.com/segersniels/supdock/commit/4aed8e6250cb5c38f929512ca3f266ad93604374)]
@@ -513,22 +671,131 @@
 - 💚 Release name has always been version [[8d3a3cf](https://github.com/segersniels/supdock/commit/8d3a3cf8680d811d064be7fd75398b75564cce32)]
 - 💚 Split github release from npm publish since things need fixing [[0f56ad9](https://github.com/segersniels/supdock/commit/0f56ad9dd86c1cbbd8b5c696b42e761046dc89db)]
 - 💚 Only run release job when bookmark is detected in commit message [[e257a95](https://github.com/segersniels/supdock/commit/e257a9533f9d5e0c7b896e4b85ced0515f6af49c)]
-- 💚 Conditional releasing adjusted to github actions [[b05e747](https://github.com/segersniels/supdock/commit/b05e7472e84ba962a56e03d4745860148ba581d5)]
-- 💚 Initial conversion to github actions [[dc6596d](https://github.com/segersniels/supdock/commit/dc6596db3c5b70d5efe9239b5748ed76b9eacae6)]
-- 💚 Correctly grab version [[71e8971](https://github.com/segersniels/supdock/commit/71e8971cbc3116df40efa5a1a278f3ffe727434d)]
-- 🚑 Return when logging version and usage [[02b547d](https://github.com/segersniels/supdock/commit/02b547d0bb34742900a9b4a07bb974d81f45c551)]
-- 💚 Only release to github when non beta [[797bbdb](https://github.com/segersniels/supdock/commit/797bbdb14821deff466738adfbc36e6b361be403)]
-- 💚 Move away from multiple branches to single master branch [[fa5b8b6](https://github.com/segersniels/supdock/commit/fa5b8b6e65db47e21c8805178513c48261b1c91a)]
-- 💚 Use node:12 [[554505f](https://github.com/segersniels/supdock/commit/554505ffcb16f44d39334c413c04aa069df91769)]
+
+
+<a name="2.6.0"></a>
+## 2.6.0 (2020-09-11)
+
+### Added
+
+- ✅ Correctly describe test [[0a52d09](https://github.com/segersniels/supdock/commit/0a52d09591893be67bc3d5ce35f505318aaeb710)]
+- ✅ Prevent logging while running tests [[89d5663](https://github.com/segersniels/supdock/commit/89d56638168ea0ea2c8e1bded6d09b64285416f8)]
+- ✅ Move test to correct command execution [[059e166](https://github.com/segersniels/supdock/commit/059e1663ebc57aa30c778454a1b3fcb810e811f6)]
+
+### Changed
+
+- ⬆️ Bump packaging dependencies [[e56d17b](https://github.com/segersniels/supdock/commit/e56d17bddde62ed0d3228a77d5112cd7dc199141)]
 
 ### Miscellaneous
 
 - 📝 Move CHANGELOG to separate file [[dfe357a](https://github.com/segersniels/supdock/commit/dfe357afba5614a44e6fda12625a4461ab6a6216)]
+
+
+<a name="2.6.0-beta.3"></a>
+## 2.6.0-beta.3 (2020-09-07)
+
+### Changed
+
+- 🎨 Improve readability [[312e14d](https://github.com/segersniels/supdock/commit/312e14dd0c905785cfb0374e61d2335615900f89)]
+- 🎨 Move parallel execution check outside of default run and move to commands where needed [[24e3e83](https://github.com/segersniels/supdock/commit/24e3e835c0877333373f7e9994032721d0fbd4f7)]
+
+### Removed
+
+- 🔥 Unused optional config [[0051d26](https://github.com/segersniels/supdock/commit/0051d26da6143306824b0b2f6e642173fa4e390e)]
+
+
+<a name="2.6.0-beta.2"></a>
+## 2.6.0-beta.2 (2020-09-07)
+
+### Changed
+
+- ♻️ Move general try catch to top level and improve readability [[7f698bf](https://github.com/segersniels/supdock/commit/7f698bfaed36f18deec85a028d41f3885081446d)]
+
+### Fixed
+
+- 💚 Conditional releasing adjusted to github actions [[b05e747](https://github.com/segersniels/supdock/commit/b05e7472e84ba962a56e03d4745860148ba581d5)]
+
+
+<a name="2.6.0-beta.1"></a>
+## 2.6.0-beta.1 (2020-09-07)
+
+### Changed
+
+- ♻️ Convert yes no choice to default confirm [[f2bce23](https://github.com/segersniels/supdock/commit/f2bce232c0cc601b0753c352e04b5405bf9a6052)]
+
+
+<a name="2.6.0-beta.0"></a>
+## 2.6.0-beta.0 (2020-09-07)
+
+### Added
+
+- ✨ Allow restart to prompt user for start [[a42ce7b](https://github.com/segersniels/supdock/commit/a42ce7b0d63712688f3a25e770903b11470fd339)]
+
+### Removed
+
+- 🔥 Remove circle build [[3fa88a1](https://github.com/segersniels/supdock/commit/3fa88a1ecdaf0591b8d98b4d6b4abab582e50332)]
+
+### Fixed
+
+- 💚 Initial conversion to github actions [[dc6596d](https://github.com/segersniels/supdock/commit/dc6596db3c5b70d5efe9239b5748ed76b9eacae6)]
+- 💚 Correctly grab version [[71e8971](https://github.com/segersniels/supdock/commit/71e8971cbc3116df40efa5a1a278f3ffe727434d)]
+
+### Miscellaneous
+
 - 📝 Display github actions badge [[3ca1095](https://github.com/segersniels/supdock/commit/3ca109528d06bbec2e91447000956ccd5f161c38)]
 
 
 <a name="2.5.0"></a>
 ## 2.5.0 (2020-07-19)
+
+### Changed
+
+- ⬆️ Bump lodash from 4.17.15 to 4.17.19 [[b1efca1](https://github.com/segersniels/supdock/commit/b1efca15f702777a29a33fa8ef7f24f34799b5ab)]
+
+
+<a name="2.5.1-beta.1"></a>
+## 2.5.1-beta.1 (2020-07-22)
+
+### Added
+
+- ✅ Fix test now that usage is moved to entrypoint instead of run() [[03b0abf](https://github.com/segersniels/supdock/commit/03b0abf0d923f5cb5a8bbc4bb833843741645a4f)]
+
+### Removed
+
+- 🔥 No need to initialize as null [[288be70](https://github.com/segersniels/supdock/commit/288be70e5f1d890cc5e0f31a095085810e674669)]
+
+### Fixed
+
+- 🚑 Return when logging version and usage [[02b547d](https://github.com/segersniels/supdock/commit/02b547d0bb34742900a9b4a07bb974d81f45c551)]
+- 💚 Only release to github when non beta [[797bbdb](https://github.com/segersniels/supdock/commit/797bbdb14821deff466738adfbc36e6b361be403)]
+- 💚 Move away from multiple branches to single master branch [[fa5b8b6](https://github.com/segersniels/supdock/commit/fa5b8b6e65db47e21c8805178513c48261b1c91a)]
+- 💚 Use node:12 [[554505f](https://github.com/segersniels/supdock/commit/554505ffcb16f44d39334c413c04aa069df91769)]
+
+
+<a name="2.5.1-beta.0"></a>
+## 2.5.1-beta.0 (2020-07-22)
+
+### Changed
+
+- ♻️ Execute async block directly instead of calling run() [[ed6b7e5](https://github.com/segersniels/supdock/commit/ed6b7e5618abcc60b8f399df5ff576cb08f00d23)]
+- ♻️ Instead of injecting run custom logic first and then super.run() [[d0583d7](https://github.com/segersniels/supdock/commit/d0583d798603ed7167fad5a6e4242a0256419bef)]
+- ♻️ Extract version and usage to entrypoint [[adf3426](https://github.com/segersniels/supdock/commit/adf34266710b448f46a2d7f7fbc52af5f8c097bc)]
+
+### Removed
+
+- 🔥 Remove inject [[fe138c2](https://github.com/segersniels/supdock/commit/fe138c2334e25e52dbffb32227e5d6955d54d081)]
+
+
+<a name="2.5.0-beta.1"></a>
+## 2.5.0-beta.1 (2020-06-10)
+
+### Fixed
+
+- 🚑 Return when no choice [[b2c7be5](https://github.com/segersniels/supdock/commit/b2c7be5dfac1c2bdaefec536b1ea973e71a948b9)]
+
+
+<a name="2.5.0-beta.0"></a>
+## 2.5.0-beta.0 (2020-06-10)
 
 ### Added
 
@@ -539,25 +806,170 @@
 
 ### Changed
 
-- ⬆️ Bump lodash from 4.17.15 to 4.17.19 [[b1efca1](https://github.com/segersniels/supdock/commit/b1efca15f702777a29a33fa8ef7f24f34799b5ab)]
 - ♻️ Move metadata back to src and add cat command [[8c85061](https://github.com/segersniels/supdock/commit/8c85061ee3ccba792a37492c071a8580952500bf)]
 - 🎨 Drop const [[74d44bb](https://github.com/segersniels/supdock/commit/74d44bb706f359af35581ea6ae96f27f7e87c233)]
 - ♻️ Use default export [[a57caa5](https://github.com/segersniels/supdock/commit/a57caa554ddb61aeabeb57f029ac3770de0c0d86)]
 - 🎨 Simplify command creation and run [[4ccd535](https://github.com/segersniels/supdock/commit/4ccd5356424a4d9b5ece8e80bb8b3865ed506f29)]
 - ⬆️ Bump deps [[6456c40](https://github.com/segersniels/supdock/commit/6456c406c992f47a07a91876b2166e4cda2bf321)]
 
+### Miscellaneous
+
+- 📝 Update readme [[5cceb08](https://github.com/segersniels/supdock/commit/5cceb08b3e09e3f72d2474a398160b02206ba73c)]
+
+
+<a name="2.4.5"></a>
+## 2.4.5 (2020-03-08)
+
+### Changed
+
+- ⬆️ Bump deps [[5b53b93](https://github.com/segersniels/supdock/commit/5b53b935ffbd98767b674c759ee53c7fb0bddce6)]
+
+### Removed
+
+- 🔥 Remove tsc compilation from lint [[498f322](https://github.com/segersniels/supdock/commit/498f322a180e8f9763610fcf75e05b5f1c0f5e18)]
+- 🔥 Remove react from eslint config [[3d255cf](https://github.com/segersniels/supdock/commit/3d255cff39fd4525a4cd6b7a290c4f92e7368ff4)]
+- 🔥 Remove babel config [[b7991df](https://github.com/segersniels/supdock/commit/b7991dfdab5d31ea295daf8c4bc16dcb17243b8f)]
+- ➖ Remove eslint react plugins ; copy paste error [[ca8664a](https://github.com/segersniels/supdock/commit/ca8664a7ef83bc856daad425cc4257f29d67416f)]
+
+
+<a name="2.4.3"></a>
+## 2.4.3 (2020-02-29)
+
 ### Fixed
 
-- 🚑 Return when no choice [[b2c7be5](https://github.com/segersniels/supdock/commit/b2c7be5dfac1c2bdaefec536b1ea973e71a948b9)]
+- 🐛 Dont early return so custom description gets logged [[299de11](https://github.com/segersniels/supdock/commit/299de118122f4bf5483151fc9505324367a15ff1)]
+- 💚 Take supdock version as tag [[d33f25a](https://github.com/segersniels/supdock/commit/d33f25ac4fb3bd934c199009da1032891e6fa870)]
 
 
-<a name="2.4.6"></a>
-## 2.4.6 (2020-04-01)
+<a name="2.4.2"></a>
+## 2.4.2 (2020-02-29)
+
+### Changed
+
+- ⚡ Only import whatever is needed [[e1f29f3](https://github.com/segersniels/supdock/commit/e1f29f3ff92cf23afbb577b350d2639c3fac54ea)]
+- 🔧 Move bin from inbetween dependencies [[628fe26](https://github.com/segersniels/supdock/commit/628fe269b447468a956a48f823f65e350c80b8d5)]
+- 🔧 Add publish scripts [[cccbf9f](https://github.com/segersniels/supdock/commit/cccbf9f5b71ef93e260435f20fdb971c3982e123)]
+
+### Miscellaneous
+
+- 📝 2.4.2 [[b8db62c](https://github.com/segersniels/supdock/commit/b8db62cd01e3f37c08246a7e40b82135852efb82)]
+
+
+<a name="2.4.1"></a>
+## 2.4.1 (2020-02-29)
+
+### Added
+
+- ✅ Test if short logs config changes the flags [[361063b](https://github.com/segersniels/supdock/commit/361063b0ea6c9018e1e2b3a31aa8d69153863b5c)]
+- ✅ Add tests to see if supdock prompt commands execute [[74df02a](https://github.com/segersniels/supdock/commit/74df02a3853eebc946406fd72255fa5d98b2e3d3)]
+- ✨ Allow mocking of nonFlags [[ef9368a](https://github.com/segersniels/supdock/commit/ef9368a08c727d871f61dc60b8814044c2d300f1)]
+- ✨ Enable fuzzy searching of more commands [[cec372e](https://github.com/segersniels/supdock/commit/cec372e0439b98cbcacf0853e98d1a82aa49d5ed)]
+- ✨ Add test helper [[e38d818](https://github.com/segersniels/supdock/commit/e38d8188597c8fb7849af5fd7a5d4afd9e1f0189)]
+- ✅ Add tests [[1531541](https://github.com/segersniels/supdock/commit/153154154a870e94ce0cf909c88faaa20b07448d)]
+- ➕ Add testing dependencies like mocha and chai [[c06e6a3](https://github.com/segersniels/supdock/commit/c06e6a35dd27a1e279997ab9d237246c8ec5a6bd)]
+- ➕ Add babel and module resolving [[8e3cb25](https://github.com/segersniels/supdock/commit/8e3cb25b9a96146466e788b00ddaa548363b7caf)]
+- ✨ Add top and port commands [[48bfc4a](https://github.com/segersniels/supdock/commit/48bfc4ad60b7f7aa1ced45033e52ac5c264cfdca)]
+- ✨ Add info flag to see docker system df [[f9d3199](https://github.com/segersniels/supdock/commit/f9d31994d5c595c0973aa9c3cc44ccc934ff15d3)]
+
+### Changed
+
+- 🎨 Type execute as any to easily support mocking [[b8c5377](https://github.com/segersniels/supdock/commit/b8c5377cd442646e25e1a882bbdc64aa5113b3d1)]
+- 🎨 Return ids so we can check which ones were restarted in tests [[9358980](https://github.com/segersniels/supdock/commit/935898025accbb0fbb2793f6d328d0617e25a1e3)]
+- 🎨 Reduce to one line [[41a89c1](https://github.com/segersniels/supdock/commit/41a89c1ab143d5bea7ab20bb0ded1ec859b77a2d)]
+- ♻️ Allow mocking of internal functions to allow testing [[1507a10](https://github.com/segersniels/supdock/commit/1507a106b37c7335f31955689f814cf73413811e)]
+- ⬆️ Bump deps [[5fb0c90](https://github.com/segersniels/supdock/commit/5fb0c90af91e7e3caba1690428388dd24a2e9d5b)]
+- 🔧 Clean up tsconfig [[72d50e7](https://github.com/segersniels/supdock/commit/72d50e74f89da248bfac7216ae8e34413d83990f)]
+- 🔧 Add babel.config.js [[2949fd3](https://github.com/segersniels/supdock/commit/2949fd30b413707f134b17f5ff9c706c73ed405d)]
+- 🔧 Split compiling and building [[9e9a554](https://github.com/segersniels/supdock/commit/9e9a554e2977399701e504356cce5991d74fd5e0)]
+- ♻️ Switch to yarn [[17d3863](https://github.com/segersniels/supdock/commit/17d3863fbbde07545043028d9ccec4b9bb46da1e)]
+- 🚚 Move metadata out of src [[a9c3af2](https://github.com/segersniels/supdock/commit/a9c3af287e251aae0afcd5a8c8cf211983bb113c)]
+- 🔧 Add module resolution [[a3d1ad2](https://github.com/segersniels/supdock/commit/a3d1ad2f5191c6e1e78ec6fce472e6dbede7eb11)]
+- ⬆️ Upgrade pkg@4.4.3 [[bddff03](https://github.com/segersniels/supdock/commit/bddff03a0d3b880618490ee1d3ab1f0fb573983f)]
+- ⬆️ Upgrade @types/node [[af4da36](https://github.com/segersniels/supdock/commit/af4da36bf2df8f7c092471c31dd02e832750bc50)]
+- 🎨 Fix lingering old github repo [[deb83bb](https://github.com/segersniels/supdock/commit/deb83bb52644d60a56cafa6d123863a7dec3adc8)]
+- ⬆️ Bump deps [[250d35b](https://github.com/segersniels/supdock/commit/250d35b57eab4fbc1ccdc271b302e5ab7335bfb6)]
+
+### Fixed
+
+- 🚑 Needed to work with npm/yarn [[c9d2561](https://github.com/segersniels/supdock/commit/c9d2561daf7e1124d8545f2faf2b5cd4dba8114b)]
+- 💚 Publish with yarn [[b483b2a](https://github.com/segersniels/supdock/commit/b483b2a1e403d88120ad87bf53b7d15e695fafce)]
+- 🐛 Should use internal createChoices [[9f94578](https://github.com/segersniels/supdock/commit/9f945781cd8e4de017ec0879a7555c4c5e4f39b0)]
+- 🐛 Extend internals even when not mocking [[29cc2e5](https://github.com/segersniels/supdock/commit/29cc2e57f2b9e1312748c97c28a9221e55159406)]
+- 🐛 Make sure nonFlags arent pushed twice [[b3201d5](https://github.com/segersniels/supdock/commit/b3201d5706963e0a1eef629919f606983c582bc2)]
+- 💚 Run tests on CI [[d1e0eec](https://github.com/segersniels/supdock/commit/d1e0eec5d56c255d864c6fef4817eba03a1138d0)]
+- 💚 Specify targets [[08c26cf](https://github.com/segersniels/supdock/commit/08c26cf28f5d0106028daa3bd7813b102b38eeae)]
+- 💚 Lingering npm [[70442c8](https://github.com/segersniels/supdock/commit/70442c823080557e03b30e931d2a12891ed11012)]
+- 💚 Adjust CI to match new scripts [[1682e6e](https://github.com/segersniels/supdock/commit/1682e6eb8a00e81f739a563490e0bd365342c378)]
+- 🐛 Comment out return [[f5018fc](https://github.com/segersniels/supdock/commit/f5018fc6f182cb1385b3246072f2c1dcbaa9f228)]
+
+### Miscellaneous
+
+- 📝 I fucked up version 2.4.0 [[a1e969a](https://github.com/segersniels/supdock/commit/a1e969a81d87abb1eb3eda4c3e4965a0fa330f2c)]
+- 📝 Add changelog for 2.4.0 [[4d2cab0](https://github.com/segersniels/supdock/commit/4d2cab0f5321c8f5056f61cfd96207ad41b196f5)]
+- 📝 Ci badge was still pointing to old repo [[9bdc2e7](https://github.com/segersniels/supdock/commit/9bdc2e71a3296ed457a398c5b73b9a249529705b)]
+
+
+<a name="2.4.0"></a>
+## 2.4.0 (2020-02-28)
+
+### Added
+
+- ✨ allow passing of flags to no prompt commands [[8d4c327](https://github.com/segersniels/supdock/commit/8d4c327ea266760b747e18c37c5417f0cefbc239)]
+- ✨ allow passing of flags to prune command [[8a3b480](https://github.com/segersniels/supdock/commit/8a3b4804f91428772c50d9a707680446c8595190)]
+- 🔊 Basic changelog added [[b1d2aec](https://github.com/segersniels/supdock/commit/b1d2aecb6d03c40cc959f89cd7563d10b7971ffc)]
+- 🔊 Be more detailed when showing supdock flags [[84bfd1c](https://github.com/segersniels/supdock/commit/84bfd1cb0cf34bb57cf58d991c0bd9c70e6d6b33)]
+- ✨ Add ConfigOptions enum [[2a28714](https://github.com/segersniels/supdock/commit/2a28714746144496e4080c904094d66dd6743b33)]
+
+### Changed
+
+- ♻️ Clean up code [[3caf1d8](https://github.com/segersniels/supdock/commit/3caf1d8d07ad0334557ac6291aac5cfa92e954da)]
+- ⬆️ Make sure package-lock is up to date [[0b1956c](https://github.com/segersniels/supdock/commit/0b1956c4d3b733042cbc7925cda2e13b34f7aa56)]
+- ⬆️ Upgrade dev deps [[d153817](https://github.com/segersniels/supdock/commit/d1538176c84ea68b559830611bdd6df8b193f1ef)]
+- ⬆️ Fuzzy-search@3.0.2 [[14a2cfd](https://github.com/segersniels/supdock/commit/14a2cfd6eb3f582b92bca932ff4252c46cfcbf23)]
+- 📌 Pin pkg to node 12 [[a7e67ec](https://github.com/segersniels/supdock/commit/a7e67ec742c8dbc0743a47240177d8deaabb0283)]
+- ♻️ Optimise internal config usage and make sure we can retain backwards compatibilty on updates [[591106f](https://github.com/segersniels/supdock/commit/591106f79c3050d3d869ee288b1054de50d09b74)]
+- ♻️ Misplaced export [[a918d77](https://github.com/segersniels/supdock/commit/a918d7797ab6820e51ea4f7896ff4634628268f9)]
+- ⚡ Use node12 [[4e1d210](https://github.com/segersniels/supdock/commit/4e1d21057bd7948bdbad3e6f2fb79db532ee5d39)]
+- ⬆️ 4.4.2 pkg [[e3639d5](https://github.com/segersniels/supdock/commit/e3639d55b9d6ea983ca770a2128bbf3888a3ff56)]
+
+### Removed
+
+- 🔥 No longer needed as this version of supdock is already way ahead of the golang one [[bbc0d5f](https://github.com/segersniels/supdock/commit/bbc0d5f409a6b9ecacdbac81c2e86c515513fd2a)]
+- 🔥 Unpin pkg to node12, doesn&#x27;t seem to work as expected... [[d7e2c30](https://github.com/segersniels/supdock/commit/d7e2c307152ccb6bd1e1c72f7f5d0b046018af0e)]
+- 🔥 Remove eslint disable lines [[c682302](https://github.com/segersniels/supdock/commit/c6823024d47202a4be8b0ad66f09b1b87f58725e)]
+
+### Fixed
+
+- 🚑 Dont exit early here [[85b8655](https://github.com/segersniels/supdock/commit/85b86553d3163f9ecbd00776869001420b316b06)]
+- 🚑 Make sure we execute after switch break [[99d1e00](https://github.com/segersniels/supdock/commit/99d1e00c498f60d080b0a97ee276b701fff445a8)]
+
+### Miscellaneous
+
+- 🏷️ fix flags typing [[6259645](https://github.com/segersniels/supdock/commit/62596458962bbd40553026e4a47f93d6b784e4d2)]
+- 📝 Adjust config in readme [[921eefc](https://github.com/segersniels/supdock/commit/921eefc005284b7762a42f738f6c67bc5452c37e)]
+
+
+<a name="2.4.6-beta.1"></a>
+## 2.4.6-beta.1 (2020-03-31)
 
 ### Added
 
 - ✅ Clean up config after tests that use config [[851b1a8](https://github.com/segersniels/supdock/commit/851b1a8ce1405f90b1e0f5e271de51b406778d11)]
 - ✨ Add helper function to delete config in test env [[44c3a37](https://github.com/segersniels/supdock/commit/44c3a37caaa269d0f2d8dd7119f3cb5d1da152f7)]
+
+### Changed
+
+- ⬆️ Bump deps [[b32bd80](https://github.com/segersniels/supdock/commit/b32bd80b267004234cded5e56bab1d6155b3bfe8)]
+- 🔧 Move all deps to devDeps [[56a3dd1](https://github.com/segersniels/supdock/commit/56a3dd16edb29044b379a5a97f14a64df5dd7afc)]
+- ♻️ Use configPath directly in config configuration [[eb7a1f2](https://github.com/segersniels/supdock/commit/eb7a1f27316c66c20223e672d0af5afb2db19004)]
+- ♻️ Use helper function instead of having duplicate code [[de2037d](https://github.com/segersniels/supdock/commit/de2037d271d9dd51a17f8fe81cae6c6d1da7880b)]
+
+
+<a name="2.4.6-beta.0"></a>
+## 2.4.6-beta.0 (2020-03-16)
+
+### Added
+
 - ✅ Write config test to make sure migrations work [[9492172](https://github.com/segersniels/supdock/commit/94921728064ee24c4a23f9511a21625569587d29)]
 - ✨ Add list to config [[7bb9a8f](https://github.com/segersniels/supdock/commit/7bb9a8fce435530effbb0c32faef5342c0188c65)]
 - ✨ Allow config to be passed a default config [[e50b5ea](https://github.com/segersniels/supdock/commit/e50b5ea3e51226abd8c76ded43de67585623d543)]
@@ -569,10 +981,6 @@
 
 ### Changed
 
-- ⬆️ Bump deps [[b32bd80](https://github.com/segersniels/supdock/commit/b32bd80b267004234cded5e56bab1d6155b3bfe8)]
-- 🔧 Move all deps to devDeps [[56a3dd1](https://github.com/segersniels/supdock/commit/56a3dd16edb29044b379a5a97f14a64df5dd7afc)]
-- ♻️ Use configPath directly in config configuration [[eb7a1f2](https://github.com/segersniels/supdock/commit/eb7a1f27316c66c20223e672d0af5afb2db19004)]
-- ♻️ Use helper function instead of having duplicate code [[de2037d](https://github.com/segersniels/supdock/commit/de2037d271d9dd51a17f8fe81cae6c6d1da7880b)]
 - 🔧 Add .config dir to gitignore [[5e25acc](https://github.com/segersniels/supdock/commit/5e25accca637c6b7eb5dedf6b0427e820c2be1c0)]
 - ♻️ Move types and interface directories where they belong [[444ab2c](https://github.com/segersniels/supdock/commit/444ab2c79205dd3ef69b80641ed21c0dbecb075e)]
 - ⬆️ Upgrade configstore@5.0.1 [[e63eede](https://github.com/segersniels/supdock/commit/e63eede9ea2fd699dc894f81549870c51fcfd122)]
@@ -595,38 +1003,48 @@
 
 - 🐛 Stats wasn&#x27;t working entirely like it should have [[ee5869d](https://github.com/segersniels/supdock/commit/ee5869d785107a5494292c54ab62efd34c0258e1)]
 
-### Miscellaneous
 
-- 📝 Update readme [[5cceb08](https://github.com/segersniels/supdock/commit/5cceb08b3e09e3f72d2474a398160b02206ba73c)]
-
-
-<a name="2.4.5"></a>
-## 2.4.5 (2020-03-08)
+<a name="2.4.5-beta.3"></a>
+## 2.4.5-beta.3 (2020-03-08)
 
 ### Added
 
 - ➕ Add @zeit/ncc [[e4ca4d0](https://github.com/segersniels/supdock/commit/e4ca4d07f1ccd1cae28cd899ff7a778e8a3e9f01)]
+
+### Changed
+
+- 🔧 Minify compiled code [[134363d](https://github.com/segersniels/supdock/commit/134363d85cf8a8bde9e58eabf65e6e6b9afbc0c2)]
+- ⬆️ Bump deps [[9e1040b](https://github.com/segersniels/supdock/commit/9e1040b1f2b7ef51edf7f78370a084accbd5be72)]
+- 🔧 Compile using ncc instead of tsc [[71b0a0e](https://github.com/segersniels/supdock/commit/71b0a0e7d2885d9f0a53391a2f6b997680b2f990)]
+
+### Removed
+
+- ➖ Drop babel dependency [[b99c5e7](https://github.com/segersniels/supdock/commit/b99c5e77276c983c8aa18af00f26dad197529c4c)]
+
+
+<a name="2.4.5-beta.2"></a>
+## 2.4.5-beta.2 (2020-03-06)
+
+### Added
+
 - ✨ Also show image name in prompt in case container has an automated name [[854f4fb](https://github.com/segersniels/supdock/commit/854f4fb7c028ebf75509a26676caf2f270ed2baa)]
+
+
+<a name="2.4.5-beta.1"></a>
+## 2.4.5-beta.1 (2020-03-06)
+
+### Added
+
 - ✨ Reintroduce error behaviour if no choices were able to be generated [[729562a](https://github.com/segersniels/supdock/commit/729562aa416beeae713f4072e648695694ad6ac5)]
 - ✅ Adjust test now that prune info functionality has changed [[df59124](https://github.com/segersniels/supdock/commit/df591244c2c0422f50a3849fa90ef91cc63477bf)]
 
 ### Changed
 
-- ⬆️ Bump deps [[5b53b93](https://github.com/segersniels/supdock/commit/5b53b935ffbd98767b674c759ee53c7fb0bddce6)]
-- 🔧 Minify compiled code [[134363d](https://github.com/segersniels/supdock/commit/134363d85cf8a8bde9e58eabf65e6e6b9afbc0c2)]
-- ⬆️ Bump deps [[9e1040b](https://github.com/segersniels/supdock/commit/9e1040b1f2b7ef51edf7f78370a084accbd5be72)]
-- 🔧 Compile using ncc instead of tsc [[71b0a0e](https://github.com/segersniels/supdock/commit/71b0a0e7d2885d9f0a53391a2f6b997680b2f990)]
 - ♻️ Extra check if string since we sometimes just return spawn response [[36b50ed](https://github.com/segersniels/supdock/commit/36b50edc7d0ffb90056569c8451c0765c9b71df5)]
 - ♻️ Return instead of having an ugly exit [[a47665d](https://github.com/segersniels/supdock/commit/a47665db3dc6f53d70eacd8f4335b9cc2478d73b)]
-- ♻️ Dont proceed with prune after info [[365dd36](https://github.com/segersniels/supdock/commit/365dd36810a99ef25a129c4bcc91bcea97abe23f)]
 
 ### Removed
 
-- 🔥 Remove tsc compilation from lint [[498f322](https://github.com/segersniels/supdock/commit/498f322a180e8f9763610fcf75e05b5f1c0f5e18)]
-- 🔥 Remove react from eslint config [[3d255cf](https://github.com/segersniels/supdock/commit/3d255cff39fd4525a4cd6b7a290c4f92e7368ff4)]
-- 🔥 Remove babel config [[b7991df](https://github.com/segersniels/supdock/commit/b7991dfdab5d31ea295daf8c4bc16dcb17243b8f)]
-- ➖ Remove eslint react plugins ; copy paste error [[ca8664a](https://github.com/segersniels/supdock/commit/ca8664a7ef83bc856daad425cc4257f29d67416f)]
-- ➖ Drop babel dependency [[b99c5e7](https://github.com/segersniels/supdock/commit/b99c5e77276c983c8aa18af00f26dad197529c4c)]
 - 🔥 Remove old testing behaviour which is no longer needed [[d3b43a8](https://github.com/segersniels/supdock/commit/d3b43a8fee3411a5676afc477c202c42fe0e35b9)]
 
 ### Miscellaneous
@@ -634,8 +1052,16 @@
 - 🏷️ Remove hard defined type since it now possibly returns the default spawnSync type [[808c7e4](https://github.com/segersniels/supdock/commit/808c7e45f8e1f4294c06fd95afa863f46d1babec)]
 
 
-<a name="2.4.4"></a>
-## 2.4.4 (2020-03-03)
+<a name="2.4.5-beta.0"></a>
+## 2.4.5-beta.0 (2020-03-04)
+
+### Changed
+
+- ♻️ Dont proceed with prune after info [[365dd36](https://github.com/segersniels/supdock/commit/365dd36810a99ef25a129c4bcc91bcea97abe23f)]
+
+
+<a name="2.4.4-beta.3"></a>
+## 2.4.4-beta.3 (2020-03-03)
 
 ### Added
 
@@ -646,11 +1072,6 @@
 - ⬆️ Bump deps [[3890498](https://github.com/segersniels/supdock/commit/389049818bc5bbfa1f4c78bc26b0cef7e88ffa0a)]
 - ♻️ Use prompts instead of inquirer to reduce package size [[f53b9c1](https://github.com/segersniels/supdock/commit/f53b9c1f060c8d340eca1558880e608edf23a75e)]
 - ♻️ Use internal prompt wherever needed [[7cb52ef](https://github.com/segersniels/supdock/commit/7cb52ef52cd647c3536bc341339929fdc5dda8e3)]
-- 🔧 Include dist dir when publishing [[48e944b](https://github.com/segersniels/supdock/commit/48e944b98566c7f037794e87c9410dba7b45d9ea)]
-- 🔧 Remove --skipLibCheck from tsc compiling [[92eb4fc](https://github.com/segersniels/supdock/commit/92eb4fc0d30ab34d4912a65bfe39b248afba3c07)]
-- 🚨 Disable @typescript-eslint/no-non-null-assertion [[e28a24a](https://github.com/segersniels/supdock/commit/e28a24acb7bd0a3a281250e504d9db43af43fabc)]
-- ⬆️ Chalk@3.0.0 [[0e66d30](https://github.com/segersniels/supdock/commit/0e66d307753aac6132056f0fda4e58e7c82e6575)]
-- 🔧 Publish from root instead of dist [[cdfc921](https://github.com/segersniels/supdock/commit/cdfc92122b95a1135bfd806b2dc367a269c76a59)]
 
 ### Removed
 
@@ -659,12 +1080,6 @@
 ### Fixed
 
 - ✏️ Typo [[c9fcf1b](https://github.com/segersniels/supdock/commit/c9fcf1b77814d7103326d6246c8398d0fe615073)]
-- 💚 Add types&quot; [[f21a606](https://github.com/segersniels/supdock/commit/f21a6069e3e8d3cb54c629a471e4a93b7a40030f)]
-- 💚 Add types [[99c947f](https://github.com/segersniels/supdock/commit/99c947fd2b37bfccbf536a3ef667198193ad90c6)]
-- 💚 Now deloying from root instead of dist [[5237d60](https://github.com/segersniels/supdock/commit/5237d6005a33c6366c496e92bc3f1531d0ed19b3)]
-- 💚 Check if on correct branch [[6eef055](https://github.com/segersniels/supdock/commit/6eef055d27d6a7b34930952b946fa4867ab6d1b7)]
-- 💚 Only create a github release on master branch [[27fc112](https://github.com/segersniels/supdock/commit/27fc112693ebc32c00addf63912737f7cd744268)]
-- 💚 Allow circle beta publishing [[40ba151](https://github.com/segersniels/supdock/commit/40ba15156a800f88b837d259378e65ca734fe41e)]
 
 ### Miscellaneous
 
@@ -673,145 +1088,53 @@
 - 📝 Adjust readme to say usage is not always up to date [[29626f8](https://github.com/segersniels/supdock/commit/29626f8474c8a12bafbb5b86afb6d1ef18aa9c59)]
 
 
-<a name="2.4.3"></a>
-## 2.4.3 (2020-02-29)
+<a name="2.4.4-beta.2"></a>
+## 2.4.4-beta.2 (2020-03-02)
+
+### Changed
+
+- 🔧 Include dist dir when publishing [[48e944b](https://github.com/segersniels/supdock/commit/48e944b98566c7f037794e87c9410dba7b45d9ea)]
+
+
+<a name="2.4.4-beta.1"></a>
+## 2.4.4-beta.1 (2020-03-02)
 
 ### Added
 
 - ✅ Add simple usage test just to be sure it still executes without issues [[15aed73](https://github.com/segersniels/supdock/commit/15aed739cd83a47f3e8732d8b1b857077ea35ff7)]
 
-### Fixed
-
-- 🐛 Dont early return so custom description gets logged [[299de11](https://github.com/segersniels/supdock/commit/299de118122f4bf5483151fc9505324367a15ff1)]
-
-
-<a name="2.4.2"></a>
-## 2.4.2 (2020-02-29)
-
 ### Changed
 
-- ⚡ Only import whatever is needed [[e1f29f3](https://github.com/segersniels/supdock/commit/e1f29f3ff92cf23afbb577b350d2639c3fac54ea)]
+- 🔧 Remove --skipLibCheck from tsc compiling [[92eb4fc](https://github.com/segersniels/supdock/commit/92eb4fc0d30ab34d4912a65bfe39b248afba3c07)]
+- 🚨 Disable @typescript-eslint/no-non-null-assertion [[e28a24a](https://github.com/segersniels/supdock/commit/e28a24acb7bd0a3a281250e504d9db43af43fabc)]
+- ⬆️ Chalk@3.0.0 [[0e66d30](https://github.com/segersniels/supdock/commit/0e66d307753aac6132056f0fda4e58e7c82e6575)]
+- 🔧 Publish from root instead of dist [[cdfc921](https://github.com/segersniels/supdock/commit/cdfc92122b95a1135bfd806b2dc367a269c76a59)]
 
 ### Fixed
 
-- 💚 Take supdock version as tag [[d33f25a](https://github.com/segersniels/supdock/commit/d33f25ac4fb3bd934c199009da1032891e6fa870)]
-
-### Miscellaneous
-
-- 📝 2.4.2 [[b8db62c](https://github.com/segersniels/supdock/commit/b8db62cd01e3f37c08246a7e40b82135852efb82)]
-
-
-<a name="2.4.1"></a>
-## 2.4.1 (2020-02-29)
-
-### Changed
-
-- 🔧 Move bin from inbetween dependencies [[628fe26](https://github.com/segersniels/supdock/commit/628fe269b447468a956a48f823f65e350c80b8d5)]
-- 🔧 Add publish scripts [[cccbf9f](https://github.com/segersniels/supdock/commit/cccbf9f5b71ef93e260435f20fdb971c3982e123)]
-
-### Fixed
-
-- 🚑 Needed to work with npm/yarn [[c9d2561](https://github.com/segersniels/supdock/commit/c9d2561daf7e1124d8545f2faf2b5cd4dba8114b)]
-- 💚 Publish with yarn [[b483b2a](https://github.com/segersniels/supdock/commit/b483b2a1e403d88120ad87bf53b7d15e695fafce)]
-
-### Miscellaneous
-
-- 📝 I fucked up version 2.4.0 [[a1e969a](https://github.com/segersniels/supdock/commit/a1e969a81d87abb1eb3eda4c3e4965a0fa330f2c)]
-
-
-<a name="2.4.0"></a>
-## 2.4.0 (2020-02-29)
-
-### Added
-
-- ✅ Test if short logs config changes the flags [[361063b](https://github.com/segersniels/supdock/commit/361063b0ea6c9018e1e2b3a31aa8d69153863b5c)]
-- ✅ Add tests to see if supdock prompt commands execute [[74df02a](https://github.com/segersniels/supdock/commit/74df02a3853eebc946406fd72255fa5d98b2e3d3)]
-- ✨ Allow mocking of nonFlags [[ef9368a](https://github.com/segersniels/supdock/commit/ef9368a08c727d871f61dc60b8814044c2d300f1)]
-- ✨ Enable fuzzy searching of more commands [[cec372e](https://github.com/segersniels/supdock/commit/cec372e0439b98cbcacf0853e98d1a82aa49d5ed)]
-- ✨ Add test helper [[e38d818](https://github.com/segersniels/supdock/commit/e38d8188597c8fb7849af5fd7a5d4afd9e1f0189)]
-- ✅ Add tests [[1531541](https://github.com/segersniels/supdock/commit/153154154a870e94ce0cf909c88faaa20b07448d)]
-- ➕ Add testing dependencies like mocha and chai [[c06e6a3](https://github.com/segersniels/supdock/commit/c06e6a35dd27a1e279997ab9d237246c8ec5a6bd)]
-- ➕ Add babel and module resolving [[8e3cb25](https://github.com/segersniels/supdock/commit/8e3cb25b9a96146466e788b00ddaa548363b7caf)]
-- ✨ Add top and port commands [[48bfc4a](https://github.com/segersniels/supdock/commit/48bfc4ad60b7f7aa1ced45033e52ac5c264cfdca)]
-- ✨ Add info flag to see docker system df [[f9d3199](https://github.com/segersniels/supdock/commit/f9d31994d5c595c0973aa9c3cc44ccc934ff15d3)]
-- ✨ allow passing of flags to no prompt commands [[8d4c327](https://github.com/segersniels/supdock/commit/8d4c327ea266760b747e18c37c5417f0cefbc239)]
-- ✨ allow passing of flags to prune command [[8a3b480](https://github.com/segersniels/supdock/commit/8a3b4804f91428772c50d9a707680446c8595190)]
-- 🔊 Basic changelog added [[b1d2aec](https://github.com/segersniels/supdock/commit/b1d2aecb6d03c40cc959f89cd7563d10b7971ffc)]
-
-### Changed
-
-- 🎨 Type execute as any to easily support mocking [[b8c5377](https://github.com/segersniels/supdock/commit/b8c5377cd442646e25e1a882bbdc64aa5113b3d1)]
-- 🎨 Return ids so we can check which ones were restarted in tests [[9358980](https://github.com/segersniels/supdock/commit/935898025accbb0fbb2793f6d328d0617e25a1e3)]
-- 🎨 Reduce to one line [[41a89c1](https://github.com/segersniels/supdock/commit/41a89c1ab143d5bea7ab20bb0ded1ec859b77a2d)]
-- ♻️ Allow mocking of internal functions to allow testing [[1507a10](https://github.com/segersniels/supdock/commit/1507a106b37c7335f31955689f814cf73413811e)]
-- ⬆️ Bump deps [[5fb0c90](https://github.com/segersniels/supdock/commit/5fb0c90af91e7e3caba1690428388dd24a2e9d5b)]
-- 🔧 Clean up tsconfig [[72d50e7](https://github.com/segersniels/supdock/commit/72d50e74f89da248bfac7216ae8e34413d83990f)]
-- 🔧 Add babel.config.js [[2949fd3](https://github.com/segersniels/supdock/commit/2949fd30b413707f134b17f5ff9c706c73ed405d)]
-- 🔧 Split compiling and building [[9e9a554](https://github.com/segersniels/supdock/commit/9e9a554e2977399701e504356cce5991d74fd5e0)]
-- ♻️ Switch to yarn [[17d3863](https://github.com/segersniels/supdock/commit/17d3863fbbde07545043028d9ccec4b9bb46da1e)]
-- 🚚 Move metadata out of src [[a9c3af2](https://github.com/segersniels/supdock/commit/a9c3af287e251aae0afcd5a8c8cf211983bb113c)]
-- 🔧 Add module resolution [[a3d1ad2](https://github.com/segersniels/supdock/commit/a3d1ad2f5191c6e1e78ec6fce472e6dbede7eb11)]
-- ⬆️ Upgrade pkg@4.4.3 [[bddff03](https://github.com/segersniels/supdock/commit/bddff03a0d3b880618490ee1d3ab1f0fb573983f)]
-- ⬆️ Upgrade @types/node [[af4da36](https://github.com/segersniels/supdock/commit/af4da36bf2df8f7c092471c31dd02e832750bc50)]
-- 🎨 Fix lingering old github repo [[deb83bb](https://github.com/segersniels/supdock/commit/deb83bb52644d60a56cafa6d123863a7dec3adc8)]
-- ⬆️ Bump deps [[250d35b](https://github.com/segersniels/supdock/commit/250d35b57eab4fbc1ccdc271b302e5ab7335bfb6)]
-- ♻️ Clean up code [[3caf1d8](https://github.com/segersniels/supdock/commit/3caf1d8d07ad0334557ac6291aac5cfa92e954da)]
-
-### Removed
-
-- 🔥 No longer needed as this version of supdock is already way ahead of the golang one [[bbc0d5f](https://github.com/segersniels/supdock/commit/bbc0d5f409a6b9ecacdbac81c2e86c515513fd2a)]
-
-### Fixed
-
-- 🐛 Should use internal createChoices [[9f94578](https://github.com/segersniels/supdock/commit/9f945781cd8e4de017ec0879a7555c4c5e4f39b0)]
-- 🐛 Extend internals even when not mocking [[29cc2e5](https://github.com/segersniels/supdock/commit/29cc2e57f2b9e1312748c97c28a9221e55159406)]
-- 🐛 Make sure nonFlags arent pushed twice [[b3201d5](https://github.com/segersniels/supdock/commit/b3201d5706963e0a1eef629919f606983c582bc2)]
-- 💚 Run tests on CI [[d1e0eec](https://github.com/segersniels/supdock/commit/d1e0eec5d56c255d864c6fef4817eba03a1138d0)]
-- 💚 Specify targets [[08c26cf](https://github.com/segersniels/supdock/commit/08c26cf28f5d0106028daa3bd7813b102b38eeae)]
-- 💚 Lingering npm [[70442c8](https://github.com/segersniels/supdock/commit/70442c823080557e03b30e931d2a12891ed11012)]
-- 💚 Adjust CI to match new scripts [[1682e6e](https://github.com/segersniels/supdock/commit/1682e6eb8a00e81f739a563490e0bd365342c378)]
-- 🐛 Comment out return [[f5018fc](https://github.com/segersniels/supdock/commit/f5018fc6f182cb1385b3246072f2c1dcbaa9f228)]
-
-### Miscellaneous
-
-- 📝 Add changelog for 2.4.0 [[4d2cab0](https://github.com/segersniels/supdock/commit/4d2cab0f5321c8f5056f61cfd96207ad41b196f5)]
-- 📝 Ci badge was still pointing to old repo [[9bdc2e7](https://github.com/segersniels/supdock/commit/9bdc2e71a3296ed457a398c5b73b9a249529705b)]
-- 🏷️ fix flags typing [[6259645](https://github.com/segersniels/supdock/commit/62596458962bbd40553026e4a47f93d6b784e4d2)]
-- 📝 Adjust config in readme [[921eefc](https://github.com/segersniels/supdock/commit/921eefc005284b7762a42f738f6c67bc5452c37e)]
+- 💚 Add types&quot; [[f21a606](https://github.com/segersniels/supdock/commit/f21a6069e3e8d3cb54c629a471e4a93b7a40030f)]
+- 💚 Add types [[99c947f](https://github.com/segersniels/supdock/commit/99c947fd2b37bfccbf536a3ef667198193ad90c6)]
+- 💚 Now deloying from root instead of dist [[5237d60](https://github.com/segersniels/supdock/commit/5237d6005a33c6366c496e92bc3f1531d0ed19b3)]
+- 💚 Check if on correct branch [[6eef055](https://github.com/segersniels/supdock/commit/6eef055d27d6a7b34930952b946fa4867ab6d1b7)]
+- 💚 Only create a github release on master branch [[27fc112](https://github.com/segersniels/supdock/commit/27fc112693ebc32c00addf63912737f7cd744268)]
+- 💚 Allow circle beta publishing [[40ba151](https://github.com/segersniels/supdock/commit/40ba15156a800f88b837d259378e65ca734fe41e)]
 
 
 <a name="2.3.0"></a>
-## 2.3.0 (2020-01-02)
+## 2.3.0 (2019-12-24)
 
 ### Added
 
-- 🔊 Be more detailed when showing supdock flags [[84bfd1c](https://github.com/segersniels/supdock/commit/84bfd1cb0cf34bb57cf58d991c0bd9c70e6d6b33)]
-- ✨ Add ConfigOptions enum [[2a28714](https://github.com/segersniels/supdock/commit/2a28714746144496e4080c904094d66dd6743b33)]
 - ✨ Add config option to enforce line limit of logs command [[38b722b](https://github.com/segersniels/supdock/commit/38b722bc959e9c94ec5818efeaa20cb77d6f3333)]
 
 ### Changed
 
-- ⬆️ Make sure package-lock is up to date [[0b1956c](https://github.com/segersniels/supdock/commit/0b1956c4d3b733042cbc7925cda2e13b34f7aa56)]
-- ⬆️ Upgrade dev deps [[d153817](https://github.com/segersniels/supdock/commit/d1538176c84ea68b559830611bdd6df8b193f1ef)]
-- ⬆️ Fuzzy-search@3.0.2 [[14a2cfd](https://github.com/segersniels/supdock/commit/14a2cfd6eb3f582b92bca932ff4252c46cfcbf23)]
-- 📌 Pin pkg to node 12 [[a7e67ec](https://github.com/segersniels/supdock/commit/a7e67ec742c8dbc0743a47240177d8deaabb0283)]
-- ♻️ Optimise internal config usage and make sure we can retain backwards compatibilty on updates [[591106f](https://github.com/segersniels/supdock/commit/591106f79c3050d3d869ee288b1054de50d09b74)]
-- ♻️ Misplaced export [[a918d77](https://github.com/segersniels/supdock/commit/a918d7797ab6820e51ea4f7896ff4634628268f9)]
-- ⚡ Use node12 [[4e1d210](https://github.com/segersniels/supdock/commit/4e1d21057bd7948bdbad3e6f2fb79db532ee5d39)]
-- ⬆️ 4.4.2 pkg [[e3639d5](https://github.com/segersniels/supdock/commit/e3639d55b9d6ea983ca770a2128bbf3888a3ff56)]
 - ♻️ Clean and split up code for better readability [[3eedd33](https://github.com/segersniels/supdock/commit/3eedd33380e5b04e8072f91546767a0201427a1c)]
 - 🚨 Drop standard again and use eslint typescript linting with prettier [[f2b73fb](https://github.com/segersniels/supdock/commit/f2b73fb5ff11ae73598f3261d477724148b2b0bd)]
 - 🚨 Linting + esModuleInterop [[8295006](https://github.com/segersniels/supdock/commit/8295006ff1a1bd7f683ba29edd70ff06506d0cfd)]
 
-### Removed
-
-- 🔥 Unpin pkg to node12, doesn&#x27;t seem to work as expected... [[d7e2c30](https://github.com/segersniels/supdock/commit/d7e2c307152ccb6bd1e1c72f7f5d0b046018af0e)]
-- 🔥 Remove eslint disable lines [[c682302](https://github.com/segersniels/supdock/commit/c6823024d47202a4be8b0ad66f09b1b87f58725e)]
-
 ### Fixed
 
-- 🚑 Dont exit early here [[85b8655](https://github.com/segersniels/supdock/commit/85b86553d3163f9ecbd00776869001420b316b06)]
-- 🚑 Make sure we execute after switch break [[99d1e00](https://github.com/segersniels/supdock/commit/99d1e00c498f60d080b0a97ee276b701fff445a8)]
 - 🚑 EsModuleInterop lingering change [[d359444](https://github.com/segersniels/supdock/commit/d359444df4e4fed8587686f5297e1138a1cc32f2)]
 - 🐛 Make sure options is not undefined [[76b8d22](https://github.com/segersniels/supdock/commit/76b8d2242995074ea8875f2f5c3e50f2404362a7)]
 
