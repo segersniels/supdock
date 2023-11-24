@@ -162,18 +162,18 @@ pub fn handle_subcommand(command: Option<&str>) {
                 let choices = prompt::determine_choices(command).unwrap_or_default();
 
                 // Search within the haystack for the requested query by fuzzy searching
-                let results = search::search(choices, query, 0.7, " ");
+                let results = search::search(&choices, query, 0.7, " ");
                 let choice = match results.len() {
                     0 => {
                         // No results found, prompt the user to select a container
                         let prompt_command = SupportedPromptCommand::from_str(command).unwrap();
-                        prompt::prompt(
+                        prompt::prompt_from_choices(
                             format!(
                                 "Select the desired {} from the list",
                                 prompt_command.get_prompt_type()
                             )
                             .as_str(),
-                            command,
+                            &choices,
                         )
                     }
                     1 => {

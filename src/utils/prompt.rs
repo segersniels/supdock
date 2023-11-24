@@ -37,6 +37,12 @@ pub fn prompt(message: &str, command: &str) -> String {
     }
 }
 
+pub fn prompt_from_choices(message: &str, choices: &Vec<String>) -> String {
+    let selection = ask(message, &choices);
+
+    extract_id_from_result(selection)
+}
+
 pub fn ask(message: &str, options: &[String]) -> String {
     let selection = inquire::Select::new(message, options.to_owned()).prompt();
 
