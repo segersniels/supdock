@@ -47,11 +47,6 @@ If you don't want to use `supdock` and `docker` separately you can just set an a
 alias docker="supdock"
 ```
 
-## Changelog
-
-For a basic changelog overview go [here](./CHANGELOG.md).
-I try to keep track of most general changes as best as I can.
-
 ## Usage
 
 ```
@@ -73,6 +68,12 @@ For more detailed usage on docker refer to "docker help"
 
 Usage above can differ from the actual usage shown by the command.
 
-## Contributing
+## Changelog
+
+For a basic changelog overview go [here](./CHANGELOG.md).
+I try to keep track of most general changes as best as I can.
+
+## Contributing & Troubleshooting
 
 If you would like to see something added or you want to add something yourself feel free to create an issue or a pull request.
+Please provide either the panic log or your terminal output with `RUST_LOG=debug` enabled for easier troubleshooting.
