@@ -147,6 +147,7 @@ fn extract_container_name_from_error(error: &str) -> Option<&str> {
             return Some(container_name);
         }
     }
+
     None
 }
 
@@ -173,16 +174,14 @@ pub fn handle_subcommand(command: Option<&str>) {
                 process::exit(status_code);
             }
 
-            /*
-            Here's where the magic of supdock comes into play.
-            We assume that if a user provided an id or name of a container that didn't match
-            with the default behavior of `docker`, then they probably meant to fuzzy match it.
-
-            Additionally we allow the user to pass in `all` as a query to perform a parallel execution.
-             */
+            // Here's where the magic of supdock comes into play.
+            // We assume that if a user provided an id or name of a container that didn't match
+            // with the default behavior of `docker`, then they probably meant to fuzzy match it.
+            // Additionally we allow the user to pass in `all` as a query to perform a parallel execution.
             if error_msg.contains("No such container") || error_msg.contains("No such image") {
                 // Extract the query from the error message and trim it to remove any whitespace.
-                let query = extract_container_name_from_error(error_msg.as_ref()).unwrap_or("");
+                let query =
+                    extract_container_name_from_error(error_msg.as_ref()).unwrap_or_default();
 
                 // Parallel execution requested
                 if query == "all" {

@@ -18,16 +18,12 @@ fn parse(needle: &str, split_char: &str) -> Vec<String> {
 /// Determine if two strings are similar based on Jaro-Winkler distance.
 fn is_similar(word: &str, needle: &str, threshold: f64) -> bool {
     let distance = jaro_winkler(&word.to_lowercase(), &needle.to_lowercase());
+
     distance > threshold
 }
 
 /// Search for a needle in a haystack
-pub fn search<'a, T, I>(
-    haystack: I,
-    needle: &'a str,
-    threshold: f64,
-    split_char: &'a str,
-) -> Vec<String>
+pub fn search<T, I>(haystack: I, needle: &str, threshold: f64, split_char: &str) -> Vec<String>
 where
     T: AsRef<str>,
     I: IntoIterator<Item = T>,
