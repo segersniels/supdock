@@ -1,11 +1,16 @@
 # Changelog
 
-<a name="next"></a>
-## next
+<a name="3.3.0"></a>
+## 3.3.0 (2024-01-23)
+
+### Added
+
+- ✨ Add inspect to prompt commands [[c2a3c03](https://github.com/segersniels/supdock/commit/c2a3c03fd484c7af30dbc473df1ed7fbcb0837db)]
 
 ### Changed
 
-- ♻️ Change how we generate CHANGELOG [[d6ada76](https://github.com/segersniels/supdock/commit/d6ada76c24037a2cce777358c2a11db7c9e649e3)]
+- ⬆️ Bump deps [[d6bdad4](https://github.com/segersniels/supdock/commit/d6bdad41e563dcbb552b7704c997fa1c4a8bcd5c)]
+- ♻️ Change how we generate CHANGELOG [[a1387e8](https://github.com/segersniels/supdock/commit/a1387e8b72740d0efd3fd8d18be7fa9b2f868793)]
 - 🚸 Notify user that only supdock specific commands are displayed there [[74d49b8](https://github.com/segersniels/supdock/commit/74d49b8d555e27550808fd6cc82db6f7f733cf3d)]
 
 ### Removed
@@ -14,6 +19,7 @@
 
 ### Miscellaneous
 
+- 📝 Update badges [[7b3f58d](https://github.com/segersniels/supdock/commit/7b3f58dd568041404173a1c99dde8a08b571c922)]
 - 📝 Mention debugging output [[e2f590d](https://github.com/segersniels/supdock/commit/e2f590d9b9e67f811b2d62a7d9ae2eeae1ad6057)]
 
 
