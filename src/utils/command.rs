@@ -35,6 +35,8 @@ pub enum SupportedPromptCommand {
     Logs,
     #[strum(serialize = "history")]
     History,
+    #[strum(serialize = "inspect")]
+    Inspect,
 }
 
 pub trait GetType {
@@ -56,6 +58,7 @@ impl GetType for SupportedPromptCommand {
             SupportedPromptCommand::Ssh => docker::Type::RunningContainers,
             SupportedPromptCommand::Logs => docker::Type::AllContainers,
             SupportedPromptCommand::History => docker::Type::AllImages,
+            SupportedPromptCommand::Inspect => docker::Type::AllContainers,
         }
     }
 
