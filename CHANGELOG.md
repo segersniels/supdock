@@ -1,5 +1,18 @@
 # Changelog
 
+<a name="3.4.0"></a>
+## 3.4.0 (2024-02-23)
+
+### Changed
+
+- 🚨 Fix linting [[259678d](https://github.com/segersniels/supdock/commit/259678d3c062f877f9f778ab879cf1559f75afcd)]
+- ♻️ Search the haystack in parallel [[6a4789b](https://github.com/segersniels/supdock/commit/6a4789b28328b31ad216f4919b9e4bbabec24e3e)]
+
+### Removed
+
+- 🔥 Explicit type not required [[45eddbc](https://github.com/segersniels/supdock/commit/45eddbce97954066fb9fa27fe6eab7c47a558555)]
+
+
 <a name="3.3.0"></a>
 ## 3.3.0 (2024-01-23)
 
