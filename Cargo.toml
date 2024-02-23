@@ -1,11 +1,20 @@
 [package]
 name = "supdock"
 description = "What's Up, Doc(ker)? A slightly more visual way to interact with the docker daemon"
-version = "3.3.0"
+version = "3.4.0"
 authors = ["Niels Segers <segers.n@hotmail.com>"]
 edition = "2021"
 license = "MIT"
-keyword = ["docker", "supdock", "visual", "interactive", "wrapper", "cli", "compose", "docker-compose"]
+keyword = [
+    "docker",
+    "supdock",
+    "visual",
+    "interactive",
+    "wrapper",
+    "cli",
+    "compose",
+    "docker-compose",
+]
 categories = ["command-line-utilities", "virtualization"]
 homepage = "https://github.com/segersniels/supdock/"
 repository = "https://github.com/segersniels/supdock/"
