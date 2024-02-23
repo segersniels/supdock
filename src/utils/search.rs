@@ -30,7 +30,7 @@ fn is_similar(word: &str, needle: &str, threshold: f64) -> bool {
 /// Search for a needle in a haystack
 pub fn search(haystack: &[String], needle: &str, threshold: f64, split_char: &str) -> Vec<String> {
     let mut threads = Vec::new();
-    let results: Arc<Mutex<HashSet<String>>> = Arc::new(Mutex::new(HashSet::new()));
+    let results = Arc::new(Mutex::new(HashSet::new()));
 
     for potential_needle in haystack.iter() {
         let results = Arc::clone(&results);
