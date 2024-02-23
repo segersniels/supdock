@@ -7,8 +7,8 @@ use super::command::{GetType, SupportedPromptCommand};
 
 /// Parse the result and extract the container id from it
 /// `8ee008c67aed - foo (nginx:1.19)` -> `8ee008c67aed`
-pub fn extract_id_from_result(result: String) -> String {
-    return result.split('-').next().unwrap().trim().to_owned();
+pub fn extract_id_from_result(result: &str) -> String {
+    result.split('-').next().unwrap().trim().to_owned()
 }
 
 /// Determine the choices for the prompt based on the requested alias
@@ -34,7 +34,7 @@ pub fn prompt(message: &str, command: &str) -> String {
         Ok(options) => {
             let selection = ask(message, &options);
 
-            extract_id_from_result(selection)
+            extract_id_from_result(&selection)
         }
         Err(error) => {
             eprintln!("{}", error);
@@ -43,10 +43,10 @@ pub fn prompt(message: &str, command: &str) -> String {
     }
 }
 
-pub fn prompt_from_choices(message: &str, choices: &Vec<String>) -> String {
-    let selection = ask(message, &choices);
+pub fn prompt_from_choices(message: &str, choices: &[String]) -> String {
+    let selection = ask(message, choices);
 
-    extract_id_from_result(selection)
+    extract_id_from_result(&selection)
 }
 
 pub fn ask(message: &str, options: &[String]) -> String {
@@ -60,5 +60,5 @@ pub fn ask(message: &str, options: &[String]) -> String {
 }
 
 pub fn text(message: &str) -> String {
-    return inquire::Text::new(message).prompt().unwrap();
+    inquire::Text::new(message).prompt().unwrap()
 }

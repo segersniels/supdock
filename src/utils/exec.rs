@@ -10,12 +10,12 @@ use std::{
 pub fn run_with_stderr_capture(args: &[String]) -> Result<Output, Error> {
     debug!("Executing: docker {}", args.join(" "));
 
-    return Command::new(docker::get_docker_binary_path())
+    Command::new(docker::get_docker_binary_path())
         .args(args)
         .stdin(Stdio::inherit())
         .stdout(Stdio::inherit())
         .stderr(Stdio::piped())
-        .output();
+        .output()
 }
 
 /// Run the command with inheritance and exit the process immediately after it completes

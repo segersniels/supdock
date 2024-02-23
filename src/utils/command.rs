@@ -86,7 +86,7 @@ pub fn parallel_execution(command: &str) {
 
     for choice in choices {
         let handle = thread::spawn(move || {
-            let id = prompt::extract_id_from_result(choice);
+            let id = prompt::extract_id_from_result(&choice);
             let args = exec::get_args_from_env()
                 .iter()
                 .map(|s| s.replace("all", &id))
@@ -181,11 +181,11 @@ pub fn handle_subcommand(command: Option<&str>) {
                     }
                     1 => {
                         // Single result returned so assume it's the correct container
-                        prompt::extract_id_from_result(results[0].clone())
+                        prompt::extract_id_from_result(&results[0].clone())
                     }
                     _ => {
                         // Multiple results returned, prompt user to select a container from the results
-                        prompt::extract_id_from_result(prompt::ask(
+                        prompt::extract_id_from_result(&prompt::ask(
                             "Search returned more than one result, please make a choice from the list.",
                             &results,
                         ))
