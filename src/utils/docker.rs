@@ -1,9 +1,12 @@
+use serde::Deserialize;
 use serde_json::Value;
 use std::error::Error;
 use std::io::{Read, Write};
 use std::os::unix::net::UnixStream;
 use std::{fmt, process};
 use which::which;
+
+use crate::utils::exec;
 
 #[derive(Debug)]
 struct DockerError {
@@ -145,4 +148,35 @@ pub fn get_docker_binary_path() -> String {
         eprintln!("Could not find docker binary");
         process::exit(1);
     }
+}
+
+#[derive(Deserialize)]
+#[serde(rename_all = "PascalCase")]
+struct ComposeEntry {
+    name: String,
+    status: String,
+    config_files: String,
+}
+
+pub fn get_running_compose_projects() -> Vec<String> {
+    let mut list = Vec::new();
+    let result = exec::run_with_capture(&[
+        "compose".to_string(),
+        "ls".to_string(),
+        "--format".to_string(),
+        "json".to_string(),
+    ]);
+
+    if let Ok(output) = result {
+        let stdout = String::from_utf8_lossy(&output.stdout);
+        if let Ok(projects) = serde_json::from_str::<Vec<ComposeEntry>>(&stdout) {
+            list = projects
+                .into_iter()
+                .filter(|project| project.status.starts_with("running"))
+                .map(|project| project.config_files)
+                .collect()
+        }
+    }
+
+    list
 }

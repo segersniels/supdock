@@ -133,7 +133,7 @@ pub fn handle_subcommand(command: Option<&str>) {
     }
 
     // Forward the command to docker and see what we need to do with it
-    let result = exec::run_with_stderr_capture(&args);
+    let result = exec::run_with_capture(&args);
 
     match result {
         Ok(output) => {

@@ -6,14 +6,14 @@ use std::{
     process::{self, Command, Output, Stdio},
 };
 
-/// Run a Docker command and only capture its error output
-pub fn run_with_stderr_capture(args: &[String]) -> Result<Output, Error> {
+/// Run a Docker command and capture stderr and stdout
+pub fn run_with_capture(args: &[String]) -> Result<Output, Error> {
     debug!("Executing: docker {}", args.join(" "));
 
     Command::new(docker::get_docker_binary_path())
         .args(args)
         .stdin(Stdio::inherit())
-        .stdout(Stdio::inherit())
+        .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .output()
 }

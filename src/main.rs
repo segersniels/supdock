@@ -45,6 +45,18 @@ fn cli() -> Command {
             .about("Echo the contents of a file using cat on a container")
             .arg_required_else_help(false),
         )
+        .subcommand(Command::new("composed")
+        .about("Run docker-compose setups from anywhere")
+        .arg_required_else_help(true)
+        .subcommand(Command::new("up").arg(
+            Arg::new("detached")
+                .short('d')
+                .long("detached")
+                .help("Detached mode: Run containers in the background")
+                .action(ArgAction::SetTrue),
+        ))
+        .subcommand(Command::new("down")),
+    )
 }
 
 fn main() {
@@ -57,6 +69,7 @@ fn main() {
             Some(("ssh", _sub_matches)) => commands::ssh::run(),
             Some(("env", _sub_matches)) => commands::env::run(),
             Some(("cat", _sub_matches)) => commands::cat::run(),
+            Some(("composed", sub_matches)) => commands::composed::run(sub_matches),
             _ => utils::command::handle_subcommand(Some(matches.subcommand().unwrap().0)),
         },
         Err(error) => {
