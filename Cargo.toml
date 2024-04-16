@@ -32,6 +32,8 @@ inquire = "0.1.0"
 serde_json = "1.0.96"
 env_logger = "0.10.1"
 log = "0.4.20"
+walkdir = "2.5.0"
+serde = { version= "1.0.197", features = ["derive"] }
 
 [profile.release]
 panic = "abort"
