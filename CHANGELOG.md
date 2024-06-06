@@ -1,5 +1,26 @@
 # Changelog
 
+<a name="3.5.0"></a>
+## 3.5.0 (2024-06-06)
+
+### Added
+
+- ✨ Allow env command to fuzzy match [[023dddf](https://github.com/segersniels/supdock/commit/023dddf66a57551b9d209f6f19db9c886fb9c826)]
+
+### Changed
+
+- ♻️ Generate demo using VHS [[b7b19bb](https://github.com/segersniels/supdock/commit/b7b19bb02b0eb00a129d381d2b96769be2ec7cba)]
+
+### Removed
+
+- 🔥 Explicit type not required [[45eddbc](https://github.com/segersniels/supdock/commit/45eddbce97954066fb9fa27fe6eab7c47a558555)]
+
+### Miscellaneous
+
+- 📝 Change image [[7ebe35a](https://github.com/segersniels/supdock/commit/7ebe35a6713ae3391c494c770926fdb91982ade8)]
+- 📝 Update CHANGELOG [[557d7c4](https://github.com/segersniels/supdock/commit/557d7c461730b3962d1a7486229ddba98205a273)]
+
+
 <a name="3.4.0"></a>
 ## 3.4.0 (2024-02-23)
 
