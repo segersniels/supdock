@@ -23,3 +23,6 @@ version:
 
 changelog:
 	npx gitmoji-changelog --preset cargo
+
+demo:
+	@vhs demo.tape
