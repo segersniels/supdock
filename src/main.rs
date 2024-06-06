@@ -39,6 +39,7 @@ fn cli() -> Command {
         )
         .subcommand(Command::new("env")
             .about("See the environment variables of a running container")
+            .allow_external_subcommands(true)
             .arg_required_else_help(false),
         )
         .subcommand(Command::new("cat")
@@ -55,7 +56,7 @@ fn main() {
         Ok(matches) => match matches.subcommand() {
             Some(("prune", sub_matches)) => commands::prune::run(sub_matches),
             Some(("ssh", _sub_matches)) => commands::ssh::run(),
-            Some(("env", _sub_matches)) => commands::env::run(),
+            Some(("env", sub_matches)) => commands::env::run(sub_matches),
             Some(("cat", _sub_matches)) => commands::cat::run(),
             _ => utils::command::handle_subcommand(Some(matches.subcommand().unwrap().0)),
         },

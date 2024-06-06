@@ -122,6 +122,50 @@ fn extract_container_name_from_error(error: &str) -> Option<&str> {
     None
 }
 
+/// Handle fuzzy search for the requested container
+pub fn handle_fuzzy_search(query: &str, command: &str) -> String {
+    let choices = match prompt::determine_choices(command) {
+        Ok(choices) => choices,
+        Err(error) => {
+            eprintln!("{}", error);
+            process::exit(0);
+        }
+    };
+
+    // Search within the haystack for the requested query by fuzzy searching
+    let results = search::search(&choices, query, 0.7, " ");
+    let choice = match results.len() {
+        0 => {
+            // No results found, prompt the user to select a container
+            let prompt_command = SupportedPromptCommand::from_str(command).unwrap();
+            prompt::prompt_from_choices(
+                format!(
+                    "Select the desired {} from the list",
+                    prompt_command.get_prompt_type()
+                )
+                .as_str(),
+                &choices,
+            )
+        }
+        1 => {
+            // Single result returned so assume it's the correct container
+            prompt::extract_id_from_result(&results[0].clone())
+        }
+        _ => {
+            // Multiple results returned, prompt user to select a container from the results
+            prompt::extract_id_from_result(&prompt::ask(
+                "Search returned more than one result, please make a choice from the list.",
+                &results,
+            ))
+        }
+    };
+
+    debug!("Query: {}", query);
+    debug!("Choice: {}", choice);
+
+    return choice;
+}
+
 /// Handle the subcommand and run the desired `docker` command with the user's choice of container
 pub fn handle_subcommand(command: Option<&str>) {
     let args = exec::get_args_from_env();
@@ -161,39 +205,8 @@ pub fn handle_subcommand(command: Option<&str>) {
                     return parallel_execution(command);
                 }
 
-                // Construct haystack to prepare for fuzzy search
-                let choices = prompt::determine_choices(command).unwrap_or_default();
-
-                // Search within the haystack for the requested query by fuzzy searching
-                let results = search::search(&choices, query, 0.7, " ");
-                let choice = match results.len() {
-                    0 => {
-                        // No results found, prompt the user to select a container
-                        let prompt_command = SupportedPromptCommand::from_str(command).unwrap();
-                        prompt::prompt_from_choices(
-                            format!(
-                                "Select the desired {} from the list",
-                                prompt_command.get_prompt_type()
-                            )
-                            .as_str(),
-                            &choices,
-                        )
-                    }
-                    1 => {
-                        // Single result returned so assume it's the correct container
-                        prompt::extract_id_from_result(&results[0].clone())
-                    }
-                    _ => {
-                        // Multiple results returned, prompt user to select a container from the results
-                        prompt::extract_id_from_result(&prompt::ask(
-                            "Search returned more than one result, please make a choice from the list.",
-                            &results,
-                        ))
-                    }
-                };
-
-                debug!("Query: {}", query);
-                debug!("Choice: {}", choice);
+                // Fuzzy search for the container name
+                let choice = handle_fuzzy_search(query, command);
 
                 return exec::default_with_replace(query, choice.as_str());
             }
