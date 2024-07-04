@@ -4,7 +4,7 @@
 [![npm](https://img.shields.io/npm/v/supdock)](https://www.npmjs.com/package/supdock)
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/segersniels/supdock/ci.yml)
 
-What's Up, Doc(ker)? A slightly more visual way to interact with the docker daemon. Supdock is a wrapper for the docker command meaning you can still use all of the other `docker` commands without issues.
+What's Up, Doc(ker)? A convenient way to interact with the docker daemon. Supdock is a wrapper for the docker command meaning you can still use all of the other `docker` commands without issues.
 
 <p align="center">
 <img src="https://i.imgur.com/ATV0nP7.png" width="250">
