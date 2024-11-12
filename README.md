@@ -50,7 +50,7 @@ alias docker="supdock"
 
 ## Usage
 
-```
+```bash
 What's Up Doc(ker)?
 
 Usage: supdock [COMMAND]
