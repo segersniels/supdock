@@ -54,7 +54,7 @@ jobs:
           rm target/${{ matrix.job.target }}/release/supdock.d
           cp target/${{ matrix.job.target }}/release/supdock* supdock-${{ matrix.job.exe }}
       - name: Archive production artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: bin
           path: supdock-${{ matrix.job.exe }}
