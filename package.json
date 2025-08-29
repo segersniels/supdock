@@ -1,7 +1,7 @@
 {
   "name": "supdock",
-  "version": "3.0.0",
-  "description": "What's Up, Doc(ker)? A slightly more visual way to interact with the docker daemon",
+  "version": "4.0.0",
+  "description": "What's Up, Doc(ker)? A beautiful way to interact with the Docker daemon built with Charmbracelet libraries",
   "files": [
     "bin",
     "scripts/preinstall.js"
@@ -11,10 +11,10 @@
   },
   "scripts": {
     "preinstall": "node ./scripts/preinstall.js",
-    "generate:changelog": "./scripts/generate-tags.sh && gitmoji-changelog"
+    "generate:changelog": "gitmoji-changelog"
   },
   "author": "Niels Segers",
-  "license": "ISC",
+  "license": "MIT",
   "homepage": "https://github.com/segersniels/supdock#readme",
   "bugs": {
     "url": "https://github.com/segersniels/supdock/issues"
@@ -26,11 +26,17 @@
   "keywords": [
     "docker",
     "supdock",
+    "go",
+    "golang",
+    "tui",
+    "charmbracelet",
+    "huh",
+    "lipgloss",
     "visual",
     "interactive",
     "wrapper",
     "cli",
-    "compose",
-    "docker-compose"
+    "container",
+    "fuzzy-search"
   ]
 }
