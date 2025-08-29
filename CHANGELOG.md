@@ -1,5 +1,41 @@
 # Changelog
 
+<a name="4.0.0"></a>
+## 4.0.0 (2024-12-20)
+
+### 🎉 Major Rewrite: Rust → Go with Charmbracelet
+
+#### Added
+- ✨ Complete rewrite in Go for faster compilation and better maintainability
+- 🎨 Beautiful TUI components using Charmbracelet Huh for interactive prompts
+- 💅 Stunning terminal styling with Lipgloss themes and colors
+- ⚡ Enhanced performance with goroutine-powered parallel fuzzy search
+- 🐳 Official Docker SDK integration for reliable API communication
+- 🔧 Comprehensive debug logging with `SUPDOCK_DEBUG=1`
+- 🚀 Cross-platform build targets (Linux, macOS, Windows)
+- 📦 Single binary distribution without external dependencies
+
+#### Changed
+- 🔄 Migrated from Rust's `inquire` to Charmbracelet Huh for prompts
+- 🔄 Replaced raw Docker socket communication with official Docker SDK
+- 🔄 Enhanced error handling with smart passthrough logic
+- 🔄 Improved fuzzy search algorithm with concurrent processing
+- 🔄 Updated CLI framework from `clap` to `cobra`
+- 🔄 Restructured codebase with clean Go packages and modules
+- 📝 Completely rewritten README with updated installation methods
+
+#### Performance
+- 🚄 Faster compilation times during development (Go vs Rust)
+- 🧵 Parallel container operations using goroutines
+- 🎯 Efficient Docker API queries with connection pooling
+- 🔍 Concurrent fuzzy search across container/image lists
+
+#### Architecture
+- 🏗️ Clean separation of concerns with internal packages
+- 🎨 Dedicated styling package with Lipgloss themes
+- 🔌 Modular command structure with Cobra
+- 🛠️ Enhanced build system with comprehensive Makefile
+
 <a name="3.5.0"></a>
 ## 3.5.0 (2024-06-06)
 
