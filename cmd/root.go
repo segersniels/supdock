@@ -86,8 +86,9 @@ func showStyledHelp() {
 		BorderForeground(lipgloss.Color("4")). // Blue
 		Padding(0, 2).
 		MarginRight(2).
-		Width(20)
+		Width(26)
 
+	// Custom commands
 	sshBox := commandBoxStyle.Copy().Render(
 		lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("2")).Render("ssh") + "\n" +
 			lipgloss.NewStyle().Foreground(lipgloss.Color("8")).Render("Interactive SSH"))
@@ -104,10 +105,67 @@ func showStyledHelp() {
 		lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("1")).Render("prune") + "\n" +
 			lipgloss.NewStyle().Foreground(lipgloss.Color("8")).Render("Clean up"))
 
-	// Layout commands in a 2x2 grid
-	topRow := lipgloss.JoinHorizontal(lipgloss.Top, sshBox, envBox)
-	bottomRow := lipgloss.JoinHorizontal(lipgloss.Top, catBox, pruneBox)
-	commandGrid := lipgloss.JoinVertical(lipgloss.Left, topRow, bottomRow)
+	// Enhanced rendering
+	psBox := commandBoxStyle.Copy().Render(
+		lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("4")).Render("ps") + "\n" +
+			lipgloss.NewStyle().Foreground(lipgloss.Color("8")).Render("Container cards"))
+
+	imagesBox := commandBoxStyle.Copy().Render(
+		lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("6")).Render("images") + "\n" +
+			lipgloss.NewStyle().Foreground(lipgloss.Color("8")).Render("Image tables"))
+
+	// Interactive prompts
+	startBox := commandBoxStyle.Copy().Render(
+		lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("2")).Render("start") + "\n" +
+			lipgloss.NewStyle().Foreground(lipgloss.Color("8")).Render("Interactive start"))
+
+	stopBox := commandBoxStyle.Copy().Render(
+		lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("1")).Render("stop") + "\n" +
+			lipgloss.NewStyle().Foreground(lipgloss.Color("8")).Render("Interactive stop"))
+
+	logsBox := commandBoxStyle.Copy().Render(
+		lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("3")).Render("logs") + "\n" +
+			lipgloss.NewStyle().Foreground(lipgloss.Color("8")).Render("Interactive logs"))
+
+	rmBox := commandBoxStyle.Copy().Render(
+		lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("1")).Render("rm") + "\n" +
+			lipgloss.NewStyle().Foreground(lipgloss.Color("8")).Render("Interactive rm"))
+
+	rmiBox := commandBoxStyle.Copy().Render(
+		lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("5")).Render("rmi") + "\n" +
+			lipgloss.NewStyle().Foreground(lipgloss.Color("8")).Render("Interactive rmi"))
+
+	inspectBox := commandBoxStyle.Copy().Render(
+		lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("6")).Render("inspect") + "\n" +
+			lipgloss.NewStyle().Foreground(lipgloss.Color("8")).Render("Interactive inspect"))
+
+	// Custom commands section
+	customTitle := lipgloss.NewStyle().
+		Bold(true).
+		Foreground(lipgloss.Color("6")).
+		MarginTop(1).
+		Render("Custom commands:")
+
+	customRow1 := lipgloss.JoinHorizontal(lipgloss.Top, sshBox, envBox)
+	customRow2 := lipgloss.JoinHorizontal(lipgloss.Top, catBox, pruneBox)
+	customCommands := lipgloss.JoinVertical(lipgloss.Left, customRow1, customRow2)
+	customSection := lipgloss.JoinVertical(lipgloss.Left, customTitle, customCommands)
+
+	// Enhanced commands section
+	enhancedTitle := lipgloss.NewStyle().
+		Bold(true).
+		Foreground(lipgloss.Color("6")).
+		MarginTop(1).
+		Render("Enhanced commands:")
+
+	enhancedRow1 := lipgloss.JoinHorizontal(lipgloss.Top, psBox, imagesBox)
+	enhancedRow2 := lipgloss.JoinHorizontal(lipgloss.Top, startBox, stopBox)
+	enhancedRow3 := lipgloss.JoinHorizontal(lipgloss.Top, logsBox, rmBox)
+	enhancedRow4 := lipgloss.JoinHorizontal(lipgloss.Top, rmiBox, inspectBox)
+	enhancedCommands := lipgloss.JoinVertical(lipgloss.Left, enhancedRow1, enhancedRow2, enhancedRow3, enhancedRow4)
+	enhancedSection := lipgloss.JoinVertical(lipgloss.Left, enhancedTitle, enhancedCommands)
+
+	commandGrid := lipgloss.JoinVertical(lipgloss.Left, customSection, enhancedSection)
 
 	// Usage section
 	usageTitle := lipgloss.NewStyle().
