@@ -128,7 +128,7 @@ func showStyledHelp() {
 		MarginTop(1).
 		Italic(true)
 
-	footer := footerStyle.Render("All other Docker commands work normally.\nDebug mode: SUPDOCK_DEBUG=1 supdock <command>")
+	footer := footerStyle.Render("All other Docker commands work normally.\nFor full Docker help: docker help")
 
 	// Combine everything
 	content := lipgloss.JoinVertical(
