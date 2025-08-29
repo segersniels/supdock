@@ -1,47 +1,61 @@
-#!/usr/bin/env node
+const os = require("os");
+const fs = require("fs");
 
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
+const BIN_DIR = "./bin";
+const BINARY_NAME = "supdock";
 
-// Determine the correct binary based on platform and architecture
-function getBinaryName() {
-  const platform = os.platform();
-  const arch = os.arch();
-  
-  if (platform === 'darwin') {
-    return 'supdock-macos';
-  } else if (platform === 'linux') {
-    if (arch === 'arm64') {
-      return 'supdock-aarch64-linux';
-    } else {
-      return 'supdock-amd64-linux';
+function checkIfBinaryExists(binary) {
+  const path = `${BIN_DIR}/${binary}`;
+  return fs.existsSync(path);
+}
+
+function determinePlatformBinary() {
+  const platform = os.type();
+
+  switch (platform) {
+    case "Linux": {
+      return os.arch() === "arm64"
+        ? `${BINARY_NAME}-aarch64-linux`
+        : `${BINARY_NAME}-amd64-linux`;
+    }
+    case "Darwin": {
+      return `${BINARY_NAME}-macos`;
+    }
+    default: {
+      console.error(`Unsupported platform: ${platform}`);
+      process.exit(1);
     }
   }
-  
-  throw new Error(`Unsupported platform: ${platform} ${arch}`);
 }
 
-// Copy the correct binary to the bin directory
-function setupBinary() {
-  const binaryName = getBinaryName();
-  const sourcePath = path.join(__dirname, '..', 'bin', binaryName);
-  const targetPath = path.join(__dirname, '..', 'bin', 'supdock');
-  
-  if (!fs.existsSync(sourcePath)) {
-    throw new Error(`Binary not found: ${sourcePath}`);
+function removeOtherBinaries(binary) {
+  const files = fs.readdirSync(BIN_DIR);
+
+  for (const file of files) {
+    if (file === binary) {
+      continue;
+    }
+
+    console.info(`Removing ${file}...`);
+    fs.unlinkSync(`${BIN_DIR}/${file}`);
   }
-  
-  // Copy and make executable
-  fs.copyFileSync(sourcePath, targetPath);
-  fs.chmodSync(targetPath, '755');
-  
-  console.log(`✓ supdock binary ready for ${os.platform()} ${os.arch()}`);
 }
 
-try {
-  setupBinary();
-} catch (error) {
-  console.error('Error setting up supdock binary:', error.message);
-  process.exit(1);
+function prepareBinaryForSymLink(binary) {
+  console.info(`Renaming ${binary} to ${BINARY_NAME}...`);
+  fs.renameSync(`${BIN_DIR}/${binary}`, `${BIN_DIR}/${BINARY_NAME}`);
 }
+
+function main() {
+  const binary = determinePlatformBinary();
+
+  if (!checkIfBinaryExists(binary)) {
+    console.error(`Binary ${binary} not found, skipping...`);
+    process.exit(1);
+  }
+
+  removeOtherBinaries(binary);
+  prepareBinaryForSymLink(binary);
+}
+
+main();
