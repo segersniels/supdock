@@ -139,6 +139,10 @@ func showStyledHelp() {
 		lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("6")).Render("inspect") + "\n" +
 			lipgloss.NewStyle().Foreground(lipgloss.Color("8")).Render("Interactive inspect"))
 
+	restartBox := commandBoxStyle.Copy().Render(
+		lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("3")).Render("restart") + "\n" +
+			lipgloss.NewStyle().Foreground(lipgloss.Color("8")).Render("Interactive restart"))
+
 	// Custom commands section
 	customTitle := lipgloss.NewStyle().
 		Bold(true).
@@ -160,9 +164,10 @@ func showStyledHelp() {
 
 	enhancedRow1 := lipgloss.JoinHorizontal(lipgloss.Top, psBox, imagesBox)
 	enhancedRow2 := lipgloss.JoinHorizontal(lipgloss.Top, startBox, stopBox)
-	enhancedRow3 := lipgloss.JoinHorizontal(lipgloss.Top, logsBox, rmBox)
-	enhancedRow4 := lipgloss.JoinHorizontal(lipgloss.Top, rmiBox, inspectBox)
-	enhancedCommands := lipgloss.JoinVertical(lipgloss.Left, enhancedRow1, enhancedRow2, enhancedRow3, enhancedRow4)
+	enhancedRow3 := lipgloss.JoinHorizontal(lipgloss.Top, restartBox, logsBox)
+	enhancedRow4 := lipgloss.JoinHorizontal(lipgloss.Top, rmBox, rmiBox)
+	enhancedRow5 := lipgloss.JoinHorizontal(lipgloss.Top, inspectBox)
+	enhancedCommands := lipgloss.JoinVertical(lipgloss.Left, enhancedRow1, enhancedRow2, enhancedRow3, enhancedRow4, enhancedRow5)
 	enhancedSection := lipgloss.JoinVertical(lipgloss.Left, enhancedTitle, enhancedCommands)
 
 	commandGrid := lipgloss.JoinVertical(lipgloss.Left, customSection, enhancedSection)
