@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(go mod init:*)",
+      "Bash(go get:*)",
+      "Bash(go build:*)",
+      "Bash(make test:*)",
+      "Bash(make lint:*)",
+      "Bash(./supdock version)",
+      "Bash(./supdock ps)",
+      "Bash(./supdock --help)",
+      "Bash(./supdock)",
+      "Bash(./supdock --version)",
+      "Bash(./supdock ssh --help)",
+      "Bash(make:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(./supdock -h)",
+      "WebFetch(domain:github.com)",
+      "Bash(./supdock ps -a)",
+      "Bash(./supdock images)",
+      "Bash(./supdock ps:*)",
+      "WebFetch(domain:pkg.go.dev)",
+      "Bash(./supdock images --help)",
+      "Bash(go mod:*)",
+      "Bash(go run:*)",
+      "Bash(go list:*)",
+      "Bash(COLUMNS=70 ./supdock ps)",
+      "Bash(go fmt:*)",
+      "Bash(go vet:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ],
+    "deny": []
+  }
+}
