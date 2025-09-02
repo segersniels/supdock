@@ -217,9 +217,9 @@ func CreateContainerGradient(text, containerID string) string {
 	hue1 := (hash % 360)
 	hue2 := ((hash * 17) % 360) // Different multiplier for second color
 
-	// Convert HSL to approximate hex (simplified)
-	color1Hex := hslToHex(hue1, 70, 60)
-	color2Hex := hslToHex(hue2, 70, 60)
+	// Convert HSL to approximate hex (simplified) - using pastel colors
+	color1Hex := hslToHex(hue1, 55, 70)
+	color2Hex := hslToHex(hue2, 55, 70)
 
 	color1 := gamut.Hex(color1Hex)
 	color2 := gamut.Hex(color2Hex)
