@@ -16,8 +16,8 @@ func init() {
 	InfoLogger = log.New(os.Stdout, "INFO: ", log.Ldate|log.Ltime|log.Lshortfile)
 	ErrorLogger = log.New(os.Stderr, "ERROR: ", log.Ldate|log.Ltime|log.Lshortfile)
 
-	// Debug logging only enabled if SUPDOCK_DEBUG is set
-	if os.Getenv("SUPDOCK_DEBUG") != "" {
+	// Debug logging only enabled if DEBUG is set
+	if os.Getenv("DEBUG") != "" {
 		DebugLogger = log.New(os.Stdout, "DEBUG: ", log.Ldate|log.Ltime|log.Lshortfile)
 	} else {
 		// Discard debug logs by default
@@ -27,7 +27,7 @@ func init() {
 }
 
 func Debug(v ...interface{}) {
-	if os.Getenv("SUPDOCK_DEBUG") != "" {
+	if os.Getenv("DEBUG") != "" {
 		DebugLogger.Println(v...)
 	}
 }
