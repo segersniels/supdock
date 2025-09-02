@@ -125,22 +125,22 @@ func showStyledHelp() {
 	}
 
 	customCommands := []Command{
-		{"ssh", "Interactive SSH", "2"},
-		{"env", "View variables", "3"},
-		{"cat", "View files", "5"},
-		{"prune", "Clean up", "1"},
+		{"ssh", "Execute command in container", "2"},
+		{"env", "Display container environment", "3"},
+		{"cat", "Output file contents", "5"},
+		{"prune", "Remove unused data", "1"},
 	}
 
 	enhancedCommands := []Command{
-		{"ps", "Container cards", "4"},
-		{"images", "Image tables", "6"},
-		{"start", "Interactive start", "2"},
-		{"stop", "Interactive stop", "1"},
-		{"restart", "Interactive restart", "3"},
-		{"logs", "Interactive logs", "3"},
-		{"rm", "Interactive rm", "1"},
-		{"rmi", "Interactive rmi", "5"},
-		{"inspect", "Interactive inspect", "6"},
+		{"ps", "List containers (enhanced)", "4"},
+		{"images", "List images (enhanced)", "6"},
+		{"start", "Start stopped containers", "2"},
+		{"stop", "Stop running containers", "1"},
+		{"restart", "Restart containers", "3"},
+		{"logs", "Fetch container logs", "3"},
+		{"rm", "Remove containers", "1"},
+		{"rmi", "Remove images", "5"},
+		{"inspect", "Display detailed info", "6"},
 	}
 
 	// Custom commands section
