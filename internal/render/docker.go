@@ -38,9 +38,25 @@ func ShouldIntercept(args []string) bool {
 		return false
 	}
 
-	// Don't intercept if help flags are present
+	// Don't intercept if help flags or custom formatting flags are present
 	for _, arg := range args {
 		if arg == "--help" || arg == "-h" {
+			return false
+		}
+		// Don't intercept if user is using custom format flags
+		if arg == "--format" || arg == "-f" {
+			return false
+		}
+		// Don't intercept format flags with values like --format=json
+		if strings.HasPrefix(arg, "--format=") {
+			return false
+		}
+		// Don't intercept other formatting flags that conflict with our JSON parsing
+		if arg == "--no-trunc" || arg == "--quiet" || arg == "-q" {
+			return false
+		}
+		// Check for other flags that change output format
+		if arg == "--size" || arg == "-s" {
 			return false
 		}
 	}
@@ -106,30 +122,47 @@ func renderContainers(args []string) error {
 		containers = append(containers, container)
 	}
 
-	// Prepare card data
-	var containerCards []ContainerCard
+	if len(containers) == 0 {
+		fmt.Println("No containers found")
+		return nil
+	}
+
+	// Prepare table data
+	headers := []string{"CONTAINER ID", "NAMES", "IMAGE", "COMMAND", "CREATED", "STATUS", "PORTS"}
+	var rows [][]string
 
 	for _, container := range containers {
-		// Format container data for cards
+		// Format container data for table
 		id := container.ID
 		if len(id) > 12 {
 			id = id[:12] // Short ID
 		}
 
-		containerCard := ContainerCard{
-			ID:      id,
-			Name:    container.Names,
-			Image:   container.Image,
-			Command: container.Command,
-			Created: container.RunningFor,
-			Status:  container.Status,
-			Ports:   container.Ports,
+		// Truncate command if too long
+		command := container.Command
+		if len(command) > 25 {
+			command = command[:22] + "…"
 		}
 
-		containerCards = append(containerCards, containerCard)
+		// Truncate ports if too long
+		ports := container.Ports
+		if len(ports) > 30 {
+			ports = ports[:27] + "…"
+		}
+
+		row := []string{
+			id,
+			container.Names,
+			container.Image,
+			command,
+			container.RunningFor,
+			container.Status,
+			ports,
+		}
+		rows = append(rows, row)
 	}
 
-	fmt.Print(CreateContainerCards(containerCards))
+	fmt.Print(CreateDockerTable(headers, rows))
 	return nil
 }
 

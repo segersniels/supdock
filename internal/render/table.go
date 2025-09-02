@@ -53,6 +53,7 @@ func CreateDockerTable(headers []string, rows [][]string) string {
 	return t.Render() + "\n"
 }
 
+
 // styleTableCell applies appropriate styling based on column type and content
 func styleTableCell(content, header string, styles *style.Styles) string {
 	if content == "" {
@@ -67,7 +68,8 @@ func styleTableCell(content, header string, styles *style.Styles) string {
 	case "TAG":
 		return styles.Yellow.Render(content)
 	case "IMAGE ID", "CONTAINER ID", "ID":
-		return styles.ID.Render(content)
+		// Use gradient based on the ID itself for visual distinction
+		return style.CreateContainerGradient(content, content)
 	case "CREATED", "AGE":
 		return styles.Age.Render(content)
 	case "SIZE":
@@ -86,6 +88,7 @@ func styleTableCell(content, header string, styles *style.Styles) string {
 		return styles.Default.Render(content)
 	}
 }
+
 
 // styleStatus applies appropriate styling to status text using our centralized styles
 func styleStatus(status string, styles *style.Styles) string {
