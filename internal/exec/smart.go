@@ -13,6 +13,7 @@ import (
 
 	"github.com/segersniels/supdock/internal/constants"
 	"github.com/segersniels/supdock/internal/docker"
+	supLog "github.com/segersniels/supdock/internal/log"
 	"github.com/segersniels/supdock/internal/prompt"
 	"github.com/segersniels/supdock/internal/render"
 	"github.com/segersniels/supdock/internal/search"
@@ -87,14 +88,19 @@ func getContainerTypeForCommand(cmd SupportedCommand) docker.ContainerType {
 
 // SmartPassthrough executes docker commands with intelligent error handling
 func SmartPassthrough(args []string) {
+	supLog.Debug("entering smart passthrough with args:", args)
+	
 	if len(args) == 0 {
+		supLog.Debug("no args provided, executing empty docker command")
 		RunDockerCommandAndExit(args...)
 		return
 	}
 
 	// Check if we should intercept for beautiful rendering
 	if render.ShouldIntercept(args) {
+		supLog.Debug("using enhanced rendering for:", args[0])
 		if err := render.InterceptDockerCommand(args); err != nil {
+			supLog.Debug("enhanced rendering failed, falling back to docker:", err)
 			fmt.Fprintf(os.Stderr, "Render error: %v\n", err)
 			// Fallback to normal Docker command
 			RunDockerCommandAndExit(args...)
@@ -107,10 +113,12 @@ func SmartPassthrough(args []string) {
 
 	// If not a supported command, just pass through
 	if !isSupported {
+		supLog.Debug("direct docker passthrough for:", command)
 		RunDockerCommandAndExit(args...)
 		return
 	}
 
+	supLog.Debug("attempting smart error handling for:", command)
 	// Try to execute the command first
 	output, err := RunDockerCommandWithOutput(args...)
 	if err == nil {
@@ -124,6 +132,7 @@ func SmartPassthrough(args []string) {
 
 	// Handle "No such container" or "No such image" errors
 	if strings.Contains(errorMsg, "No such container") || strings.Contains(errorMsg, "No such image") {
+		supLog.Debug("resource not found, attempting fuzzy search resolution")
 		handleNoSuchResourceError(args, errorMsg, supportedCmd)
 		return
 	}
@@ -131,11 +140,13 @@ func SmartPassthrough(args []string) {
 	// Handle "requires exactly 1 argument" or "requires at least 1 argument" errors
 	if strings.Contains(errorMsg, "requires exactly 1 argument") ||
 		strings.Contains(errorMsg, "requires at least 1 argument") {
+		supLog.Debug("missing argument, prompting for interactive selection")
 		handleMissingArgumentError(args, supportedCmd)
 		return
 	}
 
 	// For other errors, just display them and exit
+	supLog.Debug("error not handled by smart features, showing original docker error")
 	fmt.Fprintf(os.Stderr, "%s", errorMsg)
 	if exitError, ok := err.(*exec.ExitError); ok {
 		os.Exit(exitError.ExitCode())

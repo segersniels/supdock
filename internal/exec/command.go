@@ -11,7 +11,7 @@ import (
 
 // RunDockerCommand executes a docker command with the given arguments
 func RunDockerCommand(args ...string) error {
-	supLog.Debug("Executing: docker", strings.Join(args, " "))
+	supLog.Debug("executing docker command:", strings.Join(args, " "))
 
 	cmd := exec.Command("docker", args...)
 	cmd.Stdout = os.Stdout
@@ -23,7 +23,7 @@ func RunDockerCommand(args ...string) error {
 
 // RunDockerCommandAndExit executes a docker command and exits with the same exit code
 func RunDockerCommandAndExit(args ...string) {
-	supLog.Debug("Executing: docker", strings.Join(args, " "))
+	supLog.Debug("exec: docker", strings.Join(args, " "))
 
 	cmd := exec.Command("docker", args...)
 	cmd.Stdout = os.Stdout
@@ -43,7 +43,7 @@ func RunDockerCommandAndExit(args ...string) {
 
 // RunDockerCommandWithOutput executes a docker command and captures its output
 func RunDockerCommandWithOutput(args ...string) ([]byte, error) {
-	supLog.Debug("Executing: docker", strings.Join(args, " "))
+	supLog.Debug("exec: docker", strings.Join(args, " "))
 
 	cmd := exec.Command("docker", args...)
 	return cmd.CombinedOutput()

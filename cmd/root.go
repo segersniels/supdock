@@ -6,6 +6,7 @@ import (
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/segersniels/supdock/internal/exec"
+	supLog "github.com/segersniels/supdock/internal/log"
 	"github.com/segersniels/supdock/pkg/style"
 	"github.com/spf13/cobra"
 )
@@ -31,6 +32,7 @@ Supdock is a wrapper for the docker command meaning you can still use all of the
 
 func Execute() {
 	args := os.Args[1:]
+	supLog.Debug("supdock:", args)
 
 	// If no arguments, show help with styling
 	if len(args) == 0 {
@@ -54,11 +56,13 @@ func Execute() {
 	cmd, _, err := rootCmd.Find(args)
 	if err != nil || cmd == rootCmd {
 		// Unknown command, pass through to docker
+		supLog.Debug("passthrough to docker:", args[0])
 		exec.SmartPassthrough(args)
 		return
 	}
 
 	// Known command, let cobra handle it
+	supLog.Debug("supdock command:", cmd.Name())
 	rootCmd.SetArgs(args)
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
