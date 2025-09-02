@@ -56,7 +56,8 @@ func (p *Prompter) PromptContainerSelection(ctx context.Context, message string,
 			huh.NewSelect[string]().
 				Title(message).
 				Options(options...).
-				Value(&selected),
+				Value(&selected).
+				Filtering(true),
 		),
 	).WithTheme(style.CreateAdaptiveTheme())
 
@@ -91,7 +92,8 @@ func (p *Prompter) PromptImageSelection(ctx context.Context, message string) (st
 			huh.NewSelect[string]().
 				Title(message).
 				Options(options...).
-				Value(&selected),
+				Value(&selected).
+				Filtering(true),
 		),
 	).WithTheme(style.CreateAdaptiveTheme())
 
@@ -121,7 +123,8 @@ func (p *Prompter) PromptFromChoices(message string, choices []string) (string, 
 			huh.NewSelect[string]().
 				Title(style.AppStyles.Blue.Bold(true).Render(message)).
 				Options(options...).
-				Value(&selected),
+				Value(&selected).
+				Filtering(true),
 		),
 	).WithTheme(huh.ThemeCharm())
 

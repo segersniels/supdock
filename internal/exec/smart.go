@@ -5,10 +5,13 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"os/signal"
 	"regexp"
 	"strings"
 	"sync"
+	"syscall"
 
+	"github.com/segersniels/supdock/internal/constants"
 	"github.com/segersniels/supdock/internal/docker"
 	"github.com/segersniels/supdock/internal/prompt"
 	"github.com/segersniels/supdock/internal/render"
@@ -29,6 +32,15 @@ const (
 	CmdInspect SupportedCommand = "inspect"
 )
 
+// Import constants from centralized location
+
+// Pre-compiled regex patterns for error parsing
+var (
+	noSuchContainerRegex = regexp.MustCompile(`No such container:\s*([^\s\n]+)`)
+	noSuchImageRegex     = regexp.MustCompile(`No such image:\s*([^\s\n]+)`)
+	generalErrorRegex    = regexp.MustCompile(`Error.*:\s*([^\s\n]+)$`)
+)
+
 var supportedCommands = map[string]SupportedCommand{
 	"start":   CmdStart,
 	"restart": CmdRestart,
@@ -38,6 +50,25 @@ var supportedCommands = map[string]SupportedCommand{
 	"logs":    CmdLogs,
 	"history": CmdHistory,
 	"inspect": CmdInspect,
+}
+
+// CreateContextWithTimeout creates a context with timeout and signal handling
+func CreateContextWithTimeout() (context.Context, context.CancelFunc) {
+	ctx, cancel := context.WithTimeout(context.Background(), constants.DockerOperationTimeout)
+	
+	// Handle interrupts gracefully
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+	
+	go func() {
+		select {
+		case <-c:
+			cancel()
+		case <-ctx.Done():
+		}
+	}()
+	
+	return ctx, cancel
 }
 
 // getContainerTypeForCommand returns the appropriate container type for a command
@@ -152,7 +183,9 @@ func handleMissingArgumentError(args []string, cmd SupportedCommand) {
 	}
 	defer prompter.Close()
 
-	ctx := context.Background()
+	ctx, cancel := CreateContextWithTimeout()
+	defer cancel()
+
 	var selectedID string
 
 	if cmd == CmdRmi || cmd == CmdHistory {
@@ -181,7 +214,9 @@ func performFuzzySearch(query string, containerType docker.ContainerType) (strin
 	}
 	defer prompter.Close()
 
-	ctx := context.Background()
+	ctx, cancel := CreateContextWithTimeout()
+	defer cancel()
+
 	containers, err := prompter.ListContainers(ctx, containerType)
 	if err != nil {
 		return "", err
@@ -199,7 +234,7 @@ func performFuzzySearch(query string, containerType docker.ContainerType) (strin
 	}
 
 	// Perform fuzzy search
-	results := search.FuzzySearch(formattedContainers, query, 0.7)
+	results := search.FuzzySearch(formattedContainers, query, constants.DefaultFuzzyThreshold)
 
 	switch len(results) {
 	case 0:
@@ -230,7 +265,9 @@ func handleParallelExecution(args []string, cmd SupportedCommand) {
 	}
 	defer prompter.Close()
 
-	ctx := context.Background()
+	ctx, cancel := CreateContextWithTimeout()
+	defer cancel()
+
 	containers, err := prompter.ListContainers(ctx, containerType)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
@@ -245,32 +282,51 @@ func handleParallelExecution(args []string, cmd SupportedCommand) {
 	fmt.Println("Asynchronous execution of command is happening in the background")
 
 	var wg sync.WaitGroup
+	errorChan := make(chan error, len(containers))
+
 	for _, container := range containers {
 		wg.Add(1)
 		go func(containerID string) {
 			defer wg.Done()
 
 			newArgs := ReplaceArg(args, "all", containerID)
-			RunDockerCommandInBackground(newArgs...)
+			if err := RunDockerCommandInBackgroundWithError(newArgs...); err != nil {
+				errorChan <- fmt.Errorf("container %s: %w", containerID, err)
+			}
 		}(container.ID)
 	}
 
 	wg.Wait()
+	close(errorChan)
+
+	// Collect any errors
+	var errors []error
+	for err := range errorChan {
+		errors = append(errors, err)
+	}
+
+	if len(errors) > 0 {
+		fmt.Fprintf(os.Stderr, "Some operations failed:\n")
+		for _, err := range errors {
+			fmt.Fprintf(os.Stderr, "  %v\n", err)
+		}
+		os.Exit(1)
+	}
+
 	fmt.Printf("Some containers might take longer than others to %s\n", string(cmd))
 	os.Exit(0)
 }
 
 // extractResourceNameFromError extracts resource name from Docker error message
 func extractResourceNameFromError(errorMsg string) string {
-	// Look for patterns like "No such container: name" or "Error response from daemon: No such container: name"
-	patterns := []string{
-		`No such container:\s*([^\s\n]+)`,
-		`No such image:\s*([^\s\n]+)`,
-		`Error.*:\s*([^\s\n]+)$`,
+	// Try precompiled regex patterns
+	regexPatterns := []*regexp.Regexp{
+		noSuchContainerRegex,
+		noSuchImageRegex,
+		generalErrorRegex,
 	}
 
-	for _, pattern := range patterns {
-		re := regexp.MustCompile(pattern)
+	for _, re := range regexPatterns {
 		matches := re.FindStringSubmatch(errorMsg)
 		if len(matches) > 1 {
 			return strings.TrimSpace(matches[1])

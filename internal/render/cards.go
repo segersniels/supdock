@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
+	"github.com/segersniels/supdock/internal/constants"
 	"github.com/segersniels/supdock/pkg/style"
 	"golang.org/x/term"
 )
@@ -29,11 +30,11 @@ func CreateContainerCards(containers []ContainerCard) string {
 
 	// Get terminal width for responsive layout
 	termWidth := getTerminalWidth()
-	maxCardWidth := 60                     // Maximum width to prevent cards from being too wide
-	estimatedCardWidth := maxCardWidth + 4 // +4 for spacing and borders
+	maxCardWidth := constants.MaxCardWidth
+	estimatedCardWidth := maxCardWidth + constants.CardBorderSpacing
 	cardsPerRow := termWidth / estimatedCardWidth
-	if cardsPerRow < 1 {
-		cardsPerRow = 1
+	if cardsPerRow < constants.MinCardsPerRow {
+		cardsPerRow = constants.MinCardsPerRow
 	}
 
 	// Use the global stylesheet
@@ -166,7 +167,7 @@ func createEmptyMessage(message string) string {
 func getTerminalWidth() int {
 	width, _, err := term.GetSize(int(os.Stdout.Fd()))
 	if err != nil {
-		return 80 // Default fallback
+		return constants.DefaultTermWidth
 	}
 	return width
 }
