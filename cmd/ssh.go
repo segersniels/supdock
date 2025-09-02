@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"context"
 	"fmt"
 	"os"
 
@@ -29,7 +28,8 @@ func runSSH() {
 	}
 	defer prompter.Close()
 
-	ctx := context.Background()
+	ctx, cancel := exec.CreateContextWithTimeout()
+	defer cancel()
 
 	// Prompt for container selection
 	containerID, err := prompter.PromptContainerSelection(ctx, "Select container:", docker.RunningContainers)

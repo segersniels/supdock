@@ -29,7 +29,8 @@
       "Bash(go fmt:*)",
       "Bash(go vet:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(COLUMNS=100 ./supdock --help)"
     ],
     "deny": []
   }

@@ -35,7 +35,8 @@ func runEnv(query string) {
 	}
 	defer prompter.Close()
 
-	ctx := context.Background()
+	ctx, cancel := exec.CreateContextWithTimeout()
+	defer cancel()
 	var containerID string
 
 	if query != "" {

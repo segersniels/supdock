@@ -5,6 +5,7 @@ import (
 	"sync"
 
 	"github.com/lithammer/fuzzysearch/fuzzy"
+	"github.com/segersniels/supdock/internal/constants"
 )
 
 // SearchResult represents a search match with its score
@@ -24,7 +25,7 @@ func FuzzySearch(haystack []string, needle string, threshold float64) []string {
 	results := make([]string, 0)
 
 	// Channel to limit concurrent goroutines
-	semaphore := make(chan struct{}, 10) // Limit to 10 concurrent searches
+	semaphore := make(chan struct{}, constants.MaxConcurrentSearches)
 
 	for _, candidate := range haystack {
 		wg.Add(1)
