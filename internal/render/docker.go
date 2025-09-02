@@ -204,7 +204,7 @@ func renderImages(args []string) error {
 	}
 
 	// Prepare table data
-	headers := []string{"REPOSITORY", "TAG", "IMAGE ID", "CREATED", "SIZE"}
+	headers := []string{"IMAGE ID", "REPOSITORY", "TAG", "CREATED", "SIZE"}
 	rows := make([][]string, len(images))
 
 	for i, image := range images {
@@ -221,9 +221,9 @@ func renderImages(args []string) error {
 		}
 
 		rows[i] = []string{
+			id,
 			repository,
 			tag,
-			id,
 			image.CreatedSince,
 			image.Size,
 		}
