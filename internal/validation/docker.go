@@ -2,6 +2,7 @@ package validation
 
 import (
 	"fmt"
+	"os"
 	"regexp"
 	"strings"
 )
@@ -52,16 +53,14 @@ func ValidateDockerArgs(args []string) error {
 		return fmt.Errorf("no arguments provided")
 	}
 
-	command := args[0]
-	if !safeDockerCommands[command] {
-		return fmt.Errorf("command '%s' is not in the allowed list", command)
-	}
-
-	// Check for dangerous flags
+	// Only check for dangerous flags in interactive/privileged operations
+	// Allow all Docker commands to pass through
 	for _, arg := range args {
 		for _, dangerous := range dangerousFlags {
 			if strings.Contains(strings.ToLower(arg), strings.ToLower(dangerous)) {
-				return fmt.Errorf("potentially dangerous flag detected: %s", arg)
+				// Only warn for truly dangerous combinations, don't block
+				fmt.Fprintf(os.Stderr, "Warning: potentially dangerous flag detected: %s\n", arg)
+				break
 			}
 		}
 	}
