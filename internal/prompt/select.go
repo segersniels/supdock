@@ -32,9 +32,14 @@ func (p *Prompter) ListContainers(ctx context.Context, containerType docker.Cont
 	return p.dockerClient.ListContainers(ctx, containerType)
 }
 
+// ListImages returns image information for fuzzy search
+func (p *Prompter) ListImages(ctx context.Context) ([]docker.ImageInfo, error) {
+	return p.dockerClient.ListImages(ctx)
+}
+
 // PromptContainerSelection shows an interactive container selection prompt
 func (p *Prompter) PromptContainerSelection(ctx context.Context, message string, containerType docker.ContainerType) (string, error) {
-	containers, err := p.dockerClient.ListContainers(ctx, containerType)
+	containers, err := p.ListContainers(ctx, containerType)
 	if err != nil {
 		return "", fmt.Errorf("failed to list containers: %w", err)
 	}
@@ -70,7 +75,7 @@ func (p *Prompter) PromptContainerSelection(ctx context.Context, message string,
 
 // PromptImageSelection shows an interactive image selection prompt
 func (p *Prompter) PromptImageSelection(ctx context.Context, message string) (string, error) {
-	images, err := p.dockerClient.ListImages(ctx)
+	images, err := p.ListImages(ctx)
 	if err != nil {
 		return "", fmt.Errorf("failed to list images: %w", err)
 	}
