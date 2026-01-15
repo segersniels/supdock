@@ -214,6 +214,7 @@ pub fn handle_subcommand(command: Option<&str>) {
             // If the user didn't provide a query or id so we prompt them to select a container
             if error_msg.contains("requires exactly 1 argument")
                 || error_msg.contains("requires at least 1 argument")
+                || error_msg.contains("requires 1 argument")
             {
                 debug!("Prompting reason: {}", error_msg);
 
