@@ -111,6 +111,8 @@ jobs:
     environment: production
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master' && needs.release.outputs.tag_exists == 'false'
+    permissions:
+      id-token: write
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v3
@@ -128,4 +130,4 @@ jobs:
       - name: Publish to NPM
         run: |
           npm version ${{ steps.current_version.outputs.version }} --no-git-tag-version --no-commit-hooks --allow-same-version
-          npm publish || true
+          npm publish --provenance --access public || true
