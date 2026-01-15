@@ -129,5 +129,3 @@ jobs:
         run: |
           npm version ${{ steps.current_version.outputs.version }} --no-git-tag-version --no-commit-hooks --allow-same-version
           npm publish || true
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
