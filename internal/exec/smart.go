@@ -56,11 +56,11 @@ var supportedCommands = map[string]SupportedCommand{
 // CreateContextWithTimeout creates a context with timeout and signal handling
 func CreateContextWithTimeout() (context.Context, context.CancelFunc) {
 	ctx, cancel := context.WithTimeout(context.Background(), constants.DockerOperationTimeout)
-	
+
 	// Handle interrupts gracefully
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
-	
+
 	go func() {
 		select {
 		case <-c:
@@ -68,7 +68,7 @@ func CreateContextWithTimeout() (context.Context, context.CancelFunc) {
 		case <-ctx.Done():
 		}
 	}()
-	
+
 	return ctx, cancel
 }
 
@@ -89,7 +89,7 @@ func getContainerTypeForCommand(cmd SupportedCommand) docker.ContainerType {
 // SmartPassthrough executes docker commands with intelligent error handling
 func SmartPassthrough(args []string) {
 	supLog.Debug("entering smart passthrough with args:", args)
-	
+
 	if len(args) == 0 {
 		supLog.Debug("no args provided, executing empty docker command")
 		RunDockerCommandAndExit(args...)
@@ -139,7 +139,8 @@ func SmartPassthrough(args []string) {
 
 	// Handle "requires exactly 1 argument" or "requires at least 1 argument" errors
 	if strings.Contains(errorMsg, "requires exactly 1 argument") ||
-		strings.Contains(errorMsg, "requires at least 1 argument") {
+		strings.Contains(errorMsg, "requires at least 1 argument") ||
+		strings.Contains(errorMsg, "requires 1 argument") {
 		supLog.Debug("missing argument, prompting for interactive selection")
 		handleMissingArgumentError(args, supportedCmd)
 		return
