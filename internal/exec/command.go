@@ -1,7 +1,9 @@
 package exec
 
 import (
+	"bytes"
 	"fmt"
+	"io"
 	"os"
 	"os/exec"
 	"strings"
@@ -41,12 +43,20 @@ func RunDockerCommandAndExit(args ...string) {
 	os.Exit(0)
 }
 
-// RunDockerCommandWithOutput executes a docker command and captures its output
+// RunDockerCommandWithOutput executes a docker command, streams stdout, and captures output for error handling
 func RunDockerCommandWithOutput(args ...string) ([]byte, error) {
 	supLog.Debug("exec: docker", strings.Join(args, " "))
 
 	cmd := exec.Command("docker", args...)
-	return cmd.CombinedOutput()
+	cmd.Stdin = os.Stdin
+
+	var output bytes.Buffer
+	cmd.Stdout = io.MultiWriter(os.Stdout, &output)
+	cmd.Stderr = &output
+
+	err := cmd.Run()
+
+	return output.Bytes(), err
 }
 
 // RunDockerCommandInBackground executes a docker command in the background
