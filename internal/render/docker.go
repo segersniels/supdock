@@ -111,6 +111,10 @@ func InterceptDockerCommand(args []string) error {
 // renderContainers renders docker ps output with custom styling
 func renderContainers(args []string, options renderOptions) error {
 	terminalWidth := getTerminalWidth()
+	tableWidth := terminalWidth
+	if options.showAllColumns {
+		tableWidth = 0
+	}
 
 	// Build docker command with JSON format
 	dockerArgs := []string{"ps", "--format", "json"}
@@ -169,20 +173,28 @@ func renderContainers(args []string, options renderOptions) error {
 			case "IMAGE":
 				row = append(row, container.Image)
 			case "COMMAND":
-				row = append(row, truncateDisplayWidth(container.Command, 25))
+				if options.showAllColumns {
+					row = append(row, container.Command)
+				} else {
+					row = append(row, truncateDisplayWidth(container.Command, 25))
+				}
 			case "CREATED":
 				row = append(row, container.RunningFor)
 			case "STATUS":
 				row = append(row, container.Status)
 			case "PORTS":
-				row = append(row, truncateDisplayWidth(container.Ports, 30))
+				if options.showAllColumns {
+					row = append(row, container.Ports)
+				} else {
+					row = append(row, truncateDisplayWidth(container.Ports, 30))
+				}
 			}
 		}
 
 		rows = append(rows, row)
 	}
 
-	fmt.Print(CreateDockerTable(headers, rows, terminalWidth, hiddenColumnsFooter(columns.hidden)))
+	fmt.Print(CreateDockerTable(headers, rows, tableWidth, hiddenColumnsFooter(columns.hidden)))
 	return nil
 }
 

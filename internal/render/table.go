@@ -37,10 +37,6 @@ func CreateDockerTable(headers []string, rows [][]string, maxWidth int, footer s
 		}).
 		Headers(headers...)
 
-	if maxWidth > 0 {
-		t.Width(maxWidth)
-	}
-
 	// Add rows with intelligent styling based on column content
 	for _, row := range rows {
 		styledRow := make([]string, len(row))
@@ -55,17 +51,33 @@ func CreateDockerTable(headers []string, rows [][]string, maxWidth int, footer s
 	}
 
 	rendered := t.Render() + "\n"
+	shouldCapWidth := maxWidth > 0 && renderedExceedsWidth(rendered, maxWidth)
+	if shouldCapWidth {
+		t.Width(maxWidth)
+		rendered = t.Render() + "\n"
+	}
 
 	if footer == "" {
 		return rendered
 	}
 
 	footerStyle := styles.Gray.Copy()
-	if maxWidth > 0 {
+	if maxWidth > 0 && (shouldCapWidth || lipgloss.Width(footer) > maxWidth) {
 		footerStyle = footerStyle.MaxWidth(maxWidth)
 	}
 
 	return rendered + footerStyle.Render(footer) + "\n"
+}
+
+func renderedExceedsWidth(rendered string, maxWidth int) bool {
+	lines := strings.Split(rendered, "\n")
+	for _, line := range lines {
+		if lipgloss.Width(line) > maxWidth {
+			return true
+		}
+	}
+
+	return false
 }
 
 // styleTableCell applies appropriate styling based on column type and content
