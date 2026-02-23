@@ -12,7 +12,7 @@ import (
 )
 
 // CreateDockerTable creates a beautifully styled Docker table using our centralized stylesheet
-func CreateDockerTable(headers []string, rows [][]string) string {
+func CreateDockerTable(headers []string, rows [][]string, maxWidth int, footer string) string {
 	styles := style.AppStyles
 
 	// Create table with subtle border styling
@@ -37,6 +37,10 @@ func CreateDockerTable(headers []string, rows [][]string) string {
 		}).
 		Headers(headers...)
 
+	if maxWidth > 0 {
+		t.Width(maxWidth)
+	}
+
 	// Add rows with intelligent styling based on column content
 	for _, row := range rows {
 		styledRow := make([]string, len(row))
@@ -50,9 +54,19 @@ func CreateDockerTable(headers []string, rows [][]string) string {
 		t.Row(styledRow...)
 	}
 
-	return t.Render() + "\n"
-}
+	rendered := t.Render() + "\n"
 
+	if footer == "" {
+		return rendered
+	}
+
+	footerStyle := styles.Gray.Copy()
+	if maxWidth > 0 {
+		footerStyle = footerStyle.MaxWidth(maxWidth)
+	}
+
+	return rendered + footerStyle.Render(footer) + "\n"
+}
 
 // styleTableCell applies appropriate styling based on column type and content
 func styleTableCell(content, header string, styles *style.Styles) string {
@@ -88,7 +102,6 @@ func styleTableCell(content, header string, styles *style.Styles) string {
 		return styles.Default.Render(content)
 	}
 }
-
 
 // styleStatus applies appropriate styling to status text using our centralized styles
 func styleStatus(status string, styles *style.Styles) string {

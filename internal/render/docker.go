@@ -3,8 +3,12 @@ package render
 import (
 	"encoding/json"
 	"fmt"
+	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/charmbracelet/x/ansi"
+	"golang.org/x/term"
 )
 
 // DockerContainer represents a container from docker ps --format json output
@@ -30,6 +34,15 @@ type DockerImage struct {
 	CreatedAt    string `json:"CreatedAt"`
 	Size         string `json:"Size"`
 	CreatedSince string `json:"CreatedSince"`
+}
+
+const (
+	allColumnsFlag      = "--all-columns"
+	allColumnsAliasFlag = "--all-cols"
+)
+
+type renderOptions struct {
+	showAllColumns bool
 }
 
 // ShouldIntercept checks if we should intercept this Docker command
@@ -80,18 +93,25 @@ func InterceptDockerCommand(args []string) error {
 		return fmt.Errorf("no command provided")
 	}
 
-	switch args[0] {
+	cleanArgs, options := parseRenderOptions(args)
+	if len(cleanArgs) == 0 {
+		return fmt.Errorf("no command provided")
+	}
+
+	switch cleanArgs[0] {
 	case "ps":
-		return renderContainers(args)
+		return renderContainers(cleanArgs, options)
 	case "images":
-		return renderImages(args)
+		return renderImages(cleanArgs)
 	default:
-		return fmt.Errorf("command not supported for interception: %s", args[0])
+		return fmt.Errorf("command not supported for interception: %s", cleanArgs[0])
 	}
 }
 
 // renderContainers renders docker ps output with custom styling
-func renderContainers(args []string) error {
+func renderContainers(args []string, options renderOptions) error {
+	terminalWidth := getTerminalWidth()
+
 	// Build docker command with JSON format
 	dockerArgs := []string{"ps", "--format", "json"}
 
@@ -128,7 +148,8 @@ func renderContainers(args []string) error {
 	}
 
 	// Prepare table data
-	headers := []string{"CONTAINER ID", "NAMES", "IMAGE", "COMMAND", "CREATED", "STATUS", "PORTS"}
+	columns := getContainerColumns(terminalWidth, options.showAllColumns)
+	headers := columns.visible
 	var rows [][]string
 
 	for _, container := range containers {
@@ -138,36 +159,37 @@ func renderContainers(args []string) error {
 			id = id[:12] // Short ID
 		}
 
-		// Truncate command if too long
-		command := container.Command
-		if len(command) > 25 {
-			command = command[:22] + "…"
+		row := []string{}
+		for _, header := range headers {
+			switch header {
+			case "CONTAINER ID":
+				row = append(row, id)
+			case "NAMES":
+				row = append(row, container.Names)
+			case "IMAGE":
+				row = append(row, container.Image)
+			case "COMMAND":
+				row = append(row, truncateDisplayWidth(container.Command, 25))
+			case "CREATED":
+				row = append(row, container.RunningFor)
+			case "STATUS":
+				row = append(row, container.Status)
+			case "PORTS":
+				row = append(row, truncateDisplayWidth(container.Ports, 30))
+			}
 		}
 
-		// Truncate ports if too long
-		ports := container.Ports
-		if len(ports) > 30 {
-			ports = ports[:27] + "…"
-		}
-
-		row := []string{
-			id,
-			container.Names,
-			container.Image,
-			command,
-			container.RunningFor,
-			container.Status,
-			ports,
-		}
 		rows = append(rows, row)
 	}
 
-	fmt.Print(CreateDockerTable(headers, rows))
+	fmt.Print(CreateDockerTable(headers, rows, terminalWidth, hiddenColumnsFooter(columns.hidden)))
 	return nil
 }
 
 // renderImages renders docker images output with custom table styling
 func renderImages(args []string) error {
+	terminalWidth := getTerminalWidth()
+
 	// Build docker command with JSON format
 	dockerArgs := []string{"images", "--format", "json"}
 
@@ -229,14 +251,115 @@ func renderImages(args []string) error {
 		}
 	}
 
-	fmt.Print(CreateDockerTable(headers, rows))
+	fmt.Print(CreateDockerTable(headers, rows, terminalWidth, ""))
 	return nil
 }
 
-// truncateString truncates a string to maxLen with ellipsis
-func truncateString(s string, maxLen int) string {
-	if len(s) <= maxLen {
-		return s
+type containerColumns struct {
+	visible []string
+	hidden  []string
+}
+
+func getContainerColumns(terminalWidth int, showAllColumns bool) containerColumns {
+	visible := []string{"CONTAINER ID", "NAMES", "IMAGE", "COMMAND", "CREATED", "STATUS", "PORTS"}
+	hidden := []string{}
+
+	if showAllColumns {
+		return containerColumns{
+			visible: visible,
+			hidden:  hidden,
+		}
 	}
-	return s[:maxLen-3] + "..."
+
+	if terminalWidth <= 120 {
+		visible = removeHeader(visible, "COMMAND")
+		hidden = append(hidden, "COMMAND")
+	}
+
+	if terminalWidth <= 100 {
+		visible = removeHeader(visible, "PORTS")
+		hidden = append(hidden, "PORTS")
+	}
+
+	if terminalWidth <= 86 {
+		visible = removeHeader(visible, "IMAGE")
+		hidden = append(hidden, "IMAGE")
+	}
+
+	if terminalWidth <= 72 {
+		visible = removeHeader(visible, "CREATED")
+		hidden = append(hidden, "CREATED")
+	}
+
+	return containerColumns{
+		visible: visible,
+		hidden:  hidden,
+	}
+}
+
+func removeHeader(headers []string, target string) []string {
+	filtered := make([]string, 0, len(headers))
+	for _, header := range headers {
+		if header == target {
+			continue
+		}
+
+		filtered = append(filtered, header)
+	}
+
+	return filtered
+}
+
+func getTerminalWidth() int {
+	terminalWidth, _, err := term.GetSize(int(os.Stdout.Fd()))
+	if err != nil {
+		return 120
+	}
+
+	if terminalWidth <= 1 {
+		return 120
+	}
+
+	return terminalWidth - 1
+}
+
+func truncateDisplayWidth(value string, maxWidth int) string {
+	if maxWidth <= 0 {
+		return ""
+	}
+
+	return ansi.Truncate(value, maxWidth, "…")
+}
+
+func hiddenColumnsFooter(hidden []string) string {
+	if len(hidden) == 0 {
+		return ""
+	}
+
+	return fmt.Sprintf("+%d columns hidden (%s). use %s to keep all columns.",
+		len(hidden),
+		strings.Join(hidden, ", "),
+		allColumnsFlag)
+}
+
+func parseRenderOptions(args []string) ([]string, renderOptions) {
+	cleanArgs := make([]string, 0, len(args))
+	options := renderOptions{}
+
+	for _, arg := range args {
+		if arg == allColumnsFlag || arg == allColumnsAliasFlag {
+			options.showAllColumns = true
+			continue
+		}
+
+		cleanArgs = append(cleanArgs, arg)
+	}
+
+	return cleanArgs, options
+}
+
+// StripSupdockRenderFlags removes supdock-only flags before raw docker fallback.
+func StripSupdockRenderFlags(args []string) []string {
+	cleanArgs, _ := parseRenderOptions(args)
+	return cleanArgs
 }

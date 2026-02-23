@@ -103,7 +103,7 @@ func SmartPassthrough(args []string) {
 			supLog.Debug("enhanced rendering failed, falling back to docker:", err)
 			fmt.Fprintf(os.Stderr, "Render error: %v\n", err)
 			// Fallback to normal Docker command
-			RunDockerCommandAndExit(args...)
+			RunDockerCommandAndExit(render.StripSupdockRenderFlags(args)...)
 		}
 		return
 	}
