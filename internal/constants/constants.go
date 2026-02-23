@@ -12,11 +12,3 @@ const (
 const (
 	MaxConcurrentSearches = 10
 )
-
-// Render Constants
-const (
-	MaxCardWidth        = 60
-	CardBorderSpacing   = 4
-	DefaultTermWidth    = 80
-	MinCardsPerRow      = 1
-)

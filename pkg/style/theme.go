@@ -70,7 +70,11 @@ func CreateWarningMessage(message string) string {
 func CreateInfoBox(title, content string) string {
 	styles := AppStyles
 	titleLine := styles.Blue.Bold(true).Underline(true).Render(title)
-	contentBox := styles.ContainerCard.Render(content)
+	contentBox := lipgloss.NewStyle().
+		Border(lipgloss.RoundedBorder()).
+		BorderForeground(styles.Border.GetForeground()).
+		Padding(0, 1).
+		Render(content)
 
 	return lipgloss.JoinVertical(lipgloss.Left, titleLine, contentBox)
 }

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/charmbracelet/lipgloss"
 	"github.com/segersniels/supdock/internal/exec"
 	supLog "github.com/segersniels/supdock/internal/log"
 	"github.com/segersniels/supdock/pkg/style"
@@ -34,9 +33,9 @@ func Execute() {
 	args := os.Args[1:]
 	supLog.Debug("supdock:", args)
 
-	// If no arguments, show help with styling
+	// If no arguments, show help
 	if len(args) == 0 {
-		showStyledHelp()
+		showHelp()
 		return
 	}
 
@@ -44,7 +43,7 @@ func Execute() {
 	if len(args) == 1 {
 		switch args[0] {
 		case "--help", "-h":
-			showStyledHelp()
+			showHelp()
 			return
 		case "--version", "-v":
 			showStyledVersion()
@@ -70,133 +69,12 @@ func Execute() {
 	}
 }
 
-// showStyledHelp displays a beautiful help message with layout
-func showStyledHelp() {
-	// Header - back to simple blue
-	header := lipgloss.NewStyle().
-		Bold(true).
-		Foreground(lipgloss.Color("6")). // Cyan from terminal
-		MarginBottom(1).
-		Render("What's Up, Doc(ker)? 🐳")
-
-	subtitle := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("8")). // Gray
-		Italic(true).
-		Render("A fast Docker wrapper with interactive prompts")
-
-	// Command boxes
-	commandBoxStyle := lipgloss.NewStyle().
-		Border(lipgloss.RoundedBorder()).
-		BorderForeground(lipgloss.Color("4")). // Blue
-		Padding(0, 2).
-		MarginRight(2).
-		Width(26)
-
-	// Command definitions
-	type Command struct {
-		Name        string
-		Description string
-		Color       string
+func showHelp() {
+	rootCmd.SetArgs([]string{"--help"})
+	if err := rootCmd.Execute(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		os.Exit(1)
 	}
-
-	// Helper function to create command grids
-	createCommandGrid := func(commands []Command) string {
-		var rows []string
-		for i := 0; i < len(commands); i += 2 {
-			var rowBoxes []string
-			
-			// First box in row
-			box1 := commandBoxStyle.Copy().Render(
-				lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color(commands[i].Color)).Render(commands[i].Name) + "\n" +
-					lipgloss.NewStyle().Foreground(lipgloss.Color("8")).Render(commands[i].Description))
-			rowBoxes = append(rowBoxes, box1)
-			
-			// Second box in row (if exists)
-			if i+1 < len(commands) {
-				box2 := commandBoxStyle.Copy().Render(
-					lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color(commands[i+1].Color)).Render(commands[i+1].Name) + "\n" +
-						lipgloss.NewStyle().Foreground(lipgloss.Color("8")).Render(commands[i+1].Description))
-				rowBoxes = append(rowBoxes, box2)
-			}
-			
-			rows = append(rows, lipgloss.JoinHorizontal(lipgloss.Top, rowBoxes...))
-		}
-		return lipgloss.JoinVertical(lipgloss.Left, rows...)
-	}
-
-	customCommands := []Command{
-		{"ssh", "Execute command in container", "2"},
-		{"env", "Display container environment", "3"},
-		{"cat", "Output file contents", "5"},
-		{"prune", "Remove unused data", "1"},
-	}
-
-	enhancedCommands := []Command{
-		{"ps", "List containers (enhanced)", "4"},
-		{"images", "List images (enhanced)", "6"},
-		{"start", "Start stopped containers", "2"},
-		{"stop", "Stop running containers", "1"},
-		{"restart", "Restart containers", "3"},
-		{"logs", "Fetch container logs", "3"},
-		{"rm", "Remove containers", "1"},
-		{"rmi", "Remove images", "5"},
-		{"inspect", "Display detailed info", "6"},
-	}
-
-	// Custom commands section
-	customTitle := lipgloss.NewStyle().
-		Bold(true).
-		Foreground(lipgloss.Color("6")).
-		MarginTop(1).
-		Render("Custom commands:")
-
-	customSection := lipgloss.JoinVertical(lipgloss.Left, customTitle, createCommandGrid(customCommands))
-
-	// Enhanced commands section
-	enhancedTitle := lipgloss.NewStyle().
-		Bold(true).
-		Foreground(lipgloss.Color("6")).
-		MarginTop(1).
-		Render("Enhanced commands:")
-
-	enhancedSection := lipgloss.JoinVertical(lipgloss.Left, enhancedTitle, createCommandGrid(enhancedCommands))
-
-	commandGrid := lipgloss.JoinVertical(lipgloss.Left, customSection, enhancedSection)
-
-	// Usage section
-	usageTitle := lipgloss.NewStyle().
-		Bold(true).
-		Foreground(lipgloss.Color("6")).
-		MarginTop(1).
-		Render("Usage:")
-
-	usageStyle := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("")).
-		MarginLeft(2)
-
-	usage := usageStyle.Render("supdock [command]\nsupdock <docker-command> [args...]")
-
-	// Footer
-	footerStyle := lipgloss.NewStyle().
-		Foreground(lipgloss.Color("8")).
-		MarginTop(1).
-		Italic(true)
-
-	footer := footerStyle.Render("All other Docker commands work normally.\nFor full Docker help: docker help")
-
-	// Combine everything
-	content := lipgloss.JoinVertical(
-		lipgloss.Left,
-		header,
-		subtitle,
-		"",
-		commandGrid,
-		usageTitle,
-		usage,
-		footer,
-	)
-
-	fmt.Println(content)
 }
 
 // showStyledVersion displays a clean version message

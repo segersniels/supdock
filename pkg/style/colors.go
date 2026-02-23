@@ -37,10 +37,6 @@ type Styles struct {
 	// Status indicators
 	StatusDotRunning lipgloss.Style // Green bullet for running
 	StatusDotStopped lipgloss.Style // Red bullet for stopped
-
-	// Card styles
-	ContainerCard lipgloss.Style // Container card border
-	ImageCard     lipgloss.Style // Image card border
 }
 
 // NewStyles creates a new stylesheet using terminal colors
@@ -79,21 +75,6 @@ func NewStyles() *Styles {
 		// Status indicators
 		StatusDotRunning: lipgloss.NewStyle().Foreground(lipgloss.Color("2")).SetString("●"), // Green dot
 		StatusDotStopped: lipgloss.NewStyle().Foreground(lipgloss.Color("1")).SetString("●"), // Red dot
-
-		// Card styles - much more compact with subtle borders
-		ContainerCard: lipgloss.NewStyle().
-			Border(lipgloss.RoundedBorder()).
-			BorderForeground(lipgloss.Color("8")). // Gray - more subtle
-			Padding(0, 1).                         // Much less padding
-			MarginRight(1).
-			MarginBottom(1),
-
-		ImageCard: lipgloss.NewStyle().
-			Border(lipgloss.RoundedBorder()).
-			BorderForeground(lipgloss.Color("8")). // Gray - more subtle
-			Padding(0, 1).                         // Much less padding
-			MarginRight(1).
-			MarginBottom(1),
 	}
 }
 
