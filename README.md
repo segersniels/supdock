@@ -79,7 +79,7 @@ Usage:
 
 Commands:
   ssh     SSH into a container with beautiful shell selection
-  env     See environment variables with optional fuzzy search  
+  env     See environment variables with optional fuzzy search
   cat     View file contents within containers
   prune   Clean up containers and images with advanced options
 
@@ -99,7 +99,7 @@ supdock ssh
 # Supports multiple shell types (bash, ash, sh)
 ```
 
-#### Environment Variables  
+#### Environment Variables
 ```bash
 supdock env                    # Interactive container selection
 supdock env nginx             # Fuzzy search for containers matching "nginx"
@@ -137,14 +137,14 @@ supdock start nginx          # Fuzzy matches and starts containers
 ### Fuzzy Search
 Supdock uses intelligent fuzzy search to match container names:
 - Direct substring matching
-- Hyphenated name support (`web-server` matches `my-web-server-prod`) 
+- Hyphenated name support (`web-server` matches `my-web-server-prod`)
 - Typo-tolerant matching with stable result ordering
 
 ### Parallel Execution
 Execute commands on multiple containers simultaneously:
 ```bash
 supdock stop all      # Stops all running containers in parallel
-supdock start all     # Starts all stopped containers in parallel  
+supdock start all     # Starts all stopped containers in parallel
 supdock restart all   # Restarts all containers in parallel
 ```
 
@@ -168,7 +168,7 @@ make dev            # Development build
 make dev-debug      # Development build with debug logging
 ```
 
-### Testing  
+### Testing
 ```bash
 make test           # Run tests and smoke-test the built CLI
 make lint           # Check formatting and run go vet
