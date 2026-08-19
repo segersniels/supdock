@@ -10,14 +10,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-const version = "4.0.0"
+// Version is replaced by release builds through -ldflags.
+var Version = "4.0.0"
 
 var rootCmd = &cobra.Command{
 	Use:   "supdock",
 	Short: "What's Up, Doc(ker)?",
 	Long: `What's Up, Doc(ker)? A convenient way to interact with the docker daemon.
 Supdock is a wrapper for the docker command meaning you can still use all of the other docker commands without issues.`,
-	Version: version,
+	Version: Version,
 	Run: func(cmd *cobra.Command, args []string) {
 		if len(args) == 0 {
 			cmd.Help()
@@ -79,7 +80,7 @@ func showHelp() {
 
 // showStyledVersion displays a clean version message
 func showStyledVersion() {
-	fmt.Println(style.AppStyles.Blue.Bold(true).Render(fmt.Sprintf("supdock v%s", version)))
+	fmt.Println(style.AppStyles.Blue.Bold(true).Render(fmt.Sprintf("supdock v%s", Version)))
 }
 
 func init() {

@@ -11,7 +11,8 @@
   },
   "scripts": {
     "preinstall": "node ./scripts/preinstall.js",
-    "generate:changelog": "gitmoji-changelog"
+    "generate:changelog": "gitmoji-changelog",
+    "test": "go test ./... && node --test"
   },
   "author": "Niels Segers",
   "license": "MIT",

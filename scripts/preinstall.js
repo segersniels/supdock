@@ -9,23 +9,24 @@ function checkIfBinaryExists(binary) {
   return fs.existsSync(path);
 }
 
-function determinePlatformBinary() {
-  const platform = os.type();
+function determinePlatformBinary(platform = os.type(), architecture = os.arch()) {
+  const binaries = {
+    Linux: {
+      arm64: `${BINARY_NAME}-aarch64-linux`,
+      x64: `${BINARY_NAME}-amd64-linux`,
+    },
+    Darwin: {
+      arm64: `${BINARY_NAME}-aarch64-macos`,
+      x64: `${BINARY_NAME}-amd64-macos`,
+    },
+  };
+  const binary = binaries[platform]?.[architecture];
 
-  switch (platform) {
-    case "Linux": {
-      return os.arch() === "arm64"
-        ? `${BINARY_NAME}-aarch64-linux`
-        : `${BINARY_NAME}-amd64-linux`;
-    }
-    case "Darwin": {
-      return `${BINARY_NAME}-macos`;
-    }
-    default: {
-      console.error(`Unsupported platform: ${platform}`);
-      process.exit(1);
-    }
+  if (!binary) {
+    throw new Error(`Unsupported platform: ${platform} ${architecture}`);
   }
+
+  return binary;
 }
 
 function removeOtherBinaries(binary) {
@@ -47,7 +48,13 @@ function prepareBinaryForSymLink(binary) {
 }
 
 function main() {
-  const binary = determinePlatformBinary();
+  let binary;
+  try {
+    binary = determinePlatformBinary();
+  } catch (error) {
+    console.error(error.message);
+    process.exit(1);
+  }
 
   if (!checkIfBinaryExists(binary)) {
     console.error(`Binary ${binary} not found, skipping...`);
@@ -58,4 +65,8 @@ function main() {
   prepareBinaryForSymLink(binary);
 }
 
-main();
+if (require.main === module) {
+  main();
+}
+
+module.exports = { determinePlatformBinary };

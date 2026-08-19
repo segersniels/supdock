@@ -9,58 +9,59 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
         with:
-          go-version: '1.21'
-      - name: Run go fmt
-        run: go fmt ./...
-      - name: Run go vet
-        run: go vet ./...
+          go-version-file: go.mod
+          cache: true
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+      - name: Check formatting and vet
+        run: make lint
+      - name: Run tests
+        run: npm test
+      - name: Build
+        run: go build ./...
 
   build:
-    needs: lint
+    needs: verify
     if: github.ref == 'refs/heads/master'
     strategy:
       fail-fast: false
       matrix:
-        job:
-          - {
-              goos: linux,
-              goarch: amd64,
-              exe: amd64-linux,
-              os: ubuntu-latest,
-            }
-          - {
-              goos: linux,
-              goarch: arm64,
-              goarch_alt: aarch64,
-              exe: aarch64-linux,
-              os: ubuntu-latest,
-            }
-          - { 
-              goos: darwin, 
-              goarch: amd64, 
-              exe: macos, 
-              os: macos-latest 
-            }
-    runs-on: ${{ matrix.job.os }}
+        include:
+          - goos: linux
+            goarch: amd64
+            exe: amd64-linux
+          - goos: linux
+            goarch: arm64
+            exe: aarch64-linux
+          - goos: darwin
+            goarch: amd64
+            exe: amd64-macos
+          - goos: darwin
+            goarch: arm64
+            exe: aarch64-macos
+          - goos: windows
+            goarch: amd64
+            exe: amd64-windows.exe
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v4
         with:
-          go-version: '1.21'
+          go-version-file: go.mod
+          cache: true
       - name: Build binary
-        run: |
-          GOOS=${{ matrix.job.goos }} GOARCH=${{ matrix.job.goarch }} go build -o supdock-${{ matrix.job.exe }} .
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v4
+        run: GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} make build-release OUTPUT=supdock-${{ matrix.exe }}
+      - uses: actions/upload-artifact@v4
         with:
-          name: supdock-${{ matrix.job.exe }}
-          path: supdock-${{ matrix.job.exe }}
+          name: supdock-${{ matrix.exe }}
+          path: supdock-${{ matrix.exe }}
 
   release:
     needs: build
@@ -69,20 +70,15 @@ jobs:
     if: github.ref == 'refs/heads/master'
     outputs:
       tag_exists: ${{ steps.check_tag.outputs.exists }}
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4.1.7
         with:
-          name: supdock-macos
+          pattern: supdock-*
           path: bin
-      - uses: actions/download-artifact@v4.1.7
-        with:
-          name: supdock-aarch64-linux
-          path: bin
-      - uses: actions/download-artifact@v4.1.7
-        with:
-          name: supdock-amd64-linux
-          path: bin
+          merge-multiple: true
       - name: Get current package version
         id: current_version
         run: echo "version=$(make version)" >> $GITHUB_OUTPUT
@@ -90,46 +86,37 @@ jobs:
         id: check_tag
         with:
           tag: "${{ steps.current_version.outputs.version }}"
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - uses: marvinpinto/action-automatic-releases@latest
         if: steps.check_tag.outputs.exists == 'false'
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           automatic_release_tag: "${{ steps.current_version.outputs.version }}"
           prerelease: false
-          files: |
-            ./bin/supdock-macos
-            ./bin/supdock-aarch64-linux
-            ./bin/supdock-amd64-linux
+          files: ./bin/supdock-*
 
   npm:
     needs: release
     environment: production
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master' && needs.release.outputs.tag_exists == 'false'
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v3
         with:
           node-version: "18.x"
-          registry-url: "https://registry.npmjs.org"
+          registry-url: https://registry.npmjs.org
       - uses: actions/download-artifact@v4.1.7
         with:
-          name: supdock-macos
+          pattern: supdock-*
           path: bin
-      - uses: actions/download-artifact@v4.1.7
-        with:
-          name: supdock-aarch64-linux
-          path: bin
-      - uses: actions/download-artifact@v4.1.7
-        with:
-          name: supdock-amd64-linux
-          path: bin
+          merge-multiple: true
       - name: Get current package version
         id: current_version
         run: echo "version=$(make version)" >> $GITHUB_OUTPUT
-      - name: Publish to NPM
+      - name: Publish to npm
         run: |
           npm version ${{ steps.current_version.outputs.version }} --no-git-tag-version --no-commit-hooks --allow-same-version
-          npm publish || true
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          npm publish --provenance --access public

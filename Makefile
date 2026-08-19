@@ -2,20 +2,22 @@
 
 # Go related variables
 BINARY_NAME=supdock
-BINARY_PATH=./$(BINARY_NAME)
 VERSION=4.0.0
 
 # Build flags
-LDFLAGS=-ldflags "-s -w -X main.version=$(VERSION)"
+LDFLAGS=-ldflags "-s -w -X github.com/segersniels/supdock/cmd.Version=$(VERSION)"
 
-.PHONY: clean build dev lint lint-fix test version changelog demo install
+.PHONY: clean build build-release dev format lint lint-fix test version changelog demo install
 
 clean:
 	rm -f $(BINARY_NAME)
 	go clean
 
 build: clean
-	go build $(LDFLAGS) -o $(BINARY_NAME) .
+	$(MAKE) build-release OUTPUT=$(BINARY_NAME)
+
+build-release:
+	go build $(LDFLAGS) -o $(or $(OUTPUT),$(BINARY_NAME)) .
 
 # Development build without cleanup
 dev:
@@ -23,22 +25,27 @@ dev:
 
 # Run with debug logging enabled
 dev-debug: dev
-	SUPDOCK_DEBUG=1 ./$(BINARY_NAME)
+	DEBUG=1 ./$(BINARY_NAME)
 
 # Install locally
 install: build
 	sudo mv $(BINARY_NAME) /usr/local/bin/
 
-# Lint and format
-lint:
-	go fmt ./...
-	go vet ./...
-	go mod tidy
+# Format and lint
+format:
+	gofmt -w .
 
-lint-fix: lint
+lint:
+	@test -z "$$(gofmt -l .)" || (gofmt -l .; exit 1)
+	go vet ./...
+
+lint-fix: format
+	go vet ./...
 
 # Test the build
 test: build
+	go test ./...
+	node --test
 	./$(BINARY_NAME) --version
 	./$(BINARY_NAME) --help
 
@@ -56,14 +63,15 @@ demo:
 
 # Cross-compilation targets
 build-linux: clean
-	GOOS=linux GOARCH=amd64 go build $(LDFLAGS) -o $(BINARY_NAME)-linux-amd64 .
+	GOOS=linux GOARCH=amd64 $(MAKE) build-release OUTPUT=$(BINARY_NAME)-amd64-linux
+	GOOS=linux GOARCH=arm64 $(MAKE) build-release OUTPUT=$(BINARY_NAME)-aarch64-linux
 
 build-darwin: clean
-	GOOS=darwin GOARCH=amd64 go build $(LDFLAGS) -o $(BINARY_NAME)-darwin-amd64 .
-	GOOS=darwin GOARCH=arm64 go build $(LDFLAGS) -o $(BINARY_NAME)-darwin-arm64 .
+	GOOS=darwin GOARCH=amd64 $(MAKE) build-release OUTPUT=$(BINARY_NAME)-amd64-macos
+	GOOS=darwin GOARCH=arm64 $(MAKE) build-release OUTPUT=$(BINARY_NAME)-aarch64-macos
 
 build-windows: clean
-	GOOS=windows GOARCH=amd64 go build $(LDFLAGS) -o $(BINARY_NAME)-windows-amd64.exe .
+	GOOS=windows GOARCH=amd64 $(MAKE) build-release OUTPUT=$(BINARY_NAME)-amd64-windows.exe
 
 build-all: build-linux build-darwin build-windows
 
