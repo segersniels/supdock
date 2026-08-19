@@ -13,7 +13,7 @@ What's Up, Doc(ker)? A beautiful way to interact with the Docker daemon. Supdock
 
 - **🎨 Beautiful TUI**: Built with Charmbracelet's Huh and Lipgloss for stunning terminal interfaces
 - **⚡ Fast & Responsive**: Written in Go with concurrent operations and efficient Docker API integration
-- **🔍 Smart Search**: Fuzzy search containers and images with goroutine-powered parallel matching
+- **🔍 Smart Search**: Fuzzy search containers and images, including ordinary typos
 - **🐳 Full Docker Compatibility**: All standard Docker commands pass through seamlessly
 - **🛠 Enhanced Commands**: Interactive prompts for common Docker operations
 - **🎯 Error Recovery**: Smart error handling with helpful suggestions and container selection
@@ -38,8 +38,8 @@ go install github.com/segersniels/supdock@latest
 Grab a binary from the [releases](https://github.com/segersniels/supdock/releases) page and move it into your desired bin (eg. /usr/local/bin) location.
 
 ```bash
-# Download and install (replace with actual download URL)
-curl -L https://github.com/segersniels/supdock/releases/latest/download/supdock-$(uname -s | tr '[:upper:]' '[:lower:]')-$(uname -m) -o supdock
+# macOS on Apple Silicon; use amd64-macos, amd64-linux, or aarch64-linux as needed
+curl -L https://github.com/segersniels/supdock/releases/latest/download/supdock-aarch64-macos -o supdock
 chmod +x supdock
 sudo mv supdock /usr/local/bin/
 ```
@@ -105,8 +105,8 @@ supdock cat
 
 #### System Cleanup
 ```bash
-supdock prune                 # Basic cleanup with confirmation
-supdock prune --info          # Show disk usage before cleanup  
+supdock prune                 # Remove unused resources without confirmation
+supdock prune --info          # Show disk usage instead of pruning
 supdock prune --all           # Remove all unused images
 supdock prune --volumes       # Include volumes in cleanup
 ```
@@ -117,6 +117,7 @@ All Docker commands work seamlessly with enhanced error handling:
 
 ```bash
 supdock ps                    # Lists containers
+supdock ps --all-columns      # Keeps every column on narrow terminals
 supdock logs web-server       # Shows logs, with fuzzy matching if not found
 supdock stop all             # Parallel execution on all running containers
 supdock start nginx          # Fuzzy matches and starts containers
@@ -128,7 +129,7 @@ supdock start nginx          # Fuzzy matches and starts containers
 Supdock uses intelligent fuzzy search to match container names:
 - Direct substring matching
 - Hyphenated name support (`web-server` matches `my-web-server-prod`) 
-- Parallel search with goroutines for fast results
+- Typo-tolerant matching with stable result ordering
 
 ### Parallel Execution
 Execute commands on multiple containers simultaneously:
@@ -141,13 +142,13 @@ supdock restart all   # Restarts all containers in parallel
 ### Debug Mode
 Enable debug logging to see what's happening under the hood:
 ```bash
-SUPDOCK_DEBUG=1 supdock ssh
+DEBUG=1 supdock ssh
 ```
 
 ## Development
 
 ### Requirements
-- Go 1.21 or later
+- Go 1.24 or later
 - Docker (for testing)
 
 ### Building
@@ -160,8 +161,8 @@ make dev-debug      # Development build with debug logging
 
 ### Testing  
 ```bash
-make test           # Run build and basic tests
-make lint           # Run formatters and linters
+make test           # Run tests and smoke-test the built CLI
+make lint           # Check formatting and run go vet
 ```
 
 ## Architecture
@@ -170,7 +171,7 @@ make lint           # Run formatters and linters
 - **TUI Components**: [Charmbracelet Huh](https://github.com/charmbracelet/huh) for interactive prompts
 - **Styling**: [Lipgloss](https://github.com/charmbracelet/lipgloss) for beautiful terminal styling
 - **Docker Integration**: Official [Docker SDK](https://pkg.go.dev/github.com/docker/docker) for reliable API communication
-- **Fuzzy Search**: [fuzzysearch](https://github.com/lithammer/fuzzysearch) with custom goroutine-powered matching
+- **Fuzzy Search**: Jaro-Winkler similarity matching for names and common typos
 
 ## Changelog
 
@@ -182,7 +183,7 @@ If you would like to see something added or want to add something yourself, feel
 
 For troubleshooting, enable debug logging:
 ```bash
-SUPDOCK_DEBUG=1 supdock [command]
+DEBUG=1 supdock [command]
 ```
 
 ## License
