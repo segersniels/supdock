@@ -1,10 +1,7 @@
 package render
 
 import (
-	"fmt"
-	"strconv"
 	"strings"
-	"time"
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/lipgloss/table"
@@ -125,64 +122,5 @@ func styleStatus(status string, styles *style.Styles) string {
 		return styles.ContainerStopped.Render("● " + status)
 	} else {
 		return styles.Gray.Render("● " + status)
-	}
-}
-
-// FormatSize formats byte sizes in human-readable format
-func FormatSize(bytes int64) string {
-	const unit = 1024
-	if bytes < unit {
-		return fmt.Sprintf("%dB", bytes)
-	}
-
-	div, exp := int64(unit), 0
-	for n := bytes / unit; n >= unit; n /= unit {
-		div *= unit
-		exp++
-	}
-
-	return fmt.Sprintf("%.1f%cB", float64(bytes)/float64(div), "KMGTPE"[exp])
-}
-
-// FormatAge formats time duration in human-readable format
-func FormatAge(createdAt string) string {
-	// Try to parse different time formats Docker might use
-	layouts := []string{
-		time.RFC3339,
-		time.RFC3339Nano,
-		"2006-01-02 15:04:05 -0700 MST",
-		"2006-01-02T15:04:05.000000000Z",
-	}
-
-	var created time.Time
-	var err error
-
-	for _, layout := range layouts {
-		created, err = time.Parse(layout, createdAt)
-		if err == nil {
-			break
-		}
-	}
-
-	if err != nil {
-		// If we can't parse, try to extract a Unix timestamp
-		if timestamp, err := strconv.ParseInt(createdAt, 10, 64); err == nil {
-			created = time.Unix(timestamp, 0)
-		} else {
-			return createdAt // Return as-is if we can't parse
-		}
-	}
-
-	duration := time.Since(created)
-
-	if duration.Hours() > 24 {
-		days := int(duration.Hours() / 24)
-		return fmt.Sprintf("%d days ago", days)
-	} else if duration.Hours() > 1 {
-		return fmt.Sprintf("%d hours ago", int(duration.Hours()))
-	} else if duration.Minutes() > 1 {
-		return fmt.Sprintf("%d minutes ago", int(duration.Minutes()))
-	} else {
-		return fmt.Sprintf("%d seconds ago", int(duration.Seconds()))
 	}
 }

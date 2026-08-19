@@ -30,21 +30,3 @@ func (p *Prompter) PromptText(message string) (string, error) {
 
 	return input, nil
 }
-
-// PromptConfirm shows a confirmation prompt
-func (p *Prompter) PromptConfirm(message string) (bool, error) {
-	var confirmed bool
-	form := huh.NewForm(
-		huh.NewGroup(
-			huh.NewConfirm().
-				Title(message).
-				Value(&confirmed),
-		),
-	).WithTheme(style.CreateAdaptiveTheme())
-
-	if err := form.Run(); err != nil {
-		return false, fmt.Errorf("prompt cancelled: %w", err)
-	}
-
-	return confirmed, nil
-}
