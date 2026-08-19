@@ -84,6 +84,7 @@ func showStyledVersion() {
 }
 
 func init() {
+	rootCmd.CompletionOptions.DisableDefaultCmd = true
 	rootCmd.SetHelpTemplate(`{{.Long}}
 
 Usage:{{if .Runnable}}
