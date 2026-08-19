@@ -75,8 +75,12 @@ func (c *Client) ListContainers(ctx context.Context, containerType ContainerType
 		}
 
 		name := strings.TrimPrefix(container.Names[0], "/")
+		id := container.ID
+		if len(id) > 12 {
+			id = id[:12]
+		}
 		result = append(result, ContainerInfo{
-			ID:    container.ID[:12], // Short ID like in Rust version
+			ID:    id,
 			Name:  name,
 			Image: container.Image,
 			State: container.State,

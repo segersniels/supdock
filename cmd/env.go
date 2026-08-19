@@ -43,6 +43,9 @@ func runEnv(query string) {
 		// Handle fuzzy search for the container
 		containerID, err = handleFuzzySearch(ctx, prompter, query, docker.RunningContainers)
 		if err != nil {
+			if prompt.IsCancelled(err) {
+				return
+			}
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
 		}
@@ -50,6 +53,9 @@ func runEnv(query string) {
 		// Prompt for container selection
 		containerID, err = prompter.PromptContainerSelection(ctx, "Select a container from the list", docker.RunningContainers)
 		if err != nil {
+			if prompt.IsCancelled(err) {
+				return
+			}
 			fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 			os.Exit(1)
 		}

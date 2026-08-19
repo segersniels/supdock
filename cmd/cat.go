@@ -34,6 +34,9 @@ func runCat() {
 	// Prompt for container selection
 	containerID, err := prompter.PromptContainerSelection(ctx, "Select container:", docker.RunningContainers)
 	if err != nil {
+		if prompt.IsCancelled(err) {
+			return
+		}
 		fmt.Println(style.CreateErrorMessage(fmt.Sprintf("Selection failed: %v", err)))
 		os.Exit(1)
 	}
@@ -41,6 +44,9 @@ func runCat() {
 	// Prompt for file path
 	filePath, err := prompter.PromptText("File path:")
 	if err != nil {
+		if prompt.IsCancelled(err) {
+			return
+		}
 		fmt.Println(style.CreateErrorMessage(fmt.Sprintf("Input failed: %v", err)))
 		os.Exit(1)
 	}

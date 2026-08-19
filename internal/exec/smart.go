@@ -22,6 +22,14 @@ import (
 // SupportedCommand represents commands that supdock can handle intelligently
 type SupportedCommand string
 
+// ResourceKind identifies the Docker resource selected for a command.
+type ResourceKind string
+
+const (
+	ContainerResource ResourceKind = "container"
+	ImageResource     ResourceKind = "image"
+)
+
 const (
 	CmdStart   SupportedCommand = "start"
 	CmdRestart SupportedCommand = "restart"
@@ -33,13 +41,8 @@ const (
 	CmdInspect SupportedCommand = "inspect"
 )
 
-// Import constants from centralized location
-
-// Pre-compiled regex patterns for error parsing
 var (
-	noSuchContainerRegex = regexp.MustCompile(`No such container:\s*([^\s\n]+)`)
-	noSuchImageRegex     = regexp.MustCompile(`No such image:\s*([^\s\n]+)`)
-	generalErrorRegex    = regexp.MustCompile(`Error.*:\s*([^\s\n]+)$`)
+	missingResourceRegex = regexp.MustCompile(`(?i)no such (?:container|image|object):\s*([^\s\n]+)`)
 )
 
 var supportedCommands = map[string]SupportedCommand{
@@ -53,23 +56,25 @@ var supportedCommands = map[string]SupportedCommand{
 	"inspect": CmdInspect,
 }
 
-// CreateContextWithTimeout creates a context with timeout and signal handling
+// ResourceKindForCommand reports whether a command operates on containers or images.
+func ResourceKindForCommand(command string) ResourceKind {
+	switch SupportedCommand(command) {
+	case CmdRmi, CmdHistory:
+		return ImageResource
+	default:
+		return ContainerResource
+	}
+}
+
+// CreateContextWithTimeout returns a Docker operation context that also handles termination signals.
 func CreateContextWithTimeout() (context.Context, context.CancelFunc) {
-	ctx, cancel := context.WithTimeout(context.Background(), constants.DockerOperationTimeout)
+	signalCtx, stopSignals := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+	ctx, cancelTimeout := context.WithTimeout(signalCtx, constants.DockerOperationTimeout)
 
-	// Handle interrupts gracefully
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
-
-	go func() {
-		select {
-		case <-c:
-			cancel()
-		case <-ctx.Done():
-		}
-	}()
-
-	return ctx, cancel
+	return ctx, func() {
+		cancelTimeout()
+		stopSignals()
+	}
 }
 
 // getContainerTypeForCommand returns the appropriate container type for a command
@@ -96,7 +101,6 @@ func SmartPassthrough(args []string) {
 		return
 	}
 
-	// Check if we should intercept for beautiful rendering
 	if render.ShouldIntercept(args) {
 		supLog.Debug("using enhanced rendering for:", args[0])
 		if err := render.InterceptDockerCommand(args); err != nil {
@@ -111,7 +115,6 @@ func SmartPassthrough(args []string) {
 	command := args[0]
 	supportedCmd, isSupported := supportedCommands[command]
 
-	// If not a supported command, just pass through
 	if !isSupported {
 		supLog.Debug("direct docker passthrough for:", command)
 		RunDockerCommandAndExit(args...)
@@ -119,25 +122,22 @@ func SmartPassthrough(args []string) {
 	}
 
 	supLog.Debug("attempting smart error handling for:", command)
-	// Try to execute the command first
 	output, err := RunDockerCommandWithOutput(args...)
 	if err == nil {
-		// Command succeeded, we're done
+		if len(output) > 0 {
+			_, _ = os.Stderr.Write(output)
+		}
 		os.Exit(0)
-		return
 	}
 
-	// Command failed, analyze the error
 	errorMsg := string(output)
 
-	// Handle "No such container" or "No such image" errors
-	if strings.Contains(errorMsg, "No such container") || strings.Contains(errorMsg, "No such image") {
+	if query, ok := MissingResourceFromError(errorMsg); ok {
 		supLog.Debug("resource not found, attempting fuzzy search resolution")
-		handleNoSuchResourceError(args, errorMsg, supportedCmd)
+		handleNoSuchResourceError(args, query, supportedCmd)
 		return
 	}
 
-	// Handle "requires exactly 1 argument" or "requires at least 1 argument" errors
 	if strings.Contains(errorMsg, "requires exactly 1 argument") ||
 		strings.Contains(errorMsg, "requires at least 1 argument") ||
 		strings.Contains(errorMsg, "requires 1 argument") {
@@ -146,7 +146,6 @@ func SmartPassthrough(args []string) {
 		return
 	}
 
-	// For other errors, just display them and exit
 	supLog.Debug("error not handled by smart features, showing original docker error")
 	fmt.Fprintf(os.Stderr, "%s", errorMsg)
 	if exitError, ok := err.(*exec.ExitError); ok {
@@ -155,36 +154,31 @@ func SmartPassthrough(args []string) {
 	os.Exit(1)
 }
 
-// handleNoSuchResourceError handles cases where container/image doesn't exist
-func handleNoSuchResourceError(args []string, errorMsg string, cmd SupportedCommand) {
-	// Extract the resource name from the error message
-	query := extractResourceNameFromError(errorMsg)
-	if query == "" {
-		fmt.Fprintf(os.Stderr, "%s", errorMsg)
-		os.Exit(1)
-		return
-	}
-
-	// Special case for "all" - perform parallel execution
+func handleNoSuchResourceError(args []string, query string, cmd SupportedCommand) {
 	if query == "all" {
 		handleParallelExecution(args, cmd)
 		return
 	}
 
-	// Perform fuzzy search
-	containerType := getContainerTypeForCommand(cmd)
-	selectedID, err := performFuzzySearch(query, containerType)
+	var selectedID string
+	var err error
+	if ResourceKindForCommand(string(cmd)) == ImageResource {
+		selectedID, err = performFuzzyImageSearch(query)
+	} else {
+		selectedID, err = performFuzzyContainerSearch(query, getContainerTypeForCommand(cmd))
+	}
 	if err != nil {
+		if prompt.IsCancelled(err) {
+			return
+		}
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 		os.Exit(1)
 	}
 
-	// Replace the query with the selected ID and execute
 	newArgs := ReplaceArg(args, query, selectedID)
 	RunDockerCommandAndExit(newArgs...)
 }
 
-// handleMissingArgumentError handles cases where no resource is specified
 func handleMissingArgumentError(args []string, cmd SupportedCommand) {
 	containerType := getContainerTypeForCommand(cmd)
 
@@ -200,26 +194,25 @@ func handleMissingArgumentError(args []string, cmd SupportedCommand) {
 
 	var selectedID string
 
-	if cmd == CmdRmi || cmd == CmdHistory {
-		// For image commands
+	if ResourceKindForCommand(string(cmd)) == ImageResource {
 		selectedID, err = prompter.PromptImageSelection(ctx, "Select an image from the list")
 	} else {
-		// For container commands
 		selectedID, err = prompter.PromptContainerSelection(ctx, "Select a container from the list", containerType)
 	}
 
 	if err != nil {
+		if prompt.IsCancelled(err) {
+			return
+		}
 		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 		os.Exit(1)
 	}
 
-	// Append the selected ID and execute
 	newArgs := append(args, selectedID)
 	RunDockerCommandAndExit(newArgs...)
 }
 
-// performFuzzySearch performs fuzzy search and returns selected container ID
-func performFuzzySearch(query string, containerType docker.ContainerType) (string, error) {
+func performFuzzyContainerSearch(query string, containerType docker.ContainerType) (string, error) {
 	prompter, err := prompt.NewPrompter()
 	if err != nil {
 		return "", err
@@ -238,26 +231,69 @@ func performFuzzySearch(query string, containerType docker.ContainerType) (strin
 		return "", fmt.Errorf("no containers found")
 	}
 
-	// Format containers for search
 	formattedContainers := make([]string, len(containers))
 	for i, container := range containers {
 		formattedContainers[i] = fmt.Sprintf("%s - %s (%s)",
 			container.ID, container.Name, container.Image)
 	}
 
-	// Perform fuzzy search
-	results := search.FuzzySearch(formattedContainers, query, constants.DefaultFuzzyThreshold)
+	return selectFuzzyResult(query, formattedContainers,
+		func() (string, error) {
+			return prompter.PromptContainerSelection(ctx, "No matches found. Select a container from the list", containerType)
+		},
+		func(results []string) (string, error) {
+			return prompter.PromptFromChoices("Multiple matches found. Select a container:", results)
+		},
+	)
+}
 
+func performFuzzyImageSearch(query string) (string, error) {
+	prompter, err := prompt.NewPrompter()
+	if err != nil {
+		return "", err
+	}
+	defer prompter.Close()
+
+	ctx, cancel := CreateContextWithTimeout()
+	defer cancel()
+
+	images, err := prompter.ListImages(ctx)
+	if err != nil {
+		return "", err
+	}
+	if len(images) == 0 {
+		return "", fmt.Errorf("no images found")
+	}
+
+	choices := make([]string, len(images))
+	for i, image := range images {
+		choices[i] = fmt.Sprintf("%s - %s", image.ID, image.Name)
+	}
+
+	return selectFuzzyResult(query, choices,
+		func() (string, error) {
+			return prompter.PromptImageSelection(ctx, "No matches found. Select an image from the list")
+		},
+		func(results []string) (string, error) {
+			return prompter.PromptFromChoices("Multiple matches found. Select an image:", results)
+		},
+	)
+}
+
+func selectFuzzyResult(
+	query string,
+	choices []string,
+	selectFallback func() (string, error),
+	selectMultiple func([]string) (string, error),
+) (string, error) {
+	results := search.FuzzySearch(choices, query, constants.DefaultFuzzyThreshold)
 	switch len(results) {
 	case 0:
-		// No results found, prompt user to select
-		return prompter.PromptContainerSelection(ctx, "No matches found. Select a container from the list", containerType)
+		return selectFallback()
 	case 1:
-		// Single result
 		return extractIDFromResult(results[0]), nil
 	default:
-		// Multiple results
-		return prompter.PromptFromChoices("Multiple matches found. Select a container:", results)
+		return selectMultiple(results)
 	}
 }
 
@@ -329,33 +365,15 @@ func handleParallelExecution(args []string, cmd SupportedCommand) {
 	os.Exit(0)
 }
 
-// extractResourceNameFromError extracts resource name from Docker error message
-func extractResourceNameFromError(errorMsg string) string {
-	// Try precompiled regex patterns
-	regexPatterns := []*regexp.Regexp{
-		noSuchContainerRegex,
-		noSuchImageRegex,
-		generalErrorRegex,
+// MissingResourceFromError extracts a missing container or image name from Docker output.
+func MissingResourceFromError(errorMsg string) (string, bool) {
+	matches := missingResourceRegex.FindStringSubmatch(errorMsg)
+	if len(matches) < 2 {
+		return "", false
 	}
 
-	for _, re := range regexPatterns {
-		matches := re.FindStringSubmatch(errorMsg)
-		if len(matches) > 1 {
-			return strings.TrimSpace(matches[1])
-		}
-	}
-
-	// Fallback: extract the last word from the last line
-	lines := strings.Split(strings.TrimSpace(errorMsg), "\n")
-	if len(lines) > 0 {
-		lastLine := lines[len(lines)-1]
-		words := strings.Fields(lastLine)
-		if len(words) > 0 {
-			return strings.TrimSpace(words[len(words)-1])
-		}
-	}
-
-	return ""
+	resource := strings.Trim(strings.TrimSpace(matches[1]), `"'`)
+	return resource, resource != ""
 }
 
 // extractIDFromResult extracts container ID from formatted result

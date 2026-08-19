@@ -3,25 +3,12 @@ package exec
 import (
 	"bytes"
 	"fmt"
-	"io"
 	"os"
 	"os/exec"
 	"strings"
 
 	supLog "github.com/segersniels/supdock/internal/log"
 )
-
-// RunDockerCommand executes a docker command with the given arguments
-func RunDockerCommand(args ...string) error {
-	supLog.Debug("executing docker command:", strings.Join(args, " "))
-
-	cmd := exec.Command("docker", args...)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	cmd.Stdin = os.Stdin
-
-	return cmd.Run()
-}
 
 // RunDockerCommandAndExit executes a docker command and exits with the same exit code
 func RunDockerCommandAndExit(args ...string) {
@@ -43,7 +30,7 @@ func RunDockerCommandAndExit(args ...string) {
 	os.Exit(0)
 }
 
-// RunDockerCommandWithOutput executes a docker command, streams stdout, and captures output for error handling
+// RunDockerCommandWithOutput streams stdout and captures stderr for error handling.
 func RunDockerCommandWithOutput(args ...string) ([]byte, error) {
 	supLog.Debug("exec: docker", strings.Join(args, " "))
 
@@ -51,24 +38,12 @@ func RunDockerCommandWithOutput(args ...string) ([]byte, error) {
 	cmd.Stdin = os.Stdin
 
 	var output bytes.Buffer
-	cmd.Stdout = io.MultiWriter(os.Stdout, &output)
+	cmd.Stdout = os.Stdout
 	cmd.Stderr = &output
 
 	err := cmd.Run()
 
 	return output.Bytes(), err
-}
-
-// RunDockerCommandInBackground executes a docker command in the background
-func RunDockerCommandInBackground(args ...string) error {
-	supLog.Debug("Executing in background: docker", strings.Join(args, " "))
-
-	cmd := exec.Command("docker", args...)
-	cmd.Stdout = nil
-	cmd.Stderr = nil
-	cmd.Stdin = nil
-
-	return cmd.Start()
 }
 
 // RunDockerCommandInBackgroundWithError executes a docker command in the background and waits for completion
@@ -83,11 +58,15 @@ func RunDockerCommandInBackgroundWithError(args ...string) error {
 	return cmd.Run()
 }
 
-// ReplaceArg replaces all occurrences of target with value in the args slice
+// ReplaceArg replaces arguments that exactly match target.
 func ReplaceArg(args []string, target, value string) []string {
 	result := make([]string, len(args))
 	for i, arg := range args {
-		result[i] = strings.ReplaceAll(arg, target, value)
+		if arg == target {
+			result[i] = value
+			continue
+		}
+		result[i] = arg
 	}
 	return result
 }

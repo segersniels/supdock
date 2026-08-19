@@ -141,7 +141,7 @@ func renderContainers(args []string, options renderOptions) error {
 
 		var container DockerContainer
 		if err := json.Unmarshal([]byte(line), &container); err != nil {
-			continue // Skip malformed lines
+			return fmt.Errorf("parse docker ps output: %w", err)
 		}
 		containers = append(containers, container)
 	}
@@ -227,7 +227,7 @@ func renderImages(args []string) error {
 
 		var image DockerImage
 		if err := json.Unmarshal([]byte(line), &image); err != nil {
-			continue // Skip malformed lines
+			return fmt.Errorf("parse docker images output: %w", err)
 		}
 		images = append(images, image)
 	}

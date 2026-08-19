@@ -37,7 +37,10 @@ func FormatContainerOption(id, name, image, status string) string {
 		statusDot = styles.ContainerStopped.Render("○")
 	}
 
-	idPart := styles.ID.Render(id[:12])
+	if len(id) > 12 {
+		id = id[:12]
+	}
+	idPart := styles.ID.Render(id)
 	namePart := styles.ContainerName.Render(name)
 	imagePart := styles.Gray.Render("(" + image + ")")
 

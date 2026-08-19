@@ -34,6 +34,9 @@ func runSSH() {
 	// Prompt for container selection
 	containerID, err := prompter.PromptContainerSelection(ctx, "Select container:", docker.RunningContainers)
 	if err != nil {
+		if prompt.IsCancelled(err) {
+			return
+		}
 		fmt.Println(style.CreateErrorMessage(fmt.Sprintf("Selection failed: %v", err)))
 		os.Exit(1)
 	}
@@ -41,6 +44,9 @@ func runSSH() {
 	// Prompt for shell selection
 	shell, err := prompter.PromptShellSelection()
 	if err != nil {
+		if prompt.IsCancelled(err) {
+			return
+		}
 		fmt.Println(style.CreateErrorMessage(fmt.Sprintf("Shell selection failed: %v", err)))
 		os.Exit(1)
 	}
