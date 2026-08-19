@@ -29,20 +29,29 @@ The original Rust version was great, but Go brings several advantages:
 
 ## Installation
 
+### npm
+
+```bash
+npm install --global supdock
+```
+
+### Script
+
+The install script downloads the latest release to `~/.local/bin`.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/segersniels/supdock/master/scripts/install.sh | sh
+```
+
 ### Go Install
+
 ```bash
 go install github.com/segersniels/supdock@latest
 ```
 
 ### Binary
-Grab a binary from the [releases](https://github.com/segersniels/supdock/releases) page and move it into your desired bin (eg. /usr/local/bin) location.
 
-```bash
-# macOS on Apple Silicon; use amd64-macos, amd64-linux, or aarch64-linux as needed
-curl -L https://github.com/segersniels/supdock/releases/latest/download/supdock-aarch64-macos -o supdock
-chmod +x supdock
-sudo mv supdock /usr/local/bin/
-```
+You can also download a binary from the [releases](https://github.com/segersniels/supdock/releases) page and move it to a directory in your `PATH`.
 
 ### Build from Source
 ```bash

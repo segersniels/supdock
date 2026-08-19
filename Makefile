@@ -63,15 +63,15 @@ demo:
 
 # Cross-compilation targets
 build-linux: clean
-	GOOS=linux GOARCH=amd64 $(MAKE) build-release OUTPUT=$(BINARY_NAME)-amd64-linux
-	GOOS=linux GOARCH=arm64 $(MAKE) build-release OUTPUT=$(BINARY_NAME)-aarch64-linux
+	GOOS=linux GOARCH=amd64 $(MAKE) build-release OUTPUT=$(BINARY_NAME)-linux-amd64
+	GOOS=linux GOARCH=arm64 $(MAKE) build-release OUTPUT=$(BINARY_NAME)-linux-arm64
 
 build-darwin: clean
-	GOOS=darwin GOARCH=amd64 $(MAKE) build-release OUTPUT=$(BINARY_NAME)-amd64-macos
-	GOOS=darwin GOARCH=arm64 $(MAKE) build-release OUTPUT=$(BINARY_NAME)-aarch64-macos
+	GOOS=darwin GOARCH=amd64 $(MAKE) build-release OUTPUT=$(BINARY_NAME)-darwin-amd64
+	GOOS=darwin GOARCH=arm64 $(MAKE) build-release OUTPUT=$(BINARY_NAME)-darwin-arm64
 
 build-windows: clean
-	GOOS=windows GOARCH=amd64 $(MAKE) build-release OUTPUT=$(BINARY_NAME)-amd64-windows.exe
+	GOOS=windows GOARCH=amd64 $(MAKE) build-release OUTPUT=$(BINARY_NAME)-windows-amd64.exe
 
 build-all: build-linux build-darwin build-windows
 

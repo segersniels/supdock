@@ -13,13 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
           cache: true
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: "18.x"
+          node-version: "24.x"
       - name: Check formatting and vet
         run: make lint
       - name: Run tests
@@ -36,23 +36,23 @@ jobs:
         include:
           - goos: linux
             goarch: amd64
-            exe: amd64-linux
+            exe: linux-amd64
           - goos: linux
             goarch: arm64
-            exe: aarch64-linux
+            exe: linux-arm64
           - goos: darwin
             goarch: amd64
-            exe: amd64-macos
+            exe: darwin-amd64
           - goos: darwin
             goarch: arm64
-            exe: aarch64-macos
+            exe: darwin-arm64
           - goos: windows
             goarch: amd64
-            exe: amd64-windows.exe
+            exe: windows-amd64.exe
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v4
+      - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
           cache: true
@@ -68,8 +68,6 @@ jobs:
     environment: production
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
-    outputs:
-      tag_exists: ${{ steps.check_tag.outputs.exists }}
     permissions:
       contents: write
     steps:
@@ -86,37 +84,42 @@ jobs:
         id: check_tag
         with:
           tag: "${{ steps.current_version.outputs.version }}"
-      - uses: marvinpinto/action-automatic-releases@latest
+      - uses: ncipollo/release-action@v1
         if: steps.check_tag.outputs.exists == 'false'
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "${{ steps.current_version.outputs.version }}"
+          tag: "${{ steps.current_version.outputs.version }}"
+          artifacts: "bin/supdock-*"
+          generateReleaseNotes: true
+          makeLatest: true
           prerelease: false
-          files: ./bin/supdock-*
 
   npm:
     needs: release
     environment: production
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master' && needs.release.outputs.tag_exists == 'false'
+    if: github.ref == 'refs/heads/master'
     permissions:
       contents: read
       id-token: write
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: "18.x"
+          node-version: "24.x"
           registry-url: https://registry.npmjs.org
-      - uses: actions/download-artifact@v4.1.7
-        with:
-          pattern: supdock-*
-          path: bin
-          merge-multiple: true
       - name: Get current package version
         id: current_version
         run: echo "version=$(make version)" >> $GITHUB_OUTPUT
+      - name: Check npm package version
+        id: check_npm_version
+        run: |
+          if npm view "supdock@${{ steps.current_version.outputs.version }}" version >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
       - name: Publish to npm
+        if: steps.check_npm_version.outputs.exists == 'false'
         run: |
           npm version ${{ steps.current_version.outputs.version }} --no-git-tag-version --no-commit-hooks --allow-same-version
           npm publish --provenance --access public

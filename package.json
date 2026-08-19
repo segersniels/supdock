@@ -3,17 +3,24 @@
   "version": "4.0.0",
   "description": "What's Up, Doc(ker)? A beautiful way to interact with the Docker daemon built with Charmbracelet libraries",
   "files": [
-    "bin",
-    "scripts/preinstall.js"
+    "scripts/install.sh"
   ],
   "bin": {
     "supdock": "./bin/supdock"
   },
   "scripts": {
-    "preinstall": "node ./scripts/preinstall.js",
+    "preinstall": "SUPDOCK_VERSION=\"$npm_package_version\" ./scripts/install.sh ./bin",
     "generate:changelog": "gitmoji-changelog",
     "test": "go test ./... && node --test"
   },
+  "os": [
+    "darwin",
+    "linux"
+  ],
+  "cpu": [
+    "arm64",
+    "x64"
+  ],
   "author": "Niels Segers",
   "license": "MIT",
   "homepage": "https://github.com/segersniels/supdock#readme",
