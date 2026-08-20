@@ -17,10 +17,10 @@ Repetitive use of `docker ps`, `docker logs`, `docker stats` and `docker exec -t
 
 ## Installation
 
-### Cargo
+### Script
 
 ```bash
-cargo install supdock
+curl -fsSL https://raw.githubusercontent.com/segersniels/supdock/master/scripts/install.sh | sh
 ```
 
 ### NPM
@@ -51,18 +51,25 @@ alias docker="supdock"
 ## Usage
 
 ```bash
-What's Up Doc(ker)?
+What's Up, Doc(ker)? A convenient way to interact with the docker daemon.
+Supdock is a wrapper for the docker command meaning you can still use all of the other docker commands without issues.
 
-Usage: supdock [COMMAND]
+Usage:
+  supdock [flags]
+  supdock [command]
 
-Commands:
-  prune  Remove stopped containers and dangling images. For more detailed usage refer to "docker system prune -h"
-  ssh    SSH into a container
-  env    See the environment variables of a running container
-  cat    Echo the contents of a file using cat on a container
+Available Commands:
+  cat         Echo the contents of a file using cat on a container
+  env         See the environment variables of a running container
+  help        Help about any command
+  prune       Remove stopped containers and dangling images
+  ssh         SSH into a container
 
 Options:
-  -h, --help  Print help
+  -h, --help      help for supdock
+  -v, --version   version for supdock
+
+Use "supdock [command] --help" for more information about a command.
 
 For more detailed usage on docker refer to "docker help"
 ```

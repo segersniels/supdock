@@ -1,3 +1,5 @@
-target
 bin
 node_modules
+.claude
+/supdock
+/supdock-*
