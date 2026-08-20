@@ -3,15 +3,9 @@
 <a name="4.0.0"></a>
 ## 4.0.0 (2026-08-20)
 
-### Added
-
-- Styled output for `docker ps` and `docker images`
-- One-line install script for macOS and Linux
-
 ### Changed
 
-- Rewrote Supdock in Go while preserving Docker passthrough and interactive commands
-- Updated npm and release packaging to distribute Go binaries
+- refactor(cli): replace Rust implementation with Go ([#21](https://github.com/segersniels/supdock/pull/21))
 
 <a name="3.5.0"></a>
 ## 3.5.0 (2024-06-06)
