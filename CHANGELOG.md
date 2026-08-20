@@ -1,5 +1,12 @@
 # Changelog
 
+<a name="4.1.0"></a>
+## 4.1.0 (2026-08-20)
+
+### Added
+
+- feat(debug): add fuzzy resource selection ([bbe82f6](https://github.com/segersniels/supdock/commit/bbe82f6b9ce1e47c35546b18ae66d7721fbb5442))
+
 <a name="4.0.0"></a>
 ## 4.0.0 (2026-08-20)
 

@@ -1,6 +1,6 @@
 {
   "name": "supdock",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "What's Up, Doc(ker)? A beautiful way to interact with the Docker daemon built with Charmbracelet libraries",
   "files": [
     "scripts/install.sh"

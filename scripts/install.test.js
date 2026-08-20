@@ -6,6 +6,7 @@ const path = require("node:path");
 const test = require("node:test");
 
 const installScript = path.join(__dirname, "install.sh");
+const packageVersion = require("../package.json").version;
 
 function createFakeInstaller(t, system, machine) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), "supdock-install-"));
@@ -127,9 +128,11 @@ test("npm package installs a runnable native command", (t) => {
     },
   });
 
-  assert.match(
-    fs.readFileSync(curlLog, "utf8"),
-    /\/releases\/download\/4\.0\.0\/supdock-linux-amd64/,
+  assert.equal(
+    fs
+      .readFileSync(curlLog, "utf8")
+      .includes(`/releases/download/${packageVersion}/supdock-linux-amd64`),
+    true,
   );
   assert.equal(
     execFileSync(path.join(prefix, "bin", "supdock"), { encoding: "utf8" }),

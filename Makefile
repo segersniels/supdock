@@ -2,7 +2,7 @@
 
 # Go related variables
 BINARY_NAME=supdock
-VERSION=4.0.0
+VERSION=4.1.0
 
 # Build flags
 LDFLAGS=-ldflags "-s -w -X github.com/segersniels/supdock/cmd.Version=$(VERSION)"
