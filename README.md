@@ -1,64 +1,43 @@
 # Supdock
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/segersniels/supdock)](https://goreportcard.com/report/github.com/segersniels/supdock)
-[![GitHub release](https://img.shields.io/github/release/segersniels/supdock.svg)](https://github.com/segersniels/supdock/releases)
+[![crates.io](https://img.shields.io/crates/v/supdock.svg)](https://crates.io/crates/supdock)
+[![npm](https://img.shields.io/npm/v/supdock)](https://www.npmjs.com/package/supdock)
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/segersniels/supdock/ci.yml)
 
-What's Up, Doc(ker)? A beautiful way to interact with the Docker daemon. Supdock is a wrapper for the Docker command built with [Charmbracelet](https://charm.sh) libraries, meaning you can still use all of the other `docker` commands without issues.
+What's Up, Doc(ker)? A convenient way to interact with the docker daemon. Supdock is a wrapper for the docker command meaning you can still use all of the other `docker` commands without issues.
 
-<p align="center">
+<p align="center" />
 <img src="https://i.imgur.com/ATV0nP7.png" width="250" />
-</p>
 
-## ✨ Features
+## Why
 
-- **🎨 Beautiful TUI**: Built with Charmbracelet's Huh and Lipgloss for stunning terminal interfaces
-- **⚡ Fast & Responsive**: Written in Go with concurrent operations and efficient Docker API integration
-- **🔍 Smart Search**: Fuzzy search containers and images, including ordinary typos
-- **🐳 Full Docker Compatibility**: All standard Docker commands pass through seamlessly
-- **🛠 Enhanced Commands**: Interactive prompts for common Docker operations
-- **🎯 Error Recovery**: Smart error handling with helpful suggestions and container selection
+Repetitive use of `docker ps`, `docker logs`, `docker stats` and `docker exec -ti` when troubleshooting complex container setups can get chaotic. Supdock aims to optimize and speed up your workflow using docker.
 
-## Why Rewrite?
-
-The original Rust version was great, but Go brings several advantages:
-- **Faster compilation** during development
-- **Better Docker ecosystem integration** with the official Docker SDK
-- **Stunning terminal UIs** with Charmbracelet libraries
-- **Simpler concurrency** with goroutines
-- **Single binary distribution** without external dependencies
+![img](./demo.gif)
 
 ## Installation
 
-### npm
-
-```bash
-npm install --global supdock
-```
-
 ### Script
-
-The install script downloads the latest release to `~/.local/bin`.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/segersniels/supdock/master/scripts/install.sh | sh
 ```
 
-### Go Install
+### NPM
 
 ```bash
-go install github.com/segersniels/supdock@latest
+npm install -g supdock
 ```
+
+Chances are you will run into issues with `yarn` due to symlink issues, so install through npm instead.
 
 ### Binary
 
-You can also download a binary from the [releases](https://github.com/segersniels/supdock/releases) page and move it to a directory in your `PATH`.
+Grab a binary from the [releases](https://github.com/segersniels/supdock/releases) page and move it into your desired bin (eg. /usr/local/bin) location.
 
-### Build from Source
 ```bash
-git clone https://github.com/segersniels/supdock
-cd supdock
-make build
-sudo make install
+mv supdock-<os> /usr/local/bin/supdock
+chmod +x /usr/local/bin/supdock
 ```
 
 ## Alias
@@ -72,129 +51,37 @@ alias docker="supdock"
 ## Usage
 
 ```bash
-What's Up Doc(ker)?
+What's Up, Doc(ker)? A convenient way to interact with the docker daemon.
+Supdock is a wrapper for the docker command meaning you can still use all of the other docker commands without issues.
 
 Usage:
-  supdock [COMMAND]
+  supdock [flags]
+  supdock [command]
 
-Commands:
-  ssh     SSH into a container with beautiful shell selection
-  env     See environment variables with optional fuzzy search
-  cat     View file contents within containers
-  prune   Clean up containers and images with advanced options
+Available Commands:
+  cat         Echo the contents of a file using cat on a container
+  env         See the environment variables of a running container
+  help        Help about any command
+  prune       Remove stopped containers and dangling images
+  ssh         SSH into a container
 
 Options:
-  -h, --help     Show this help
-  -v, --version  Show version
+  -h, --help      help for supdock
+  -v, --version   version for supdock
+
+Use "supdock [command] --help" for more information about a command.
 
 For more detailed usage on docker refer to "docker help"
 ```
 
-### Enhanced Commands
-
-#### SSH into Containers
-```bash
-supdock ssh
-# Interactive selection with beautiful TUI
-# Supports multiple shell types (bash, ash, sh)
-```
-
-#### Environment Variables
-```bash
-supdock env                    # Interactive container selection
-supdock env nginx             # Fuzzy search for containers matching "nginx"
-supdock env web-server        # Smart matching for hyphenated names
-```
-
-#### File Contents
-```bash
-supdock cat
-# Select container and specify file path interactively
-```
-
-#### System Cleanup
-```bash
-supdock prune                 # Remove unused resources without confirmation
-supdock prune --info          # Show disk usage instead of pruning
-supdock prune --all           # Remove all unused images
-supdock prune --volumes       # Include volumes in cleanup
-```
-
-### Smart Passthrough
-
-All Docker commands work seamlessly with enhanced error handling:
-
-```bash
-supdock ps                    # Lists containers
-supdock ps --all-columns      # Keeps every column on narrow terminals
-supdock logs web-server       # Shows logs, with fuzzy matching if not found
-supdock stop all             # Parallel execution on all running containers
-supdock start nginx          # Fuzzy matches and starts containers
-```
-
-## Advanced Features
-
-### Fuzzy Search
-Supdock uses intelligent fuzzy search to match container names:
-- Direct substring matching
-- Hyphenated name support (`web-server` matches `my-web-server-prod`)
-- Typo-tolerant matching with stable result ordering
-
-### Parallel Execution
-Execute commands on multiple containers simultaneously:
-```bash
-supdock stop all      # Stops all running containers in parallel
-supdock start all     # Starts all stopped containers in parallel
-supdock restart all   # Restarts all containers in parallel
-```
-
-### Debug Mode
-Enable debug logging to see what's happening under the hood:
-```bash
-DEBUG=1 supdock ssh
-```
-
-## Development
-
-### Requirements
-- Go 1.24 or later
-- Docker (for testing)
-
-### Building
-```bash
-make build          # Build for current platform
-make build-all      # Cross-compile for all platforms
-make dev            # Development build
-make dev-debug      # Development build with debug logging
-```
-
-### Testing
-```bash
-make test           # Run tests and smoke-test the built CLI
-make lint           # Check formatting and run go vet
-```
-
-## Architecture
-
-- **CLI Framework**: [Cobra](https://cobra.dev) for robust command handling
-- **TUI Components**: [Charmbracelet Huh](https://github.com/charmbracelet/huh) for interactive prompts
-- **Styling**: [Lipgloss](https://github.com/charmbracelet/lipgloss) for beautiful terminal styling
-- **Docker Integration**: Official [Docker SDK](https://pkg.go.dev/github.com/docker/docker) for reliable API communication
-- **Fuzzy Search**: Jaro-Winkler similarity matching for names and common typos
+Usage above can differ from the actual usage shown by the command.
 
 ## Changelog
 
-For a detailed changelog see [CHANGELOG.md](./CHANGELOG.md).
+For a basic changelog overview go [here](./CHANGELOG.md).
+I try to keep track of most general changes as best as I can.
 
 ## Contributing & Troubleshooting
 
-If you would like to see something added or want to add something yourself, feel free to create an issue or pull request.
-
-For troubleshooting, enable debug logging:
-```bash
-DEBUG=1 supdock [command]
-```
-
-## License
-
-MIT - see [LICENSE](./LICENSE) for details.
+If you would like to see something added or you want to add something yourself feel free to create an issue or a pull request.
+Please provide either the panic log or your terminal output with `RUST_LOG=debug` enabled for easier troubleshooting.
