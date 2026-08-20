@@ -45,6 +45,7 @@ func TestReplaceArgChangesOnlyTheResourceArgument(t *testing.T) {
 
 func TestResourceKindMatchesDockerCommand(t *testing.T) {
 	tests := map[string]supexec.ResourceKind{
+		"debug":   supexec.AnyResource,
 		"rmi":     supexec.ImageResource,
 		"history": supexec.ImageResource,
 		"logs":    supexec.ContainerResource,
@@ -74,5 +75,11 @@ func TestMissingResourceFromDockerError(t *testing.T) {
 				t.Fatalf("MissingResourceFromError() = %q, %t, want %q, true", got, ok, want)
 			}
 		})
+	}
+}
+
+func TestDockerDebugMissingResourceErrorRequiresSelection(t *testing.T) {
+	if !supexec.IsMissingArgumentError("image or container required\n") {
+		t.Fatal("IsMissingArgumentError() = false, want true")
 	}
 }

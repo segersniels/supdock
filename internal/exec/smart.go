@@ -28,6 +28,7 @@ type ResourceKind string
 const (
 	ContainerResource ResourceKind = "container"
 	ImageResource     ResourceKind = "image"
+	AnyResource       ResourceKind = "container or image"
 )
 
 const (
@@ -39,6 +40,7 @@ const (
 	CmdLogs    SupportedCommand = "logs"
 	CmdHistory SupportedCommand = "history"
 	CmdInspect SupportedCommand = "inspect"
+	CmdDebug   SupportedCommand = "debug"
 )
 
 var (
@@ -54,6 +56,7 @@ var supportedCommands = map[string]SupportedCommand{
 	"logs":    CmdLogs,
 	"history": CmdHistory,
 	"inspect": CmdInspect,
+	"debug":   CmdDebug,
 }
 
 // ResourceKindForCommand reports whether a command operates on containers or images.
@@ -61,9 +64,19 @@ func ResourceKindForCommand(command string) ResourceKind {
 	switch SupportedCommand(command) {
 	case CmdRmi, CmdHistory:
 		return ImageResource
+	case CmdDebug:
+		return AnyResource
 	default:
 		return ContainerResource
 	}
+}
+
+// IsMissingArgumentError reports whether Docker rejected a command without its target resource.
+func IsMissingArgumentError(message string) bool {
+	return strings.Contains(message, "requires exactly 1 argument") ||
+		strings.Contains(message, "requires at least 1 argument") ||
+		strings.Contains(message, "requires 1 argument") ||
+		strings.Contains(message, "image or container required")
 }
 
 // CreateContextWithTimeout returns a Docker operation context that also handles termination signals.
@@ -138,9 +151,7 @@ func SmartPassthrough(args []string) {
 		return
 	}
 
-	if strings.Contains(errorMsg, "requires exactly 1 argument") ||
-		strings.Contains(errorMsg, "requires at least 1 argument") ||
-		strings.Contains(errorMsg, "requires 1 argument") {
+	if IsMissingArgumentError(errorMsg) {
 		supLog.Debug("missing argument, prompting for interactive selection")
 		handleMissingArgumentError(args, supportedCmd)
 		return
@@ -194,9 +205,12 @@ func handleMissingArgumentError(args []string, cmd SupportedCommand) {
 
 	var selectedID string
 
-	if ResourceKindForCommand(string(cmd)) == ImageResource {
+	switch ResourceKindForCommand(string(cmd)) {
+	case ImageResource:
 		selectedID, err = prompter.PromptImageSelection(ctx, "Select an image from the list")
-	} else {
+	case AnyResource:
+		selectedID, err = prompter.PromptResourceSelection(ctx, "Select a container or image from the list")
+	default:
 		selectedID, err = prompter.PromptContainerSelection(ctx, "Select a container from the list", containerType)
 	}
 

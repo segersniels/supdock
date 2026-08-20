@@ -109,6 +109,54 @@ func (p *Prompter) PromptImageSelection(ctx context.Context, message string) (st
 	return selected, nil
 }
 
+// PromptResourceSelection shows containers and images in one searchable prompt.
+func (p *Prompter) PromptResourceSelection(ctx context.Context, message string) (string, error) {
+	containers, err := p.ListContainers(ctx, docker.AllContainers)
+	if err != nil {
+		return "", fmt.Errorf("failed to list containers: %w", err)
+	}
+
+	images, err := p.ListImages(ctx)
+	if err != nil {
+		return "", fmt.Errorf("failed to list images: %w", err)
+	}
+
+	options := resourceOptions(containers, images)
+	if len(options) == 0 {
+		return "", fmt.Errorf("no containers or images found")
+	}
+
+	var selected string
+	form := huh.NewForm(
+		huh.NewGroup(
+			huh.NewSelect[string]().
+				Title(message).
+				Options(options...).
+				Value(&selected).
+				Filtering(true),
+		),
+	).WithTheme(style.CreateAdaptiveTheme())
+
+	if err := form.Run(); err != nil {
+		return "", fmt.Errorf("prompt cancelled: %w", err)
+	}
+
+	return selected, nil
+}
+
+func resourceOptions(containers []docker.ContainerInfo, images []docker.ImageInfo) []huh.Option[string] {
+	options := make([]huh.Option[string], 0, len(containers)+len(images))
+	for _, container := range containers {
+		displayText := style.FormatContainerOption(container.ID, container.Name, container.Image, container.State)
+		options = append(options, huh.NewOption(displayText, container.ID))
+	}
+	for _, image := range images {
+		displayText := style.FormatImageOption(image.ID, image.Name)
+		options = append(options, huh.NewOption(displayText, image.ID))
+	}
+	return options
+}
+
 // PromptFromChoices shows a selection prompt from pre-built choices
 func (p *Prompter) PromptFromChoices(message string, choices []string) (string, error) {
 	if len(choices) == 0 {
