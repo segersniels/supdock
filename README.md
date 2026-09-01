@@ -1,6 +1,5 @@
 # Supdock
 
-[![crates.io](https://img.shields.io/crates/v/supdock.svg)](https://crates.io/crates/supdock)
 [![npm](https://img.shields.io/npm/v/supdock)](https://www.npmjs.com/package/supdock)
 ![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/segersniels/supdock/ci.yml)
 
